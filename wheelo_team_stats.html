@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+
+<html lang="en" xml:lang="en">
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>AFL Team Statistics</title>
+<meta name="description" content="AFL team statistics.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet">
+
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<link href="site_libs/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-5.2.2/bootstrap.bundle.min.js"></script>
+<script src="site_libs/bs3compat-0.4.2/transition.js"></script>
+<script src="site_libs/bs3compat-0.4.2/tabs.js"></script>
+<script src="site_libs/bs3compat-0.4.2/bs3compat.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/core-js-2.5.3/shim.min.js"></script>
+<script src="site_libs/react-17.0.0/react.min.js"></script>
+<script src="site_libs/react-17.0.0/react-dom.min.js"></script>
+<script src="site_libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="site_libs/reactable-0.4.4/reactable.css" rel="stylesheet" />
+<script src="site_libs/reactable-binding-0.4.4/reactable.js"></script>
+<link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="icon" href="favicon.ico" />
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="logo_192.png">
+<meta name="theme-color" content="#670099">
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L04L041MGC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-L04L041MGC');
+</script>
+<!-- <script type="text/javascript">
+  (function (c, l, a, r, i, t, y) {
+    c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+    t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+    y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+  })(window, document, "clarity", "script", "ae8a2litjx");
+</script> -->
+
+<link rel="stylesheet" href="custom.css" type="text/css" />
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+<!-- tabsets -->
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+</head>
+<body>
+<div class="container-fluid main-container container">
+
+<nav id="nav" class="navbar navbar-expand-sm navbar-default fixed-top" role="navigation">
+  <div class="container">
+    <a class="navbar-brand" href="index.html"><img id="logo" style="height: 50px; width: 151px;" src="logo.png"
+        alt="Wheelo Ratings logo" /></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+      aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="index.html">Home</a>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+            ATP Tennis
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            <li class="dropdown-header">RATINGS</li>
+            <li>
+              <a href="tennis_atp_ratings.html">Elo Ratings</a>
+            </li>
+            <li>
+              <a href="tennis_atp_race.html">Elo Race</a>
+            </li>
+            <!-- <li>
+              <a href="tennis_atp_ratings_by_year.html">End of year top 200</a>
+            </li>
+            <li>
+              <a href="tennis_atp_ratings_by_year_top5.html">End of year top 5</a>
+            </li> -->
+            <li class="divider"></li>
+            <li class="dropdown-header">STATISTICS</li>
+            <li>
+              <a href="tennis_atp_stats_last52.html">Player Stats - Last 52 Weeks</a>
+            </li>
+            <!-- <li class="divider"></li>
+            <li class="dropdown-header">HISTORY</li>
+            <li>
+              <a href="tennis_atp_players.html">Players</a>
+            </li>
+            <li>
+              <a href="tennis_atp_tournaments.html">Tournaments</a>
+            </li> -->
+            <li class="divider"></li>
+            <li class="dropdown-header">RECORDS</li>
+            <li>
+              <a href="tennis_atp_records.html">Overall Records</a>
+            </li>
+            <li>
+              <a href="tennis_atp_season_records.html">Season Records</a>
+            </li>
+            <li>
+              <a href="tennis_atp_goat.html">Greatest players</a>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+            WTA Tennis
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            <li class="dropdown-header">RATINGS</li>
+            <li>
+              <a href="tennis_wta_ratings.html">Elo Ratings</a>
+            </li>
+            <li>
+              <a href="tennis_wta_race.html">Elo Race</a>
+            </li>
+            <!-- <li>
+              <a href="tennis_wta_ratings_by_year.html">End of year top 200</a>
+            </li>
+            <li>
+              <a href="tennis_wta_ratings_by_year_top5.html">End of year top 5</a>
+            </li> -->
+            <li class="divider"></li>
+            <li class="dropdown-header">STATISTICS</li>
+            <li>
+              <a href="tennis_wta_stats_last52.html">Player Stats - Last 52 Weeks</a>
+            </li>
+            <!-- <li class="divider"></li>
+            <li class="dropdown-header">HISTORY</li>
+            <li>
+              <a href="tennis_wta_players.html">Players</a>
+            </li>
+            <li>
+              <a href="tennis_wta_tournaments.html">Tournaments</a>
+            </li> -->
+            <li class="divider"></li>
+            <li class="dropdown-header">RECORDS</li>
+            <li>
+              <a href="tennis_wta_records.html">Overall Records</a>
+            </li>
+            <li>
+              <a href="tennis_wta_season_records.html">Season Records</a>
+            </li>
+            <li>
+              <a href="tennis_wta_goat.html">Greatest players</a>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+            AFL
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            <li>
+              <a href="afl_index.html">AFL Home</a>
+            </li>
+            <li>
+              <a href="afl_match_previews.html">Match Previews</a>
+            </li>
+            <li class="divider"></li>
+            <li class="dropdown-header">MODEL</li>
+            <li>
+              <a href="afl_ratings.html">Ratings</a>
+            </li>
+            <li>
+              <a href="afl_tipping.html">Tipping</a>
+            </li>
+            <li>
+              <a href="afl_simulations.html">Simulations</a>
+            </li>
+            <li class="divider"></li>
+            <li class="dropdown-header">STATISTICS</li>
+            <li>
+              <a href="afl_team_lists.html">Team Lists</a>
+            </li>
+            <li>
+              <a href="afl_match_stats.html">Match Stats</a>
+            </li>
+            <li>
+              <a href="afl_stats.html">Player Stats</a>
+            </li>
+            <li>
+              <a href="afl_stats_team.html">Team Stats</a>
+            </li>
+            <li>
+              <a href="afl_xscores.html">Expected Scores</a>
+            </li>
+            <li>
+              <a href="afl_brownlow.html">Brownlow Medal Predictions</a>
+            </li>
+            <li>
+              <a href="afl_premiership_metrics.html">Premiership Metrics</a>
+            </li>
+            <li class="divider"></li>
+            <li class="dropdown-header">RECORDS</li>
+            <li>
+              <a href="afl_premierships.html">Premierships</a>
+            </li>
+            <li>
+              <a href="afl_annual_summary.html">Team Annual Summary</a>
+            </li>
+            <li>
+              <a href="afl_record_against_finals_teams.html">Record Against Finals Teams</a>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+            NBL
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            <li class="dropdown-header">MODEL</li>
+            <li>
+              <a href="nbl_ratings.html">Team Ratings</a>
+            </li>
+            <li class="divider"></li>
+            <li class="dropdown-header">STATISTICS</li>
+            <li>
+              <a href="nbl_stats.html">Player Stats</a>
+            </li>
+            <li>
+              <a href="nbl_stats_team.html">Team Stats</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="about.html">About</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="https://ko-fi.com/wheeloratings" target="_blank">
+            <img id="kofi" style="height: 24px; width: 24px;" src="kofi_144.png" alt="Support me on ko-fi" />
+          </a>
+        </li>
+        <li>
+          <a href="https://twitter.com/WheeloRatings" target="_blank">
+            <!-- <span class="ion ion-social-twitter"></span> -->
+            <svg class="twitter" xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 24 24">
+              <path
+                d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<nav id="navbar-banner">
+    <ul class="nav navbar-banner-heading justify-content-center">
+        <li class="fw-bold text-center">
+            Australian Football League (AFL)
+        </li>
+    </ul>
+    <ul class="nav navbar-banner-nav justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link" href="afl_index.html">AFL Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="afl_match_previews.html">Match Previews</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="afl_team_lists.html">Team Lists</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="afl_match_stats.html">Match Stats</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="afl_stats.html">Player Stats</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="afl_stats_team.html">Team Stats</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="afl_ratings.html">Team Ratings</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="afl_simulations.html">Simulations</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="afl_brownlow.html">Brownlow</a>
+        </li>
+    </ul>
+</nav>
+
+<header id="header">
+
+
+<h1 class="title toc-ignore">AFL Team Statistics</h1>
+
+</header>
+
+
+<main>
+<div>
+<b>Competition</b>
+</div>
+<div id="comp-select" class="nav nav-pills">
+
+</div>
+<div>
+<b>Season</b>
+</div>
+<div id="season-select" class="nav nav-pills">
+
+</div>
+<div id="loading-icon" class="d-inline-block">
+<p><span class="spinner-border spinner-border-sm" role="status"></span>
+<span >Loading<span></p>
+</div>
+<div id="stats-table" class="d-none">
+<div id="season-meta" class="message">
+
+</div>
+<!-- <div class="d-flex"><span class="me-2 my-2"><b>Highlight</b></span><select id="highlighted-team-select" class="form-select" aria-label="Highlight Team"></select></div> -->
+<p><label class="form-label fw-bold" for="stat-highlight-table">Highlight
+team</label>
+<select id="stat-highlight-table" class="form-select" aria-label="Select highlight value">
+</select></p>
+<hr>
+<script>
+document.querySelector('h1').innerText = "Team Statistics";
+const urlParams = new URLSearchParams(location.search);
+let comp = urlParams.get("comp");
+let season = urlParams.get("season");
+if (!season) season = urlParams.get("year");
+if (season === "-1") season = "last5";
+let season_label;
+let season_url;
+
+const dataset = "team_stats";
+const reactableId = "team-stats-table";
+const page_title = "Team Statistics";
+let comps;
+let season_data;
+let season_metadata;
+let comp_changed = true;
+let missing_columns = [];
+
+const compSelect = document.querySelector("#comp-select")
+const seasonSelect = document.querySelector("#season-select")
+const seasonMeta = document.querySelector("#season-meta")
+//const highlightedTeamSelect = document.querySelector("#highlighted-team-select")
+//highlightedTeamSelect.addEventListener('change', (e) => { Reactable.setMeta(reactableId) });
+
+const teamDisplay = function (cellInfo) {
+  return cellInfo.row['Image'] && cellInfo.row['Image'] !== "NA" ? `<img src='${cellInfo.row['Image']}' height='15px' width='15px' alt=''> ${cellInfo.row['Abbreviation']}` : cellInfo.row['Abbreviation']
+}
+const teamMatchStatsDisplay = function (cellInfo) {
+  return cellInfo.value && cellInfo.value !== "NA" ? `<a href='afl_match_stats_team.html?id=${cellInfo.value}${season_url}'>View</a>` : ""
+}
+const columnClass = function(rowInfo, column, state) {
+  if (column.id !== 'Team') {
+    for (let i = 0; i < state.sorted.length; i++) {
+      if (state.sorted[i].id === column.id)
+        return 'fw-bold'
+    }
+  }
+}
+const rowClass = function(rowInfo) {
+  if (rowInfo && rowInfo.values["Team"] === statHighlightTable.value) return 'fw-bold'
+}
+</script>
+<script>const reactable_columns = ['Team','Abbreviation','WebsiteId','Image','LastN','Matches','Players','Age','Experience','Wins','Losses','Draws','RatingPoints','Supercoach','DreamTeamPoints','CoachesVotes','Kicks','Handballs','Disposals','DisposalEfficiency','KickingEfficiency','HandballEfficiency','KickPercentage','DisposalsPerOppositionTackle','Inside50s','Rebound50s','Rebound50sPerOppositionInside50s','MetresGained','MetresGainedPerDisposal','KickMetresGained','KickMetresGainedPerKick','HandballMetresGained','HandballMetresGainedPerHandball','Clangers','DisposalsPerClanger','Turnovers','DisposalsPerTurnover','DisposalRetentionPercentage','KickIntoF50RetentionPercentage','Equity_PreClearance','Equity_PostClearance','Equity_Possession','Equity_BallUse','xThreatPerKick','ThreatRating','xRetainPerKick','RetentionRating','ContestedPossessions','UncontestedPossessions','TotalPossessions','ContestedPossessionRate','Intercepts','GroundBallGets','GroundBallGetsForward50','GroundBallGetsDefensive50','HardBallGets','LooseBallGets','PostClearanceContestedPossessions','PostClearanceGroundBallGets','GathersFromHitout','CrumbingPossessions','HandballReceives','CentreClearances','StoppageClearances','TotalClearances','FirstPossessions','FirstPossessionToClearance','Marks','ContestedMarks','MarksInside50','MarksInside50PerInside50','InterceptMarks','MarksOnLead','GoalScorers_Total','GoalScorers','Goals','Behinds','TotalPoints','RushedBehinds','ShotsAtGoal','GoalAssists','GoalAccuracy','GoalsPerInside50','ScoringShotsPerInside50','ShotsPerInside50','xWins','WinsAboveXWins','xScore','xScoreRating','xScorePerShot','xScoreRatingPerShot','xScorePerShot_Set','xScoreRatingPerShot_Set','xScorePerShot_General','xScoreRatingPerShot_General','xChainScore','xChainScoreFromStoppage','xChainScoreFromTurnover','PointsFromKickIn','PointsFromStoppage','PointsFromTurnover','PointsFromDefensiveHalf','PointsFromForwardHalf','PointsFromCentreBounce','ChainToScore','D50ToF50','D50ToScore','DefHalfToF50','DefHalfToScore','ForwardHalf','TimeInPossession','ContestOffensiveOneOnOnes','ContestOffensiveWinPercentage','ContestDefensiveOneOnOnes','ContestDefensiveLossPercentage','Tackles','TacklesInside50','PressureActs','PressureActsDefensiveHalf','Spoils','RuckContests','Hitouts','HitoutsWinPercentage','HitoutsToAdvantage','HitoutsToAdvantagePercentage','RuckHardBallGets','HitoutToFirstPossession','HitoutToClearance','FreesFor','FreesAgainst','FreesDiff','KickIns','KickInsPlayOnPercentage','Bounces','OnePercenters','InterchangeCount','RatingPoints_Opposition','Supercoach_Opposition','DreamTeamPoints_Opposition','CoachesVotes_Opposition','Kicks_Opposition','Handballs_Opposition','Disposals_Opposition','DisposalEfficiency_Opposition','KickingEfficiency_Opposition','HandballEfficiency_Opposition','OppositionDisposalsPerTackle','Inside50s_Opposition','Rebound50s_Opposition','OppositionRebound50sPerInside50s','MetresGained_Opposition','MetresGainedPerDisposal_Opposition','KickMetresGained_Opposition','KickMetresGainedPerKick_Opposition','HandballMetresGained_Opposition','HandballMetresGainedPerHandball_Opposition','Clangers_Opposition','DisposalsPerClanger_Opposition','Turnovers_Opposition','DisposalsPerTurnover_Opposition','DisposalRetentionPercentage_Opposition','KickIntoF50RetentionPercentage_Opposition','Equity_PreClearance_Opposition','Equity_PostClearance_Opposition','Equity_Possession_Opposition','Equity_BallUse_Opposition','xThreatPerKick_Opposition','ThreatRating_Opposition','xRetainPerKick_Opposition','RetentionRating_Opposition','ContestedPossessions_Opposition','UncontestedPossessions_Opposition','TotalPossessions_Opposition','ContestedPossessionRate_Opposition','Intercepts_Opposition','GroundBallGets_Opposition','GroundBallGetsForward50_Opposition','GroundBallGetsDefensive50_Opposition','HardBallGets_Opposition','LooseBallGets_Opposition','PostClearanceContestedPossessions_Opposition','PostClearanceGroundBallGets_Opposition','GathersFromHitout_Opposition','CrumbingPossessions_Opposition','HandballReceives_Opposition','CentreClearances_Opposition','StoppageClearances_Opposition','TotalClearances_Opposition','FirstPossessions_Opposition','FirstPossessionToClearance_Opposition','Marks_Opposition','ContestedMarks_Opposition','MarksInside50_Opposition','MarksInside50PerInside50_Opposition','InterceptMarks_Opposition','MarksOnLead_Opposition','Goals_Opposition','Behinds_Opposition','TotalPoints_Opposition','RushedBehinds_Opposition','ShotsAtGoal_Opposition','GoalAssists_Opposition','GoalAccuracy_Opposition','GoalsPerInside50_Opposition','ScoringShotsPerInside50_Opposition','ShotsPerInside50_Opposition','xScore_Opposition','xScoreRating_Opposition','xScorePerShot_Opposition','xScoreRatingPerShot_Opposition','xScorePerShot_Set_Opposition','xScoreRatingPerShot_Set_Opposition','xScorePerShot_General_Opposition','xScoreRatingPerShot_General_Opposition','xChainScore_Opposition','xChainScoreFromStoppage_Opposition','xChainScoreFromTurnover_Opposition','PointsFromKickIn_Opposition','PointsFromStoppage_Opposition','PointsFromTurnover_Opposition','PointsFromDefensiveHalf_Opposition','PointsFromForwardHalf_Opposition','PointsFromCentreBounce_Opposition','ChainToScore_Opposition','D50ToF50_Opposition','D50ToScore_Opposition','DefHalfToF50_Opposition','DefHalfToScore_Opposition','TimeInPossession_Opposition','Tackles_Opposition','TacklesInside50_Opposition','PressureActs_Opposition','PressureActsDefensiveHalf_Opposition','Spoils_Opposition','Hitouts_Opposition','HitoutsWinPercentage_Opposition','HitoutsToAdvantage_Opposition','HitoutsToAdvantagePercentage_Opposition','RuckHardBallGets_Opposition','HitoutToFirstPossession_Opposition','HitoutToClearance_Opposition','KickIns_Opposition','KickInsPlayOnPercentage_Opposition','Bounces_Opposition','OnePercenters_Opposition','InterchangeCount_Opposition','RatingPoints_Diff','Supercoach_Diff','DreamTeamPoints_Diff','CoachesVotes_Diff','Kicks_Diff','Handballs_Diff','Disposals_Diff','Inside50s_Diff','MetresGained_Diff','KickMetresGained_Diff','HandballMetresGained_Diff','Clangers_Diff','Turnovers_Diff','Equity_PreClearance_Diff','Equity_PostClearance_Diff','Equity_Possession_Diff','Equity_BallUse_Diff','ThreatRating_Diff','RetentionRating_Diff','ContestedPossessions_Diff','UncontestedPossessions_Diff','TotalPossessions_Diff','Intercepts_Diff','GroundBallGets_Diff','GroundBallGetsForward50_Diff','GroundBallGetsDefensive50_Diff','HardBallGets_Diff','LooseBallGets_Diff','PostClearanceContestedPossessions_Diff','PostClearanceGroundBallGets_Diff','GathersFromHitout_Diff','CrumbingPossessions_Diff','HandballReceives_Diff','CentreClearances_Diff','StoppageClearances_Diff','TotalClearances_Diff','FirstPossessions_Diff','Marks_Diff','ContestedMarks_Diff','MarksInside50_Diff','InterceptMarks_Diff','MarksOnLead_Diff','Goals_Diff','Behinds_Diff','TotalPoints_Diff','ShotsAtGoal_Diff','GoalAssists_Diff','xScore_Diff','xScoreRating_Diff','xScorePerShot_Diff','xChainScore_Diff','xChainScoreFromStoppage_Diff','xChainScoreFromTurnover_Diff','PointsFromKickIn_Diff','PointsFromStoppage_Diff','PointsFromTurnover_Diff','PointsFromDefensiveHalf_Diff','PointsFromForwardHalf_Diff','PointsFromCentreBounce_Diff','TimeInPossession_Diff','Tackles_Diff','TacklesInside50_Diff','PressureActs_Diff','PressureActsDefensiveHalf_Diff','Spoils_Diff','Hitouts_Diff','HitoutsToAdvantage_Diff','RuckHardBallGets_Diff','Bounces_Diff','OnePercenters_Diff','InterchangeCount_Diff']</script>
+<div><button id="download-csv-button" class="btn btn-primary btn-sm mx-1">Download as CSV</button></div>
+<div>
+<button id="for-stats" type="button" class="btn btn-primary btm-sm mx-1 my-2">Team Averages</button>
+<button id="against-stats" type="button" class="btn btn-light btm-sm mx-1 my-2">Opposition Averages</button>
+<button id="difference-stats" type="button" class="btn btn-light btm-sm mx-1 my-2">Difference</button>
+</div>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="team-stats-table" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="team-stats-table">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Team":[],"Abbreviation":[],"WebsiteId":[],"Image":[],"LastN":[],"Matches":[],"Players":[],"Age":[],"Experience":[],"Wins":[],"Losses":[],"Draws":[],"RatingPoints":[],"Supercoach":[],"DreamTeamPoints":[],"CoachesVotes":[],"Kicks":[],"Handballs":[],"Disposals":[],"DisposalEfficiency":[],"KickingEfficiency":[],"HandballEfficiency":[],"KickPercentage":[],"DisposalsPerOppositionTackle":[],"Inside50s":[],"Rebound50s":[],"Rebound50sPerOppositionInside50s":[],"MetresGained":[],"MetresGainedPerDisposal":[],"KickMetresGained":[],"KickMetresGainedPerKick":[],"HandballMetresGained":[],"HandballMetresGainedPerHandball":[],"Clangers":[],"DisposalsPerClanger":[],"Turnovers":[],"DisposalsPerTurnover":[],"DisposalRetentionPercentage":[],"KickIntoF50RetentionPercentage":[],"Equity_PreClearance":[],"Equity_PostClearance":[],"Equity_Possession":[],"Equity_BallUse":[],"xThreatPerKick":[],"ThreatRating":[],"xRetainPerKick":[],"RetentionRating":[],"ContestedPossessions":[],"UncontestedPossessions":[],"TotalPossessions":[],"ContestedPossessionRate":[],"Intercepts":[],"GroundBallGets":[],"GroundBallGetsForward50":[],"GroundBallGetsDefensive50":[],"HardBallGets":[],"LooseBallGets":[],"PostClearanceContestedPossessions":[],"PostClearanceGroundBallGets":[],"GathersFromHitout":[],"CrumbingPossessions":[],"HandballReceives":[],"CentreClearances":[],"StoppageClearances":[],"TotalClearances":[],"FirstPossessions":[],"FirstPossessionToClearance":[],"Marks":[],"ContestedMarks":[],"MarksInside50":[],"MarksInside50PerInside50":[],"InterceptMarks":[],"MarksOnLead":[],"GoalScorers_Total":[],"GoalScorers":[],"Goals":[],"Behinds":[],"TotalPoints":[],"RushedBehinds":[],"ShotsAtGoal":[],"GoalAssists":[],"GoalAccuracy":[],"GoalsPerInside50":[],"ScoringShotsPerInside50":[],"ShotsPerInside50":[],"xWins":[],"WinsAboveXWins":[],"xScore":[],"xScoreRating":[],"xScorePerShot":[],"xScoreRatingPerShot":[],"xScorePerShot_Set":[],"xScoreRatingPerShot_Set":[],"xScorePerShot_General":[],"xScoreRatingPerShot_General":[],"xChainScore":[],"xChainScoreFromStoppage":[],"xChainScoreFromTurnover":[],"PointsFromKickIn":[],"PointsFromStoppage":[],"PointsFromTurnover":[],"PointsFromDefensiveHalf":[],"PointsFromForwardHalf":[],"PointsFromCentreBounce":[],"ChainToScore":[],"D50ToF50":[],"D50ToScore":[],"DefHalfToF50":[],"DefHalfToScore":[],"ForwardHalf":[],"TimeInPossession":[],"ContestOffensiveOneOnOnes":[],"ContestOffensiveWinPercentage":[],"ContestDefensiveOneOnOnes":[],"ContestDefensiveLossPercentage":[],"Tackles":[],"TacklesInside50":[],"PressureActs":[],"PressureActsDefensiveHalf":[],"Spoils":[],"RuckContests":[],"Hitouts":[],"HitoutsWinPercentage":[],"HitoutsToAdvantage":[],"HitoutsToAdvantagePercentage":[],"RuckHardBallGets":[],"HitoutToFirstPossession":[],"HitoutToClearance":[],"FreesFor":[],"FreesAgainst":[],"FreesDiff":[],"KickIns":[],"KickInsPlayOnPercentage":[],"Bounces":[],"OnePercenters":[],"InterchangeCount":[],"RatingPoints_Opposition":[],"Supercoach_Opposition":[],"DreamTeamPoints_Opposition":[],"CoachesVotes_Opposition":[],"Kicks_Opposition":[],"Handballs_Opposition":[],"Disposals_Opposition":[],"DisposalEfficiency_Opposition":[],"KickingEfficiency_Opposition":[],"HandballEfficiency_Opposition":[],"OppositionDisposalsPerTackle":[],"Inside50s_Opposition":[],"Rebound50s_Opposition":[],"OppositionRebound50sPerInside50s":[],"MetresGained_Opposition":[],"MetresGainedPerDisposal_Opposition":[],"KickMetresGained_Opposition":[],"KickMetresGainedPerKick_Opposition":[],"HandballMetresGained_Opposition":[],"HandballMetresGainedPerHandball_Opposition":[],"Clangers_Opposition":[],"DisposalsPerClanger_Opposition":[],"Turnovers_Opposition":[],"DisposalsPerTurnover_Opposition":[],"DisposalRetentionPercentage_Opposition":[],"KickIntoF50RetentionPercentage_Opposition":[],"Equity_PreClearance_Opposition":[],"Equity_PostClearance_Opposition":[],"Equity_Possession_Opposition":[],"Equity_BallUse_Opposition":[],"xThreatPerKick_Opposition":[],"ThreatRating_Opposition":[],"xRetainPerKick_Opposition":[],"RetentionRating_Opposition":[],"ContestedPossessions_Opposition":[],"UncontestedPossessions_Opposition":[],"TotalPossessions_Opposition":[],"ContestedPossessionRate_Opposition":[],"Intercepts_Opposition":[],"GroundBallGets_Opposition":[],"GroundBallGetsForward50_Opposition":[],"GroundBallGetsDefensive50_Opposition":[],"HardBallGets_Opposition":[],"LooseBallGets_Opposition":[],"PostClearanceContestedPossessions_Opposition":[],"PostClearanceGroundBallGets_Opposition":[],"GathersFromHitout_Opposition":[],"CrumbingPossessions_Opposition":[],"HandballReceives_Opposition":[],"CentreClearances_Opposition":[],"StoppageClearances_Opposition":[],"TotalClearances_Opposition":[],"FirstPossessions_Opposition":[],"FirstPossessionToClearance_Opposition":[],"Marks_Opposition":[],"ContestedMarks_Opposition":[],"MarksInside50_Opposition":[],"MarksInside50PerInside50_Opposition":[],"InterceptMarks_Opposition":[],"MarksOnLead_Opposition":[],"Goals_Opposition":[],"Behinds_Opposition":[],"TotalPoints_Opposition":[],"RushedBehinds_Opposition":[],"ShotsAtGoal_Opposition":[],"GoalAssists_Opposition":[],"GoalAccuracy_Opposition":[],"GoalsPerInside50_Opposition":[],"ScoringShotsPerInside50_Opposition":[],"ShotsPerInside50_Opposition":[],"xScore_Opposition":[],"xScoreRating_Opposition":[],"xScorePerShot_Opposition":[],"xScoreRatingPerShot_Opposition":[],"xScorePerShot_Set_Opposition":[],"xScoreRatingPerShot_Set_Opposition":[],"xScorePerShot_General_Opposition":[],"xScoreRatingPerShot_General_Opposition":[],"xChainScore_Opposition":[],"xChainScoreFromStoppage_Opposition":[],"xChainScoreFromTurnover_Opposition":[],"PointsFromKickIn_Opposition":[],"PointsFromStoppage_Opposition":[],"PointsFromTurnover_Opposition":[],"PointsFromDefensiveHalf_Opposition":[],"PointsFromForwardHalf_Opposition":[],"PointsFromCentreBounce_Opposition":[],"ChainToScore_Opposition":[],"D50ToF50_Opposition":[],"D50ToScore_Opposition":[],"DefHalfToF50_Opposition":[],"DefHalfToScore_Opposition":[],"TimeInPossession_Opposition":[],"Tackles_Opposition":[],"TacklesInside50_Opposition":[],"PressureActs_Opposition":[],"PressureActsDefensiveHalf_Opposition":[],"Spoils_Opposition":[],"Hitouts_Opposition":[],"HitoutsWinPercentage_Opposition":[],"HitoutsToAdvantage_Opposition":[],"HitoutsToAdvantagePercentage_Opposition":[],"RuckHardBallGets_Opposition":[],"HitoutToFirstPossession_Opposition":[],"HitoutToClearance_Opposition":[],"KickIns_Opposition":[],"KickInsPlayOnPercentage_Opposition":[],"Bounces_Opposition":[],"OnePercenters_Opposition":[],"InterchangeCount_Opposition":[],"RatingPoints_Diff":[],"Supercoach_Diff":[],"DreamTeamPoints_Diff":[],"CoachesVotes_Diff":[],"Kicks_Diff":[],"Handballs_Diff":[],"Disposals_Diff":[],"Inside50s_Diff":[],"MetresGained_Diff":[],"KickMetresGained_Diff":[],"HandballMetresGained_Diff":[],"Clangers_Diff":[],"Turnovers_Diff":[],"Equity_PreClearance_Diff":[],"Equity_PostClearance_Diff":[],"Equity_Possession_Diff":[],"Equity_BallUse_Diff":[],"ThreatRating_Diff":[],"RetentionRating_Diff":[],"ContestedPossessions_Diff":[],"UncontestedPossessions_Diff":[],"TotalPossessions_Diff":[],"Intercepts_Diff":[],"GroundBallGets_Diff":[],"GroundBallGetsForward50_Diff":[],"GroundBallGetsDefensive50_Diff":[],"HardBallGets_Diff":[],"LooseBallGets_Diff":[],"PostClearanceContestedPossessions_Diff":[],"PostClearanceGroundBallGets_Diff":[],"GathersFromHitout_Diff":[],"CrumbingPossessions_Diff":[],"HandballReceives_Diff":[],"CentreClearances_Diff":[],"StoppageClearances_Diff":[],"TotalClearances_Diff":[],"FirstPossessions_Diff":[],"Marks_Diff":[],"ContestedMarks_Diff":[],"MarksInside50_Diff":[],"InterceptMarks_Diff":[],"MarksOnLead_Diff":[],"Goals_Diff":[],"Behinds_Diff":[],"TotalPoints_Diff":[],"ShotsAtGoal_Diff":[],"GoalAssists_Diff":[],"xScore_Diff":[],"xScoreRating_Diff":[],"xScorePerShot_Diff":[],"xChainScore_Diff":[],"xChainScoreFromStoppage_Diff":[],"xChainScoreFromTurnover_Diff":[],"PointsFromKickIn_Diff":[],"PointsFromStoppage_Diff":[],"PointsFromTurnover_Diff":[],"PointsFromDefensiveHalf_Diff":[],"PointsFromForwardHalf_Diff":[],"PointsFromCentreBounce_Diff":[],"TimeInPossession_Diff":[],"Tackles_Diff":[],"TacklesInside50_Diff":[],"PressureActs_Diff":[],"PressureActsDefensiveHalf_Diff":[],"Spoils_Diff":[],"Hitouts_Diff":[],"HitoutsToAdvantage_Diff":[],"RuckHardBallGets_Diff":[],"Bounces_Diff":[],"OnePercenters_Diff":[],"InterchangeCount_Diff":[]},"columns":[{"id":"Team","name":"Team","type":"character","sortNALast":true,"minWidth":180,"align":"left","className":"columnClass","defaultSortDesc":false},{"id":"Abbreviation","name":"Team","type":"character","sortNALast":true,"minWidth":65,"align":"left","className":"sticky","defaultSortDesc":false,"cell":"function(cellInfo) { return teamDisplay(cellInfo) }","html":true,"headerClassName":"sticky"},{"id":"WebsiteId","name":"Match Stats","type":"character","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","sortable":false,"cell":"function(cellInfo) { return teamMatchStatsDisplay(cellInfo) }","html":true},{"id":"Image","name":"Image","type":["glue","character"],"sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":false},{"id":"LastN","name":"LastN","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass"},{"id":"Matches","name":"Gm","type":"numeric","sortNALast":true,"minWidth":35,"align":"center","className":"sticky","style":{"left":60},"headerClassName":"sticky","headerStyle":{"left":60}},{"id":"Players","name":"Players","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":0},"aggregated":{"digits":0}}},{"id":"Age","name":"Age","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Experience","name":"Exp.","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Wins","name":"Wins","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass"},{"id":"Losses","name":"Losses","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass"},{"id":"Draws","name":"Draws","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass"},{"id":"RatingPoints","name":"Rating","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Supercoach","name":"Super Coach","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DreamTeamPoints","name":"Fantasy Points","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"CoachesVotes","name":"Coaches Votes","type":"numeric","sortNALast":true,"minWidth":65,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Kicks","name":"Kick","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Handballs","name":"HB","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Disposals","name":"Dis.","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DisposalEfficiency","name":"Dis. Eff %","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"KickingEfficiency","name":"Kick Eff %","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HandballEfficiency","name":"HB Eff %","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"KickPercentage","name":"Kick %","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DisposalsPerOppositionTackle","name":"D / O Tk","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Inside50s","name":"In 50s","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Rebound50s","name":"Reb 50s","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Rebound50sPerOppositionInside50s","name":"R50 Rate","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"MetresGained","name":"Mtrs Gnd","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"MetresGainedPerDisposal","name":"Mtrs / D","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"KickMetresGained","name":"Kick Mtrs","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"KickMetresGainedPerKick","name":"Mtrs / K","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HandballMetresGained","name":"HB Mtrs","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HandballMetresGainedPerHandball","name":"Mtrs / HB","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Clangers","name":"Clng","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DisposalsPerClanger","name":"D/Cg","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Turnovers","name":"TO","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DisposalsPerTurnover","name":"D/TO","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DisposalRetentionPercentage","name":"Dis. Ret %","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"KickIntoF50RetentionPercentage","name":"I50 Ret %","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Equity_PreClearance","name":"Pre Clr","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Equity_PostClearance","name":"Post Clr","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Equity_Possession","name":"Ball Win.","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Equity_BallUse","name":"Ball Use","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xThreatPerKick","name":"xThreat / Kick","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ThreatRating","name":"Threat Rating","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"xRetainPerKick","name":"xRetain / Kick","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"RetentionRating","name":"Retention Rating","type":"numeric","sortNALast":true,"minWidth":75,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"ContestedPossessions","name":"CP","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"UncontestedPossessions","name":"UP","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"TotalPossessions","name":"Poss","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ContestedPossessionRate","name":"CP%","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Intercepts","name":"Int Poss","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GroundBallGets","name":"GB Gets","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GroundBallGetsForward50","name":"F50 GBG","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GroundBallGetsDefensive50","name":"D50 GBG","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HardBallGets","name":"Hard Gets","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"LooseBallGets","name":"Loose Gets","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PostClearanceContestedPossessions","name":"Post Cl CP","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PostClearanceGroundBallGets","name":"Post Cl GBG","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GathersFromHitout","name":"Gath HO","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"CrumbingPossessions","name":"Crumb","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HandballReceives","name":"HB Rec","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"CentreClearances","name":"Ctr Clr","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"StoppageClearances","name":"Stp Clr","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"TotalClearances","name":"Tot","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"FirstPossessions","name":"1st Poss","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"FirstPossessionToClearance","name":"1st Poss to Clr","type":"numeric","sortNALast":true,"minWidth":65,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Marks","name":"Tot","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ContestedMarks","name":"CM","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"MarksInside50","name":"In 50","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"MarksInside50PerInside50","name":"M50 Rate","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"InterceptMarks","name":"Int Mks","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"MarksOnLead","name":"On Lead","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GoalScorers_Total","name":"Goal Sc.","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":0},"aggregated":{"digits":0}}},{"id":"GoalScorers","name":"Avg GS","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Goals","name":"Gls","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Behinds","name":"Beh","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"TotalPoints","name":"Pts","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"RushedBehinds","name":"RB","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ShotsAtGoal","name":"Shots","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GoalAssists","name":"Goal Ass.","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GoalAccuracy","name":"Acc","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GoalsPerInside50","name":"G / In 50","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ScoringShotsPerInside50","name":"Sc / In 50","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ShotsPerInside50","name":"Sh / In 50","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xWins","name":"xWins","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"WinsAboveXWins","name":"xW +/-","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xScore","name":"xSc","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xScoreRating","name":"xSc +/-","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xScorePerShot","name":"xSc / Shot","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"xScoreRatingPerShot","name":"Rating","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"xScorePerShot_Set","name":"xSc / Sh (Set)","type":"numeric","sortNALast":true,"minWidth":65,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"xScoreRatingPerShot_Set","name":"Rating (Set)","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"xScorePerShot_General","name":"xSc / Sh (Gen)","type":"numeric","sortNALast":true,"minWidth":65,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"xScoreRatingPerShot_General","name":"Rating (Gen)","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"xChainScore","name":"Total","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xChainScoreFromStoppage","name":"Stop","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xChainScoreFromTurnover","name":"Turn over","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromKickIn","name":"Kick In","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromStoppage","name":"Stop","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromTurnover","name":"Turn over","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromDefensiveHalf","name":"Def Half","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromForwardHalf","name":"Fwd Half","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromCentreBounce","name":"Ctr Bnc","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ChainToScore","name":"Chain to Sc.","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"D50ToF50","name":"D50 to F50","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"D50ToScore","name":"D50 to Sc.","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DefHalfToF50","name":"Def Half to F50","type":"numeric","sortNALast":true,"minWidth":65,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DefHalfToScore","name":"Def Half to Sc.","type":"numeric","sortNALast":true,"minWidth":65,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ForwardHalf","name":"Fwd Half","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"TimeInPossession","name":"Poss Time","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ContestOffensiveOneOnOnes","name":"Off 1v1","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ContestOffensiveWinPercentage","name":"Win %","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ContestDefensiveOneOnOnes","name":"Def 1v1","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ContestDefensiveLossPercentage","name":"Loss %","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Tackles","name":"Tack","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"TacklesInside50","name":"Tack In 50","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PressureActs","name":"Press. Acts","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PressureActsDefensiveHalf","name":"Def. PA","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Spoils","name":"Spoils","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"RuckContests","name":"Ruck Cont","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Hitouts","name":"Hit Outs","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HitoutsWinPercentage","name":"Win %","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HitoutsToAdvantage","name":"To Adv","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HitoutsToAdvantagePercentage","name":"Adv %","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"RuckHardBallGets","name":"Ruck HBG","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HitoutToFirstPossession","name":"To 1st","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HitoutToClearance","name":"To Cl","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"FreesFor","name":"Free For","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"FreesAgainst","name":"Free Agn","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"FreesDiff","name":"Free Diff","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"KickIns","name":"Kick Ins","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"KickInsPlayOnPercentage","name":"KI Play On %","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Bounces","name":"Bounce","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"OnePercenters","name":"1%s","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"InterchangeCount","name":"Int' chg","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"RatingPoints_Opposition","name":"Rating","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Supercoach_Opposition","name":"Super Coach","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DreamTeamPoints_Opposition","name":"Fantasy Points","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"CoachesVotes_Opposition","name":"Coaches Votes","type":"numeric","sortNALast":true,"minWidth":65,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Kicks_Opposition","name":"Kick","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Handballs_Opposition","name":"HB","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Disposals_Opposition","name":"Dis.","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DisposalEfficiency_Opposition","name":"Dis. Eff %","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"KickingEfficiency_Opposition","name":"Kick Eff %","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HandballEfficiency_Opposition","name":"HB Eff %","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"OppositionDisposalsPerTackle","name":"D / O Tk","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Inside50s_Opposition","name":"In 50s","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Rebound50s_Opposition","name":"Reb 50s","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"OppositionRebound50sPerInside50s","name":"R50 Rate","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"MetresGained_Opposition","name":"Mtrs Gnd","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"MetresGainedPerDisposal_Opposition","name":"Mtrs / D","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"KickMetresGained_Opposition","name":"Kick Mtrs","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"KickMetresGainedPerKick_Opposition","name":"Mtrs / K","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HandballMetresGained_Opposition","name":"HB Mtrs","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HandballMetresGainedPerHandball_Opposition","name":"Mtrs / HB","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Clangers_Opposition","name":"Clng","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DisposalsPerClanger_Opposition","name":"D/Cg","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Turnovers_Opposition","name":"TO","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DisposalsPerTurnover_Opposition","name":"D/TO","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DisposalRetentionPercentage_Opposition","name":"Dis. Ret %","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"KickIntoF50RetentionPercentage_Opposition","name":"I50 Ret %","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Equity_PreClearance_Opposition","name":"Pre Clr","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Equity_PostClearance_Opposition","name":"Post Clr","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Equity_Possession_Opposition","name":"Ball Win.","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Equity_BallUse_Opposition","name":"Ball Use","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xThreatPerKick_Opposition","name":"xThreat / Kick","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ThreatRating_Opposition","name":"Threat Rating","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"xRetainPerKick_Opposition","name":"xRetain / Kick","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"RetentionRating_Opposition","name":"Retention Rating","type":"numeric","sortNALast":true,"minWidth":75,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"ContestedPossessions_Opposition","name":"CP","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"UncontestedPossessions_Opposition","name":"UP","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"TotalPossessions_Opposition","name":"Poss","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ContestedPossessionRate_Opposition","name":"CP%","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Intercepts_Opposition","name":"Int Poss","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GroundBallGets_Opposition","name":"GB Gets","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GroundBallGetsForward50_Opposition","name":"F50 GBG","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GroundBallGetsDefensive50_Opposition","name":"D50 GBG","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HardBallGets_Opposition","name":"Hard Gets","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"LooseBallGets_Opposition","name":"Loose Gets","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PostClearanceContestedPossessions_Opposition","name":"Post Cl CP","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PostClearanceGroundBallGets_Opposition","name":"Post Cl GBG","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GathersFromHitout_Opposition","name":"Gath HO","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"CrumbingPossessions_Opposition","name":"Crumb","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HandballReceives_Opposition","name":"HB Rec","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"CentreClearances_Opposition","name":"Ctr Clr","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"StoppageClearances_Opposition","name":"Stp Clr","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"TotalClearances_Opposition","name":"Tot","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"FirstPossessions_Opposition","name":"1st Poss","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"FirstPossessionToClearance_Opposition","name":"1st Poss to Clr","type":"numeric","sortNALast":true,"minWidth":65,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Marks_Opposition","name":"Tot","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ContestedMarks_Opposition","name":"CM","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"MarksInside50_Opposition","name":"In 50","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"MarksInside50PerInside50_Opposition","name":"M50 Rate","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"InterceptMarks_Opposition","name":"Int Mks","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"MarksOnLead_Opposition","name":"On Lead","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Goals_Opposition","name":"Gls","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Behinds_Opposition","name":"Beh","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"TotalPoints_Opposition","name":"Pts","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"RushedBehinds_Opposition","name":"RB","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ShotsAtGoal_Opposition","name":"Shots","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GoalAssists_Opposition","name":"Goal Ass.","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GoalAccuracy_Opposition","name":"Acc","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GoalsPerInside50_Opposition","name":"G / In 50","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ScoringShotsPerInside50_Opposition","name":"Sc / In 50","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ShotsPerInside50_Opposition","name":"Sh / In 50","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xScore_Opposition","name":"xSc","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xScoreRating_Opposition","name":"xSc +/-","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xScorePerShot_Opposition","name":"xSc / Shot","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"xScoreRatingPerShot_Opposition","name":"Rating","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"xScorePerShot_Set_Opposition","name":"xSc / Sh (Set)","type":"numeric","sortNALast":true,"minWidth":65,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"xScoreRatingPerShot_Set_Opposition","name":"Rating (Set)","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"xScorePerShot_General_Opposition","name":"xSc / Sh (Gen)","type":"numeric","sortNALast":true,"minWidth":65,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"xScoreRatingPerShot_General_Opposition","name":"Rating (Gen)","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"xChainScore_Opposition","name":"Total","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xChainScoreFromStoppage_Opposition","name":"Stop","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xChainScoreFromTurnover_Opposition","name":"Turn over","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromKickIn_Opposition","name":"Kick In","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromStoppage_Opposition","name":"Stop","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromTurnover_Opposition","name":"Turn over","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromDefensiveHalf_Opposition","name":"Def Half","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromForwardHalf_Opposition","name":"Fwd Half","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromCentreBounce_Opposition","name":"Ctr Bnc","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ChainToScore_Opposition","name":"Chain to Sc.","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"D50ToF50_Opposition","name":"D50 to F50","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"D50ToScore_Opposition","name":"D50 to Sc.","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DefHalfToF50_Opposition","name":"Def Half to F50","type":"numeric","sortNALast":true,"minWidth":65,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DefHalfToScore_Opposition","name":"Def Half to Sc.","type":"numeric","sortNALast":true,"minWidth":65,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"TimeInPossession_Opposition","name":"Poss Time","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Tackles_Opposition","name":"Tack","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"TacklesInside50_Opposition","name":"Tack In 50","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PressureActs_Opposition","name":"Press. Acts","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PressureActsDefensiveHalf_Opposition","name":"Def. PA","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Spoils_Opposition","name":"Spoils","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Hitouts_Opposition","name":"Hit Outs","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HitoutsWinPercentage_Opposition","name":"Win %","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HitoutsToAdvantage_Opposition","name":"To Adv","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HitoutsToAdvantagePercentage_Opposition","name":"Adv %","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"RuckHardBallGets_Opposition","name":"Ruck HBG","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HitoutToFirstPossession_Opposition","name":"To 1st","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HitoutToClearance_Opposition","name":"To Cl","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"KickIns_Opposition","name":"Kick Ins","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"KickInsPlayOnPercentage_Opposition","name":"KI Play On %","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Bounces_Opposition","name":"Bounce","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"OnePercenters_Opposition","name":"1%s","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"InterchangeCount_Opposition","name":"Int' chg","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"RatingPoints_Diff","name":"Rating","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Supercoach_Diff","name":"Super Coach","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"DreamTeamPoints_Diff","name":"Fantasy Points","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"CoachesVotes_Diff","name":"Coaches Votes","type":"numeric","sortNALast":true,"minWidth":65,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Kicks_Diff","name":"Kick","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Handballs_Diff","name":"HB","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Disposals_Diff","name":"Dis.","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Inside50s_Diff","name":"In 50s","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"MetresGained_Diff","name":"Mtrs Gnd","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"KickMetresGained_Diff","name":"Kick Mtrs","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HandballMetresGained_Diff","name":"HB Mtrs","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Clangers_Diff","name":"Clng","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Turnovers_Diff","name":"TO","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":false,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Equity_PreClearance_Diff","name":"Pre Clr","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Equity_PostClearance_Diff","name":"Post Clr","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Equity_Possession_Diff","name":"Ball Win.","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Equity_BallUse_Diff","name":"Ball Use","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ThreatRating_Diff","name":"Threat Rating","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"RetentionRating_Diff","name":"Retention Rating","type":"numeric","sortNALast":true,"minWidth":75,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"ContestedPossessions_Diff","name":"CP","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"UncontestedPossessions_Diff","name":"UP","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"TotalPossessions_Diff","name":"Poss","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Intercepts_Diff","name":"Int Poss","type":"numeric","sortNALast":true,"minWidth":40,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GroundBallGets_Diff","name":"GB Gets","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GroundBallGetsForward50_Diff","name":"F50 GBG","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GroundBallGetsDefensive50_Diff","name":"D50 GBG","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HardBallGets_Diff","name":"Hard Gets","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"LooseBallGets_Diff","name":"Loose Gets","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PostClearanceContestedPossessions_Diff","name":"Post Cl CP","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PostClearanceGroundBallGets_Diff","name":"Post Cl GBG","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GathersFromHitout_Diff","name":"Gath HO","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"CrumbingPossessions_Diff","name":"Crumb","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HandballReceives_Diff","name":"HB Rec","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"CentreClearances_Diff","name":"Ctr Clr","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"StoppageClearances_Diff","name":"Stp Clr","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"TotalClearances_Diff","name":"Tot","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"FirstPossessions_Diff","name":"1st Poss","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Marks_Diff","name":"Tot","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ContestedMarks_Diff","name":"CM","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"MarksInside50_Diff","name":"In 50","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"InterceptMarks_Diff","name":"Int Mks","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"MarksOnLead_Diff","name":"On Lead","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Goals_Diff","name":"Gls","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Behinds_Diff","name":"Beh","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"TotalPoints_Diff","name":"Pts","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"ShotsAtGoal_Diff","name":"Shots","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"GoalAssists_Diff","name":"Goal Ass.","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xScore_Diff","name":"xSc","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xScoreRating_Diff","name":"xSc +/-","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xScorePerShot_Diff","name":"xSc / Shot","type":"numeric","sortNALast":true,"minWidth":55,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":2},"aggregated":{"digits":2}}},{"id":"xChainScore_Diff","name":"Total","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xChainScoreFromStoppage_Diff","name":"Stop","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"xChainScoreFromTurnover_Diff","name":"Turn over","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromKickIn_Diff","name":"Kick In","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromStoppage_Diff","name":"Stop","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromTurnover_Diff","name":"Turn over","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromDefensiveHalf_Diff","name":"Def Half","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromForwardHalf_Diff","name":"Fwd Half","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PointsFromCentreBounce_Diff","name":"Ctr Bnc","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"TimeInPossession_Diff","name":"Poss Time","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Tackles_Diff","name":"Tack","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"TacklesInside50_Diff","name":"Tack In 50","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PressureActs_Diff","name":"Press. Acts","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"PressureActsDefensiveHalf_Diff","name":"Def. PA","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Spoils_Diff","name":"Spoils","type":"numeric","sortNALast":true,"minWidth":50,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Hitouts_Diff","name":"Hit Outs","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"HitoutsToAdvantage_Diff","name":"To Adv","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"RuckHardBallGets_Diff","name":"Ruck HBG","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"Bounces_Diff","name":"Bounce","type":"numeric","sortNALast":true,"minWidth":60,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"OnePercenters_Diff","name":"1%s","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}},{"id":"InterchangeCount_Diff","name":"Int' chg","type":"numeric","sortNALast":true,"minWidth":45,"align":"center","className":"columnClass","show":true,"defaultSortDesc":true,"format":{"cell":{"digits":1},"aggregated":{"digits":1}}}],"columnGroups":[{"name":"General","columns":["RatingPoints","Supercoach","DreamTeamPoints","CoachesVotes","ForwardHalf","TimeInPossession"]},{"name":"General","columns":["RatingPoints_Opposition","Supercoach_Opposition","DreamTeamPoints_Opposition","CoachesVotes_Opposition","TimeInPossession_Opposition"]},{"name":"General","columns":["RatingPoints_Diff","Supercoach_Diff","DreamTeamPoints_Diff","CoachesVotes_Diff","TimeInPossession_Diff"]},{"name":"Disposals","columns":["Kicks","Handballs","Disposals","DisposalEfficiency","KickingEfficiency","HandballEfficiency","KickPercentage","DisposalsPerOppositionTackle","Inside50s","Rebound50s","Rebound50sPerOppositionInside50s","Clangers","DisposalsPerClanger","Turnovers","DisposalsPerTurnover","DisposalRetentionPercentage","KickIntoF50RetentionPercentage"]},{"name":"Disposals","columns":["Kicks_Opposition","Handballs_Opposition","Disposals_Opposition","DisposalEfficiency_Opposition","KickingEfficiency_Opposition","HandballEfficiency_Opposition","OppositionDisposalsPerTackle","Inside50s_Opposition","Rebound50s_Opposition","OppositionRebound50sPerInside50s","Clangers_Opposition","DisposalsPerClanger_Opposition","Turnovers_Opposition","DisposalsPerTurnover_Opposition","DisposalRetentionPercentage_Opposition","KickIntoF50RetentionPercentage_Opposition"]},{"name":"Disposals","columns":["Kicks_Diff","Handballs_Diff","Disposals_Diff","Inside50s_Diff","Clangers_Diff","Turnovers_Diff"]},{"name":"Metres Gained","columns":["MetresGained","MetresGainedPerDisposal","KickMetresGained","KickMetresGainedPerKick","HandballMetresGained","HandballMetresGainedPerHandball"]},{"name":"Metres Gained","columns":["MetresGained_Opposition","MetresGainedPerDisposal_Opposition","KickMetresGained_Opposition","KickMetresGainedPerKick_Opposition","HandballMetresGained_Opposition","HandballMetresGainedPerHandball_Opposition"]},{"name":"Metres Gained","columns":["MetresGained_Diff","KickMetresGained_Diff","HandballMetresGained_Diff"]},{"name":"Equity","columns":["Equity_PreClearance","Equity_PostClearance","Equity_Possession","Equity_BallUse"]},{"name":"Equity","columns":["Equity_PreClearance_Opposition","Equity_PostClearance_Opposition","Equity_Possession_Opposition","Equity_BallUse_Opposition"]},{"name":"Equity","columns":["Equity_PreClearance_Diff","Equity_PostClearance_Diff","Equity_Possession_Diff","Equity_BallUse_Diff"]},{"name":"Kick Rating","columns":["xThreatPerKick","ThreatRating","xRetainPerKick","RetentionRating"]},{"name":"Kick Rating","columns":["xThreatPerKick_Opposition","ThreatRating_Opposition","xRetainPerKick_Opposition","RetentionRating_Opposition"]},{"name":"Kick Rating","columns":["ThreatRating_Diff","RetentionRating_Diff"]},{"name":"Possessions","columns":["ContestedPossessions","UncontestedPossessions","TotalPossessions","ContestedPossessionRate","Intercepts","GroundBallGets","GroundBallGetsForward50","GroundBallGetsDefensive50","HardBallGets","LooseBallGets","PostClearanceContestedPossessions","PostClearanceGroundBallGets","GathersFromHitout","CrumbingPossessions","HandballReceives"]},{"name":"Possessions","columns":["ContestedPossessions_Opposition","UncontestedPossessions_Opposition","TotalPossessions_Opposition","ContestedPossessionRate_Opposition","Intercepts_Opposition","GroundBallGets_Opposition","GroundBallGetsForward50_Opposition","GroundBallGetsDefensive50_Opposition","HardBallGets_Opposition","LooseBallGets_Opposition","PostClearanceContestedPossessions_Opposition","PostClearanceGroundBallGets_Opposition","GathersFromHitout_Opposition","CrumbingPossessions_Opposition","HandballReceives_Opposition"]},{"name":"Possessions","columns":["ContestedPossessions_Diff","UncontestedPossessions_Diff","TotalPossessions_Diff","Intercepts_Diff","GroundBallGets_Diff","GroundBallGetsForward50_Diff","GroundBallGetsDefensive50_Diff","HardBallGets_Diff","LooseBallGets_Diff","PostClearanceContestedPossessions_Diff","PostClearanceGroundBallGets_Diff","GathersFromHitout_Diff","CrumbingPossessions_Diff","HandballReceives_Diff"]},{"name":"Transition","columns":["ChainToScore","D50ToF50","D50ToScore","DefHalfToF50","DefHalfToScore"]},{"name":"Transition","columns":["ChainToScore_Opposition","D50ToF50_Opposition","D50ToScore_Opposition","DefHalfToF50_Opposition","DefHalfToScore_Opposition"]},{"name":"Clearances","columns":["CentreClearances","StoppageClearances","TotalClearances","FirstPossessions","FirstPossessionToClearance"]},{"name":"Clearances","columns":["CentreClearances_Opposition","StoppageClearances_Opposition","TotalClearances_Opposition","FirstPossessions_Opposition","FirstPossessionToClearance_Opposition"]},{"name":"Clearances","columns":["CentreClearances_Diff","StoppageClearances_Diff","TotalClearances_Diff","FirstPossessions_Diff"]},{"name":"Marks","columns":["Marks","ContestedMarks","MarksInside50","MarksInside50PerInside50","InterceptMarks","MarksOnLead"]},{"name":"Marks","columns":["Marks_Opposition","ContestedMarks_Opposition","MarksInside50_Opposition","MarksInside50PerInside50_Opposition","InterceptMarks_Opposition","MarksOnLead_Opposition"]},{"name":"Marks","columns":["Marks_Diff","ContestedMarks_Diff","MarksInside50_Diff","InterceptMarks_Diff","MarksOnLead_Diff"]},{"name":"Scoring","columns":["GoalScorers_Total","GoalScorers","Goals","Behinds","TotalPoints","RushedBehinds","ShotsAtGoal","GoalAssists","GoalAccuracy","GoalsPerInside50","ScoringShotsPerInside50","ShotsPerInside50","ContestOffensiveOneOnOnes","ContestOffensiveWinPercentage"]},{"name":"Scoring","columns":["Goals_Opposition","Behinds_Opposition","TotalPoints_Opposition","RushedBehinds_Opposition","ShotsAtGoal_Opposition","GoalAssists_Opposition","GoalAccuracy_Opposition","GoalsPerInside50_Opposition","ScoringShotsPerInside50_Opposition","ShotsPerInside50_Opposition"]},{"name":"Scoring","columns":["Goals_Diff","Behinds_Diff","TotalPoints_Diff","ShotsAtGoal_Diff","GoalAssists_Diff"]},{"name":"xScores","columns":["xWins","WinsAboveXWins","xScore","xScoreRating","xScorePerShot","xScoreRatingPerShot","xScorePerShot_Set","xScoreRatingPerShot_Set","xScorePerShot_General","xScoreRatingPerShot_General"]},{"name":"xScores","columns":["xScore_Opposition","xScoreRating_Opposition","xScorePerShot_Opposition","xScoreRatingPerShot_Opposition","xScorePerShot_Set_Opposition","xScoreRatingPerShot_Set_Opposition","xScorePerShot_General_Opposition","xScoreRatingPerShot_General_Opposition"]},{"name":"xScores","columns":["xScore_Diff","xScoreRating_Diff","xScorePerShot_Diff"]},{"name":"xChainScores","columns":["xChainScore","xChainScoreFromStoppage","xChainScoreFromTurnover"]},{"name":"xChainScores","columns":["xChainScore_Opposition","xChainScoreFromStoppage_Opposition","xChainScoreFromTurnover_Opposition"]},{"name":"xChainScores","columns":["xChainScore_Diff","xChainScoreFromStoppage_Diff","xChainScoreFromTurnover_Diff"]},{"name":"Score Sources","columns":["PointsFromKickIn","PointsFromStoppage","PointsFromTurnover"]},{"name":"Score Sources","columns":["PointsFromKickIn_Opposition","PointsFromStoppage_Opposition","PointsFromTurnover_Opposition"]},{"name":"Score Sources","columns":["PointsFromKickIn_Diff","PointsFromStoppage_Diff","PointsFromTurnover_Diff"]},{"name":"Score Origin","columns":["PointsFromDefensiveHalf","PointsFromForwardHalf","PointsFromCentreBounce"]},{"name":"Score Origin","columns":["PointsFromDefensiveHalf_Opposition","PointsFromForwardHalf_Opposition","PointsFromCentreBounce_Opposition"]},{"name":"Score Origin","columns":["PointsFromDefensiveHalf_Diff","PointsFromForwardHalf_Diff","PointsFromCentreBounce_Diff"]},{"name":"Defence","columns":["ContestDefensiveOneOnOnes","ContestDefensiveLossPercentage","Tackles","TacklesInside50","PressureActs","PressureActsDefensiveHalf","Spoils"]},{"name":"Defence","columns":["Tackles_Opposition","TacklesInside50_Opposition","PressureActs_Opposition","PressureActsDefensiveHalf_Opposition","Spoils_Opposition"]},{"name":"Defence","columns":["Tackles_Diff","TacklesInside50_Diff","PressureActs_Diff","PressureActsDefensiveHalf_Diff","Spoils_Diff"]},{"name":"Ruck","columns":["RuckContests","Hitouts","HitoutsWinPercentage","HitoutsToAdvantage","HitoutsToAdvantagePercentage","RuckHardBallGets","HitoutToFirstPossession","HitoutToClearance"]},{"name":"Ruck","columns":["Hitouts_Opposition","HitoutsWinPercentage_Opposition","HitoutsToAdvantage_Opposition","HitoutsToAdvantagePercentage_Opposition","RuckHardBallGets_Opposition","HitoutToFirstPossession_Opposition","HitoutToClearance_Opposition"]},{"name":"Ruck","columns":["Hitouts_Diff","HitoutsToAdvantage_Diff","RuckHardBallGets_Diff"]},{"name":"Other","columns":["FreesFor","FreesAgainst","FreesDiff","KickIns","KickInsPlayOnPercentage","Bounces","OnePercenters","InterchangeCount"]},{"name":"Other","columns":["KickIns_Opposition","KickInsPlayOnPercentage_Opposition","Bounces_Opposition","OnePercenters_Opposition","InterchangeCount_Opposition"]},{"name":"Other","columns":["Bounces_Diff","OnePercenters_Diff","InterchangeCount_Diff"]}],"defaultSortDesc":true,"defaultSorted":[{"id":"RatingPoints","desc":true},{"id":"DreamTeamPoints","desc":true}],"pagination":false,"striped":true,"showSortIcon":false,"className":"afl-table table-condensed","rowClassName":"rowClass","theme":{"borderColor":"#dfe2e5","highlightColor":"#f0f5f9","cellPadding":"4px 5px","searchInputStyle":{"width":"100%"}},"language":{"filterPlaceholder":"search","noData":"No entries found","pageNext":"❯","pagePrevious":"❮","pageInfo":"{rowStart}–{rowEnd} of {rows} entries","pageNextLabel":"Next page","pagePreviousLabel":"Previous page"},"elementId":"team-stats-table","dataKey":"f534a040fb6ba978b8c87860b8f798c1"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.className","tag.attribs.columns.1.cell","tag.attribs.columns.2.className","tag.attribs.columns.2.cell","tag.attribs.columns.3.className","tag.attribs.columns.4.className","tag.attribs.columns.6.className","tag.attribs.columns.7.className","tag.attribs.columns.8.className","tag.attribs.columns.9.className","tag.attribs.columns.10.className","tag.attribs.columns.11.className","tag.attribs.columns.12.className","tag.attribs.columns.13.className","tag.attribs.columns.14.className","tag.attribs.columns.15.className","tag.attribs.columns.16.className","tag.attribs.columns.17.className","tag.attribs.columns.18.className","tag.attribs.columns.19.className","tag.attribs.columns.20.className","tag.attribs.columns.21.className","tag.attribs.columns.22.className","tag.attribs.columns.23.className","tag.attribs.columns.24.className","tag.attribs.columns.25.className","tag.attribs.columns.26.className","tag.attribs.columns.27.className","tag.attribs.columns.28.className","tag.attribs.columns.29.className","tag.attribs.columns.30.className","tag.attribs.columns.31.className","tag.attribs.columns.32.className","tag.attribs.columns.33.className","tag.attribs.columns.34.className","tag.attribs.columns.35.className","tag.attribs.columns.36.className","tag.attribs.columns.37.className","tag.attribs.columns.38.className","tag.attribs.columns.39.className","tag.attribs.columns.40.className","tag.attribs.columns.41.className","tag.attribs.columns.42.className","tag.attribs.columns.43.className","tag.attribs.columns.44.className","tag.attribs.columns.45.className","tag.attribs.columns.46.className","tag.attribs.columns.47.className","tag.attribs.columns.48.className","tag.attribs.columns.49.className","tag.attribs.columns.50.className","tag.attribs.columns.51.className","tag.attribs.columns.52.className","tag.attribs.columns.53.className","tag.attribs.columns.54.className","tag.attribs.columns.55.className","tag.attribs.columns.56.className","tag.attribs.columns.57.className","tag.attribs.columns.58.className","tag.attribs.columns.59.className","tag.attribs.columns.60.className","tag.attribs.columns.61.className","tag.attribs.columns.62.className","tag.attribs.columns.63.className","tag.attribs.columns.64.className","tag.attribs.columns.65.className","tag.attribs.columns.66.className","tag.attribs.columns.67.className","tag.attribs.columns.68.className","tag.attribs.columns.69.className","tag.attribs.columns.70.className","tag.attribs.columns.71.className","tag.attribs.columns.72.className","tag.attribs.columns.73.className","tag.attribs.columns.74.className","tag.attribs.columns.75.className","tag.attribs.columns.76.className","tag.attribs.columns.77.className","tag.attribs.columns.78.className","tag.attribs.columns.79.className","tag.attribs.columns.80.className","tag.attribs.columns.81.className","tag.attribs.columns.82.className","tag.attribs.columns.83.className","tag.attribs.columns.84.className","tag.attribs.columns.85.className","tag.attribs.columns.86.className","tag.attribs.columns.87.className","tag.attribs.columns.88.className","tag.attribs.columns.89.className","tag.attribs.columns.90.className","tag.attribs.columns.91.className","tag.attribs.columns.92.className","tag.attribs.columns.93.className","tag.attribs.columns.94.className","tag.attribs.columns.95.className","tag.attribs.columns.96.className","tag.attribs.columns.97.className","tag.attribs.columns.98.className","tag.attribs.columns.99.className","tag.attribs.columns.100.className","tag.attribs.columns.101.className","tag.attribs.columns.102.className","tag.attribs.columns.103.className","tag.attribs.columns.104.className","tag.attribs.columns.105.className","tag.attribs.columns.106.className","tag.attribs.columns.107.className","tag.attribs.columns.108.className","tag.attribs.columns.109.className","tag.attribs.columns.110.className","tag.attribs.columns.111.className","tag.attribs.columns.112.className","tag.attribs.columns.113.className","tag.attribs.columns.114.className","tag.attribs.columns.115.className","tag.attribs.columns.116.className","tag.attribs.columns.117.className","tag.attribs.columns.118.className","tag.attribs.columns.119.className","tag.attribs.columns.120.className","tag.attribs.columns.121.className","tag.attribs.columns.122.className","tag.attribs.columns.123.className","tag.attribs.columns.124.className","tag.attribs.columns.125.className","tag.attribs.columns.126.className","tag.attribs.columns.127.className","tag.attribs.columns.128.className","tag.attribs.columns.129.className","tag.attribs.columns.130.className","tag.attribs.columns.131.className","tag.attribs.columns.132.className","tag.attribs.columns.133.className","tag.attribs.columns.134.className","tag.attribs.columns.135.className","tag.attribs.columns.136.className","tag.attribs.columns.137.className","tag.attribs.columns.138.className","tag.attribs.columns.139.className","tag.attribs.columns.140.className","tag.attribs.columns.141.className","tag.attribs.columns.142.className","tag.attribs.columns.143.className","tag.attribs.columns.144.className","tag.attribs.columns.145.className","tag.attribs.columns.146.className","tag.attribs.columns.147.className","tag.attribs.columns.148.className","tag.attribs.columns.149.className","tag.attribs.columns.150.className","tag.attribs.columns.151.className","tag.attribs.columns.152.className","tag.attribs.columns.153.className","tag.attribs.columns.154.className","tag.attribs.columns.155.className","tag.attribs.columns.156.className","tag.attribs.columns.157.className","tag.attribs.columns.158.className","tag.attribs.columns.159.className","tag.attribs.columns.160.className","tag.attribs.columns.161.className","tag.attribs.columns.162.className","tag.attribs.columns.163.className","tag.attribs.columns.164.className","tag.attribs.columns.165.className","tag.attribs.columns.166.className","tag.attribs.columns.167.className","tag.attribs.columns.168.className","tag.attribs.columns.169.className","tag.attribs.columns.170.className","tag.attribs.columns.171.className","tag.attribs.columns.172.className","tag.attribs.columns.173.className","tag.attribs.columns.174.className","tag.attribs.columns.175.className","tag.attribs.columns.176.className","tag.attribs.columns.177.className","tag.attribs.columns.178.className","tag.attribs.columns.179.className","tag.attribs.columns.180.className","tag.attribs.columns.181.className","tag.attribs.columns.182.className","tag.attribs.columns.183.className","tag.attribs.columns.184.className","tag.attribs.columns.185.className","tag.attribs.columns.186.className","tag.attribs.columns.187.className","tag.attribs.columns.188.className","tag.attribs.columns.189.className","tag.attribs.columns.190.className","tag.attribs.columns.191.className","tag.attribs.columns.192.className","tag.attribs.columns.193.className","tag.attribs.columns.194.className","tag.attribs.columns.195.className","tag.attribs.columns.196.className","tag.attribs.columns.197.className","tag.attribs.columns.198.className","tag.attribs.columns.199.className","tag.attribs.columns.200.className","tag.attribs.columns.201.className","tag.attribs.columns.202.className","tag.attribs.columns.203.className","tag.attribs.columns.204.className","tag.attribs.columns.205.className","tag.attribs.columns.206.className","tag.attribs.columns.207.className","tag.attribs.columns.208.className","tag.attribs.columns.209.className","tag.attribs.columns.210.className","tag.attribs.columns.211.className","tag.attribs.columns.212.className","tag.attribs.columns.213.className","tag.attribs.columns.214.className","tag.attribs.columns.215.className","tag.attribs.columns.216.className","tag.attribs.columns.217.className","tag.attribs.columns.218.className","tag.attribs.columns.219.className","tag.attribs.columns.220.className","tag.attribs.columns.221.className","tag.attribs.columns.222.className","tag.attribs.columns.223.className","tag.attribs.columns.224.className","tag.attribs.columns.225.className","tag.attribs.columns.226.className","tag.attribs.columns.227.className","tag.attribs.columns.228.className","tag.attribs.columns.229.className","tag.attribs.columns.230.className","tag.attribs.columns.231.className","tag.attribs.columns.232.className","tag.attribs.columns.233.className","tag.attribs.columns.234.className","tag.attribs.columns.235.className","tag.attribs.columns.236.className","tag.attribs.columns.237.className","tag.attribs.columns.238.className","tag.attribs.columns.239.className","tag.attribs.columns.240.className","tag.attribs.columns.241.className","tag.attribs.columns.242.className","tag.attribs.columns.243.className","tag.attribs.columns.244.className","tag.attribs.columns.245.className","tag.attribs.columns.246.className","tag.attribs.columns.247.className","tag.attribs.columns.248.className","tag.attribs.columns.249.className","tag.attribs.columns.250.className","tag.attribs.columns.251.className","tag.attribs.columns.252.className","tag.attribs.columns.253.className","tag.attribs.columns.254.className","tag.attribs.columns.255.className","tag.attribs.columns.256.className","tag.attribs.columns.257.className","tag.attribs.columns.258.className","tag.attribs.columns.259.className","tag.attribs.columns.260.className","tag.attribs.columns.261.className","tag.attribs.columns.262.className","tag.attribs.columns.263.className","tag.attribs.columns.264.className","tag.attribs.columns.265.className","tag.attribs.columns.266.className","tag.attribs.columns.267.className","tag.attribs.columns.268.className","tag.attribs.columns.269.className","tag.attribs.columns.270.className","tag.attribs.columns.271.className","tag.attribs.columns.272.className","tag.attribs.columns.273.className","tag.attribs.columns.274.className","tag.attribs.columns.275.className","tag.attribs.columns.276.className","tag.attribs.columns.277.className","tag.attribs.columns.278.className","tag.attribs.columns.279.className","tag.attribs.columns.280.className","tag.attribs.columns.281.className","tag.attribs.columns.282.className","tag.attribs.columns.283.className","tag.attribs.columns.284.className","tag.attribs.columns.285.className","tag.attribs.columns.286.className","tag.attribs.columns.287.className","tag.attribs.columns.288.className","tag.attribs.columns.289.className","tag.attribs.columns.290.className","tag.attribs.columns.291.className","tag.attribs.columns.292.className","tag.attribs.columns.293.className","tag.attribs.columns.294.className","tag.attribs.columns.295.className","tag.attribs.columns.296.className","tag.attribs.columns.297.className","tag.attribs.columns.298.className","tag.attribs.columns.299.className","tag.attribs.columns.300.className","tag.attribs.columns.301.className","tag.attribs.columns.302.className","tag.attribs.columns.303.className","tag.attribs.columns.304.className","tag.attribs.columns.305.className","tag.attribs.columns.306.className","tag.attribs.columns.307.className","tag.attribs.columns.308.className","tag.attribs.columns.309.className","tag.attribs.columns.310.className","tag.attribs.columns.311.className","tag.attribs.columns.312.className","tag.attribs.columns.313.className","tag.attribs.columns.314.className","tag.attribs.columns.315.className","tag.attribs.columns.316.className","tag.attribs.rowClassName"],"jsHooks":[]}</script>
+</div>
+<script src="./src/js/afl-stats-fetch.js"></script>
+<script src="./src/js/afl-team-stats-2.0.js"></script>
+<script>
+const loadingIcon = document.querySelector("#loading-icon");
+const statsTable = document.querySelector("#stats-table");
+fetchComps();
+</script>
+<div id="overlay" class="overlay overlay-fullscreen">
+<div class="overlay-content overlay-fullscreen-content">
+<div class="d-flex justify-content-between">
+<p class="fw-bold">
+Scatter chart
+</p>
+<button id="close-search-button" type="button" class="btn-close" aria-label="Close">
+</button>
+</div>
+<div class="container-fluid">
+<div class="row">
+<div class="col-sm-4">
+<p><label class="form-label fw-bold" for="stat-select-x">X-axis</label>
+<select id="stat-select-x" class="form-select" aria-label="Select stat for chart x axis">
+</select></p>
+</div>
+<div class="col-sm-4">
+<p><label class="form-label fw-bold" for="stat-select-y">Y-axis</label>
+<select id="stat-select-y" class="form-select" aria-label="Select stat for chart y axis">
+</select></p>
+</div>
+<div id="highlight-rows-div" class="col-sm-4">
+<p><label class="form-label fw-bold" for="stat-highlight">Highlight</label>
+<select id="stat-highlight" class="form-select" aria-label="Select highlight value">
+</select></p>
+</div>
+</div>
+<div class="row">
+<div class="chart-container"
+style="position: relative; margin:auto; height:45vw; width:100%; max-height:600px">
+<canvas id="stats-chart">
+</canvas>
+</div>
+</div>
+<p class="py-3">
+Chart built using
+<a href="https://www.chartjs.org" target="_blank">chartjs.org</a>
+<p>
+</div>
+</div>
+</div>
+<script src="./src/js/afl-team-stats-chart-2.0.js"></script>
+<script src="./src/js/stats-chart-scatter-2.0.js"></script>
+<h3>
+Abbreviations
+</h3>
+<h4>
+General
+</h4>
+<ul>
+<li>
+<b>Players:</b> Total players used, including medical subs who have not
+played any game time.
+</li>
+<li>
+<b>Age:</b> Average age of players in each game played.
+</li>
+<li>
+<b>Exp.:</b> Average career games experience for players in each game.
+</li>
+<li>
+<b>Rating:</b> Official AFL Player Ratings
+(<a href="https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/PlayerRatings/PlayerRatings_HOW.pdf" target="_blank">Overview</a>)
+</li>
+<li>
+<b>Fwd Half:</b> Time in forward half (% of game time).
+</li>
+<li>
+<b>Poss Time:</b> Time in possession (% of game time).
+</li>
+</ul>
+<h4>
+Disposals
+</h4>
+<ul>
+<li>
+<b>Kick:</b> Kicks
+</li>
+<li>
+<b>HB:</b> Handballs
+</li>
+<li>
+<b>Dis.:</b> Disposals
+</li>
+<li>
+<b>Eff %:</b> Disposal Efficiency
+</li>
+<li>
+<b>Kick Eff %:</b> Kick Efficiency
+</li>
+<li>
+<b>Kick %:</b> Kicks / Disposals
+</li>
+<li>
+<b>D / O Tk:</b> Disposals / Opposition Tackle
+</li>
+<li>
+<b>In 50s:</b> Inside 50s
+</li>
+<li>
+<b>Reb 50s:</b> Rebound 50s
+</li>
+<li>
+<b>R50 Rate:</b> Rebound 50s per Opposition Inside 50
+</li>
+<li>
+<b>Clng:</b> Clangers
+</li>
+<li>
+<b>D/Cg:</b> Disposals per clanger
+</li>
+<li>
+<b>TO:</b> Turnovers
+</li>
+<li>
+<b>D/TO:</b> Disposals per turnover
+</li>
+<li>
+<b>Dis. Ret %:</b> Disposal retention. Proportion of disposals where
+possession was retained by a teammate.
+</li>
+<li>
+<b>I50 Ret %:</b> Kicks inside 50 retention. Proportion of kicks into
+the forward 50 where possession was retained by a teammate.
+</li>
+</ul>
+<h4>
+Metres Gained
+</h4>
+<ul>
+<li>
+<b>Mtrs Gnd:</b> Metres gained
+</li>
+<li>
+<b>Mtrs / D:</b> Metres gained per Disposal
+</li>
+<li>
+<b>Kick Mtrs:</b> Kick metres gained, including any running between
+taking possession and kicking the ball (estimated)
+</li>
+<li>
+<b>Mtrs / K:</b> Kick metres gained per kick (estimated)
+</li>
+<li>
+<b>HB Mtrs:</b> Handball metres gained, including any running between
+taking possession and releasing the handball (estimated)
+</li>
+<li>
+<b>Mtrs / HB:</b> Handball metres gained per handball (estimated)
+</li>
+</ul>
+<h4>
+Equity
+</h4>
+<p>
+Equity is the WheeloRatings implementation of the AFL Player Ratings.
+</p>
+<ul>
+<li>
+<b>Pre Clr:</b> Pre-clearance equity points.
+</li>
+<li>
+<b>Post Clr:</b> Post-clearance equity points.
+</li>
+<li>
+<b>Ball Win.:</b> Equity points from winning possession of the ball.
+</li>
+<li>
+<b>Ball Use:</b> Equity points from disposal, including shots at goal,
+and carrying the ball.
+</li>
+</ul>
+<h4>
+Kick Rating
+</h4>
+<p>
+Kick ratings have been developed by
+<a href="https://x.com/crow_data_sigh" target="_blank">crow_data_sigh<a>.
+<b>Retention</b> is how likely a kick is to be retained by a teammate.
+<b>Threat</b> is how likely a kick is to result in a shot at goal later
+in the chain.
+</p>
+<ul>
+<li>
+<b>Threat Rating:</b> a measure of how often a player’s kicks result in
+a shot at goal later in the chain compared to expectation.
+</li>
+<li>
+<b>Retention Rating:</b> a measure of how often a player’s kicks are
+retained by a teammate compared to expectation.
+</li>
+</ul>
+<h4>
+Possessions
+</h4>
+<ul>
+<li>
+<b>CP:</b> Contested possessions
+</li>
+<li>
+<b>UP:</b> Uncontested possessions
+</li>
+<li>
+<b>Poss:</b> Total possessions
+</li>
+<li>
+<b>CP%:</b> Contested possessions / total possessions
+</li>
+<li>
+<b>Int Poss:</b> Intercept possessions
+</li>
+<li>
+<b>GB Gets:</b> Ground ball gets
+</li>
+<li>
+<b>F50 GBG:</b> Ground ball gets inside forward 50.
+</li>
+<li>
+<b>D50 GBG:</b> Ground ball gets inside defensive 50.
+</li>
+<li>
+<b>Hard Gets:</b> Hard ball gets. A disputed ball at ground level under
+direct physical pressure or out of a ruck contest, resulting in an
+opportunity to effect a legal disposal.
+</li>
+<li>
+<b>Loose Gets:</b> Loose ball gets. A disputed ball at ground level not
+under direct physical pressure that results in an opportunity to record
+a legal disposal.
+</li>
+<li>
+<b>Gath HO:</b> Gathers from hitout. A possession gained from a
+teammate’s hitout-to-advantage
+</li>
+<li>
+<b>Crumb:</b> Crumbing possessions. Ground ball gets that are won by a
+player at ground level after a marking contest.
+</li>
+<li>
+<b>HB Rec:</b> Handball receives
+</li>
+</ul>
+<h4>
+Clearances
+</h4>
+<ul>
+<li>
+<b>Ctr Clr:</b> Centre clearances
+</li>
+<li>
+<b>Stp Clr:</b> Stoppage clearances
+</li>
+<li>
+<b>Tot:</b> Total clearances
+</li>
+<li>
+<b>1st Poss:</b> First possessions at stoppages
+</li>
+<li>
+<b>1st Poss to Clr:</b> Proportion of first possessions where the team
+won the clearance
+</li>
+</ul>
+<h4>
+Marks
+</h4>
+<ul>
+<li>
+<b>Tot:</b> Total marks
+</li>
+<li>
+<b>CM:</b> Contested marks
+</li>
+<li>
+<b>In 50:</b> Marks inside forward 50
+</li>
+<li>
+<b>M50 Rate:</b> Marks inside forward 50 per inside 50
+</li>
+<li>
+<b>Int Mks:</b> Intercept marks
+</li>
+<li>
+<b>On lead:</b> Marks on lead
+</li>
+</ul>
+<h4>
+Scoring
+</h4>
+<ul>
+<li>
+<b>Goal Sc.:</b> Total goal scorers
+</li>
+<li>
+<b>Avg GS:</b> Average goal scorers per match
+</li>
+<li>
+<b>Gls:</b> Goals
+</li>
+<li>
+<b>Beh:</b> Behinds (includes rushed behinds)
+</li>
+<li>
+<b>Pts:</b> Total points
+</li>
+<li>
+<b>RB:</b> Rushed behinds
+</li>
+<li>
+<b>Shots:</b> Shots at goal
+</li>
+<li>
+<b>Goal Ass.:</b> Goal assists
+</li>
+<li>
+<b>Acc:</b> Accuracy (Goals / shots at goal)
+</li>
+<li>
+<b>G / In 50:</b> Goals / Inside 50
+</li>
+<li>
+<b>Sc / In 50:</b> Scores (Goals + Behinds) per Inside 50 (includes
+rushed behinds)
+</li>
+<li>
+<b>Sh / In 50:</b> Shots at goal per Inside 50
+</li>
+<li>
+<b>Launch:</b> Score launches
+</li>
+<li>
+<b>Off 1v1:</b> Offensive one-on-one contests
+</li>
+<li>
+<b>Win %:</b> Percentage of offensive one-on-one contests won
+</li>
+</ul>
+<h4>
+Expected Scores (xScores)
+</h4>
+<ul>
+<li>
+<b>xWins:</b> Expected number of wins based on expected scores in each
+game.
+</li>
+<li>
+<b>xW +/-:</b> Number of wins above or below expected wins.
+</li>
+<li>
+<b>xSc:</b> Average expected score per game (excludes rushed behinds).
+</li>
+<li>
+<b>xSc +/-:</b> Average score above or below expected per game (excludes
+rushed behinds).
+</li>
+<li>
+<b>xSc / Shot:</b> Average expected score per shot at goal, reflecting
+the average difficulty of shots taken.
+</li>
+<li>
+<b>Rating:</b> Average score above or below expected score per shot at
+goal.
+</li>
+<li>
+<b>xSc / Sh (Set):</b> Average expected score per shot at goal for set
+shots, reflecting the average difficulty of shots taken.
+</li>
+<li>
+<b>Rating (Set):</b> Average score above or below expected score per
+shot at goal for set shots.
+</li>
+<li>
+<b>xSc / Sh (Gen):</b> Average expected score per shot at goal for shots
+in general play, reflecting the average difficulty of shots taken.
+</li>
+<li>
+<b>Rating (Gen):</b> Average score above or below expected score per
+shot at goal for shots in general play.
+</li>
+</ul>
+<h4>
+xChainScores
+</h4>
+<ul>
+<li>
+<b>Total:</b> Expected points scored based on the origin of a team’s
+chains, including clearances, turnovers, and kick-ins.
+</li>
+<li>
+<b>Stop:</b> Expected points scored from stoppages.
+</li>
+<li>
+<b>Turnover:</b> Expected points scored from turnovers.
+</li>
+</ul>
+<h4>
+Score Sources
+</h4>
+<ul>
+<li>
+<b>Kick In:</b> Points scored from kick-ins.
+</li>
+<li>
+<b>Stop:</b> Points scored from stoppages.
+</li>
+<li>
+<b>Turnover:</b> Points scored from turnovers.
+</li>
+</ul>
+<h4>
+Score Origin
+</h4>
+<ul>
+<li>
+<b>Def Half:</b> Points scored from defensive half.
+</li>
+<li>
+<b>Fwd Half:</b> Points scored from forward half.
+</li>
+<li>
+<b>Ctr Bnc:</b> Points scored from centre bounce.
+</li>
+</ul>
+<h4>
+Transition
+</h4>
+<p>
+Chains include all kick-in chains, all clearances, and intercepts with
+at least one disposal in the chain.
+</p>
+<ul>
+<li>
+<b>Chain to Sc.:</b> proportion of all chains that resulted in a score.
+</li>
+<li>
+<b>D50 to F50:</b> proportion of all chains starting in the defensive 50
+that resulted in an inside 50.
+</li>
+<li>
+<b>D50 to Sc.:</b> proportion of all chains starting in the defensive 50
+that resulted in a score.
+</li>
+<li>
+<b>Def Half to F50:</b> proportion of all chains starting in the
+defensive half that resulted in an inside 50.
+</li>
+<li>
+<b>Def Half to Sc.:</b> proportion of all chains starting in the
+defensive half that resulted in a score.
+</li>
+</ul>
+<h4>
+Defence
+</h4>
+<ul>
+<li>
+<b>Def 1v1:</b> Defensive one-on-one contests
+</li>
+<li>
+<b>Loss %:</b> Percentage of defensive one-on-one contests lost
+</li>
+<li>
+<b>Tack:</b> Total tackles
+</li>
+<li>
+<b>Tack In 50:</b> Tackles inside forward 50
+</li>
+<li>
+<b>Press. Acts:</b> Pressure acts
+</li>
+</ul>
+<h4>
+Ruck contests
+</h4>
+<ul>
+<li>
+<b>Ruck Cont:</b> Total ruck contests
+</li>
+<li>
+<b>Hit Outs:</b> Total hit outs
+</li>
+<li>
+<b>Win %:</b> Hit outs / ruck contests
+</li>
+<li>
+<b>To Adv:</b> Hit outs to advantage
+</li>
+<li>
+<b>Adv %:</b> Hit outs to advantage / total hit outs
+</li>
+<li>
+<b>Ruck HBG:</b> Ruck hard ball gets. Taking possession of the ball
+directly out of the ruck.
+</li>
+<li>
+<b>To 1st:</b> Hit outs to first possession. Proportion of hit outs
+resulting in a teammate obtaining first possession.
+</li>
+<li>
+<b>To Cl:</b> Hit outs to clearance. Proportion of hit outs where the
+team won the clearance.
+</li>
+</ul>
+<h4>
+Other
+</h4>
+<ul>
+<li>
+<b>KI Play On %:</b> Play on percentage from kick-ins
+</li>
+<li>
+<b>Bounce:</b> Bounces
+</li>
+<li>
+<b>1%s:</b> One percenters
+</li>
+<li>
+<b>Int’ chg:</b> Interchanges
+</li>
+</ul>
+<!-- <script> -->
+<!-- var checkbox = document.getElementById("showColorScale"); -->
+
+<!-- checkbox.addEventListener('change', function() { -->
+<!--   var element = document.getElementById("team-stats"); -->
+<!--   element.classList.toggle("bg-hide"); -->
+<!--   element.classList.toggle("bg-show"); -->
+<!-- }); -->
+<!-- </script> -->
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<footer>
+    <!-- <br> -->
+    <!-- <div class="addthis_inline_share_toolbox"></div>
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <!-- <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=wheels83"></script> -->
+    <!-- &nbsp; -->
+    <hr />
+    <p style="text-align: center;"><a href="#top">Back to top</a></p>
+    <p style="text-align: center;">&copy; Wheelo Ratings</p>
+</footer>
+
+
+
+</div>
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+(function() {
+  href = window.location.pathname;
+  href = href.substr(href.lastIndexOf('/') + 1);
+  if (href === "")
+    href = "index.html";
+  
+  let li = null;
+  
+  // main menu
+  let menuAnchor = document.getElementById("navbar").querySelector('[href="' + href + '"]');
+
+  if (menuAnchor !== null) {
+      li = menuAnchor.closest('li');
+      li.classList.add('active');
+      
+      let parent = li.parentElement.closest('li')
+      
+      if (parent !== null)
+        parent.classList.add('active');
+  }
+  
+  // banner menu
+  menuAnchor = document.getElementById("navbar-banner").querySelector('[href="' + href + '"]');
+
+  if (menuAnchor !== null) {
+    li = menuAnchor.closest('li');
+    li.classList.add('active');
+  }
+})();
+</script>
+<!-- <script>
+var prevScrollpos = window.pageYOffset;
+window.onscroll = function() {
+var currentScrollPos = window.pageYOffset;
+  if (prevScrollpos > currentScrollPos) {
+    document.getElementById("nav").style.top = "0";
+  } else {
+    document.getElementById("nav").style.top = "-60px";
+  }
+  prevScrollpos = currentScrollPos;
+}
+</script> -->
+</body>
+</html>

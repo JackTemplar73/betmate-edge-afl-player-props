@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.merlin.betmate-edge-monitor</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>/Users/merlin/Documents/Codex/2026-05-24/consider-all-our-existing-afl-related/monitor_betmate_edge.sh</string>
+  </array>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StartInterval</key>
+  <integer>1800</integer>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/merlin/Documents/Codex/2026-05-24/consider-all-our-existing-afl-related</string>
+
+  <key>StandardOutPath</key>
+  <string>/Users/merlin/Documents/Codex/2026-05-24/consider-all-our-existing-afl-related/monitor_logs/launchd_stdout.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/Users/merlin/Documents/Codex/2026-05-24/consider-all-our-existing-afl-related/monitor_logs/launchd_stderr.log</string>
+</dict>
+</plist>

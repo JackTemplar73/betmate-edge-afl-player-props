@@ -1,0 +1,12 @@
+bet_id,game,commence_time,player,market,side,line,book,actual,result,unit_profit,stake_profit,stake_units,signal
+archie_roberts_disposals_over_29_5_pointsbetau_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Archie Roberts,Disposals,Over,29.5,PointsBet (AU),31,WIN,0.87,0.87,1.0,A_BET
+sullivan_robey_disposals_under_20_5_pointsbetau_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Sullivan Robey,Disposals,Under,20.5,PointsBet (AU),19,WIN,0.87,0.87,1.0,A_BET
+mason_redman_disposals_under_21_5_sportsbet_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Mason Redman,Disposals,Under,21.5,SportsBet,,NO_STAT,0.0,0.0,1.0,A_BET
+kyle_langford_disposals_under_20_5_pointsbetau_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Kyle Langford,Disposals,Under,20.5,PointsBet (AU),21,LOSS,-1,-1.0,1.0,A_BET
+tom_mccarthy_disposals_under_25_5_pointsbetau_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Tom McCarthy,Disposals,Under,25.5,PointsBet (AU),26,LOSS,-1,-1.0,1.0,A_BET
+tom_mccarthy_disposals_under_25_5_sportsbet_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Tom McCarthy,Disposals,Under,25.5,SportsBet,26,LOSS,-1,-1.0,1.0,A_BET
+archie_roberts_disposals_over_28_5_pointsbetau_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Archie Roberts,Disposals,Over,28.5,PointsBet (AU),31,WIN,1.0,1.0,1.0,A_BET
+will_setterfield_goals_over_0_5_betright_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Will Setterfield,Goals,Over,0.5,Bet Right,0,LOSS,-1,-0.5,0.5,A_BET
+archie_roberts_disposals_over_29_5_sportsbet_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Archie Roberts,Disposals,Over,29.5,SportsBet,31,WIN,0.88,0.88,1.0,A_BET
+tom_mccarthy_disposals_under_25_5_ladbrokes_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Tom McCarthy,Disposals,Under,25.5,Ladbrokes,26,LOSS,-1,-1.0,1.0,A_BET
+will_setterfield_goals_over_0_5_betr_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Will Setterfield,Goals,Over,0.5,Betr,0,LOSS,-1,-0.5,0.5,A_BET

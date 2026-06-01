@@ -1,0 +1,35 @@
+bet_id,game,commence_time,player,market,side,line,book,actual,result,unit_profit,stake_profit,stake_units,signal
+jack_gunston_goals_over_2_5_unibet_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Jack Gunston,Goals,Over,2.5,Unibet,5,WIN,0.79,0.395,0.5,A_BET
+isaac_keeler_goals_over_0_5_pointsbetau_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Isaac Keeler,Goals,Over,0.5,PointsBet (AU),0,LOSS,-1,-0.5,0.5,A_BET
+karl_amon_disposals_under_26_5_pointsbetau_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Karl Amon,Disposals,Under,26.5,PointsBet (AU),24,WIN,0.87,0.87,1.0,A_BET
+nick_watson_goals_over_1_5_unibet_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Nick Watson,Goals,Over,1.5,Unibet,2,WIN,0.38,0.19,0.5,A_BET
+bradley_hill_disposals_over_19_5_pointsbetau_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Bradley Hill,Disposals,Over,19.5,PointsBet (AU),30,WIN,0.87,0.435,0.5,B_BET
+max_hall_disposals_under_21_5_sportsbet_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Max Hall,Disposals,Under,21.5,SportsBet,26,LOSS,-1,-0.5,0.5,B_BET
+cam_mackenzie_tackles_over_3_5_pointsbetau_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Cam Mackenzie,Tackles,Over,3.5,PointsBet (AU),6,WIN,1.1,0.44,0.4,B_BET
+marcus_windhager_disposals_over_20_5_pointsbetau_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Marcus Windhager,Disposals,Over,20.5,PointsBet (AU),16,LOSS,-1,-0.5,0.5,B_BET
+connor_macdonald_disposals_over_18_5_pointsbetau_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Connor Macdonald,Disposals,Over,18.5,PointsBet (AU),26,WIN,0.87,0.435,0.5,B_BET
+jack_sinclair_disposals_over_27_5_pointsbetau_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Jack Sinclair,Disposals,Over,27.5,PointsBet (AU),33,WIN,0.87,0.435,0.5,B_BET
+jack_gunston_goals_over_1_5_ladbrokes_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Jack Gunston,Goals,Over,1.5,Ladbrokes,5,WIN,0.22,0.22,1.0,A_BET
+jack_gunston_goals_over_2_5_ladbrokes_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Jack Gunston,Goals,Over,2.5,Ladbrokes,5,WIN,0.72,0.72,1.0,A_BET
+jack_gunston_goals_over_3_5_tab_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Jack Gunston,Goals,Over,3.5,TAB,5,WIN,1.8,1.8,1.0,B_BET
+nick_watson_goals_over_1_5_pointsbetau_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Nick Watson,Goals,Over,1.5,PointsBet (AU),2,WIN,0.33,0.33,1.0,A_BET
+mabior_chol_tackles_over_1_5_pointsbetau_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Mabior Chol,Tackles,Over,1.5,PointsBet (AU),2,WIN,0.87,0.696,0.8,A_BET
+darcy_wilson_goals_over_0_5_sportsbet_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Darcy Wilson,Goals,Over,0.5,SportsBet,1,WIN,0.56,0.56,1.0,A_BET
+hugo_garcia_goals_over_0_5_pointsbetau_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Hugo Garcia,Goals,Over,0.5,PointsBet (AU),0,LOSS,-1,-1.0,1.0,B_BET
+liam_henry_goals_over_0_5_sportsbet_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Liam Henry,Goals,Over,0.5,SportsBet,0,LOSS,-1,-1.0,1.0,A_BET
+nick_watson_goals_over_0_5_pointsbetau_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Nick Watson,Goals,Over,0.5,PointsBet (AU),2,WIN,0.07,0.07,1.0,A_BET
+tom_de_koning_goals_over_0_5_pointsbetau_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Tom De Koning,Goals,Over,0.5,PointsBet (AU),2,WIN,1.55,1.55,1.0,B_BET
+conor_nash_tackles_over_4_5_unibet_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Conor Nash,Tackles,Over,4.5,Unibet,DNP,PUSH,0.0,0.0,1.0,B_BET
+conor_nash_tackles_over_3_5_unibet_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Conor Nash,Tackles,Over,3.5,Unibet,DNP,PUSH,0.0,0.0,1.0,A_BET
+james_sicily_disposals_under_22_5_ladbrokes_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,James Sicily,Disposals,Under,22.5,Ladbrokes,33,LOSS,-1,-1.0,1.0,B_BET
+max_hall_disposals_under_22_5_ladbrokes_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Max Hall,Disposals,Under,22.5,Ladbrokes,26,LOSS,-1,-1.0,1.0,B_BET
+darcy_wilson_disposals_over_18_5_ladbrokes_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Darcy Wilson,Disposals,Over,18.5,Ladbrokes,25,WIN,0.87,0.87,1.0,B_BET
+bradley_hill_disposals_over_18_5_ladbrokes_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Bradley Hill,Disposals,Over,18.5,Ladbrokes,30,WIN,0.87,0.87,1.0,A_BET
+james_sicily_disposals_under_23_5_pointsbetau_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,James Sicily,Disposals,Under,23.5,PointsBet (AU),33,LOSS,-1,-1.0,1.0,B_BET
+dylan_moore_goals_over_0_5_betr_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Dylan Moore,Goals,Over,0.5,Betr,0,LOSS,-1,-1.0,1.0,A_BET
+josh_ward_disposals_over_20_5_sportsbet_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Josh Ward,Disposals,Over,20.5,SportsBet,22,WIN,0.89,0.89,1.0,B_BET
+conor_nash_tackles_over_2_5_unibet_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Conor Nash,Tackles,Over,2.5,Unibet,DNP,PUSH,0.0,0.0,1.0,B_BET
+jai_newcombe_disposals_over_23_5_sportsbet_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Jai Newcombe,Disposals,Over,23.5,SportsBet,25,WIN,0.88,0.88,1.0,B_BET
+max_hall_goals_over_0_5_sportsbet_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Max Hall,Goals,Over,0.5,SportsBet,0,LOSS,-1,-1.0,1.0,A_BET
+cam_mackenzie_tackles_over_2_5_sportsbet_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Cam Mackenzie,Tackles,Over,2.5,SportsBet,6,WIN,0.35,0.35,1.0,LEAN
+connor_macdonald_disposals_over_17_5_ladbrokes_2026_05_28T09_30_00Z,St Kilda Saints v Hawthorn Hawks,2026-05-28T09:30:00Z,Connor Macdonald,Disposals,Over,17.5,Ladbrokes,26,WIN,0.9,0.9,1.0,B_BET

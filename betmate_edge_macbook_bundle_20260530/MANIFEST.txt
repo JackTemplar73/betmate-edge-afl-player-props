@@ -1,0 +1,37 @@
+Base44 Direct Runtime Bundle
+
+docs/
+  README.md
+
+code/
+  Dockerfile
+  runtime.env.example
+  bootstrap_state.sh
+  run_hosted_betmate_edge.sh
+  betmate_edge_refresh_server.py
+  betmate_edge_public_server.py
+  build_walters_summary_html.py
+  extract_wheelo_today_pack.py
+  score_oddsapi_wheelo_props.py
+  aflplayerprops_history.py
+  settle_player_props_from_wheelo.py
+  base44_port_reference.py
+  markov_bet_justifications.py
+  afl_match_mapping.csv
+  afl_round_mapping.csv
+
+state_seed/
+  aflplayerprops_bet_history.csv
+  player_prop_settlement.csv
+  oddsapi_wheelo_ev_qi.csv
+  wheelo_today_player_pack.csv
+  wheelo_today_team_context.csv
+  oddsapi_events.json
+  oddsapi_car_gee_props.json
+  oddsapi_syd_rich_props.json
+  oddsapi_bris_fre_props.json
+  oddsapi_wb_coll_props.json
+  oddsapi_melb_gws_props.json
+  oddsapi_wce_ess_props.json
+  afl_match_mapping.csv
+  afl_round_mapping.csv

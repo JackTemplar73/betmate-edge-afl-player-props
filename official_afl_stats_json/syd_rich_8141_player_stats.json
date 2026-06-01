@@ -1,0 +1,70 @@
+{
+  "homeTeamPlayerStats": [
+    {
+      "playerStats": {
+        "player": {
+          "playerName": {
+            "givenName": "Hayden",
+            "surname": "McLean"
+          }
+        },
+        "stats": {
+          "goals": 4,
+          "disposals": 8,
+          "tackles": 0,
+          "marks": 0
+        }
+      }
+    }
+  ],
+  "awayTeamPlayerStats": [
+    {
+      "playerStats": {
+        "player": {
+          "playerName": {
+            "givenName": "Noah",
+            "surname": "Roberts-Thomson"
+          }
+        },
+        "stats": {
+          "goals": 1,
+          "disposals": 0,
+          "tackles": 0,
+          "marks": 0
+        }
+      }
+    },
+    {
+      "playerStats": {
+        "player": {
+          "playerName": {
+            "givenName": "Liam",
+            "surname": "Fawcett"
+          }
+        },
+        "stats": {
+          "goals": 0,
+          "disposals": 0,
+          "tackles": 0,
+          "marks": 0
+        }
+      }
+    },
+    {
+      "playerStats": {
+        "player": {
+          "playerName": {
+            "givenName": "Dion",
+            "surname": "Prestia"
+          }
+        },
+        "stats": {
+          "goals": 0,
+          "disposals": 20,
+          "tackles": 0,
+          "marks": 0
+        }
+      }
+    }
+  ]
+}

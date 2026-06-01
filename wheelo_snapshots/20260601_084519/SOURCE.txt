@@ -1,0 +1,8 @@
+Captured: 20260601_084519
+Sources:
+- https://www.wheeloratings.com/src/afl_stats/player_stats/afl/2026.json
+- https://www.wheeloratings.com/src/afl_stats/player_stats/afl/last5.json
+- https://www.wheeloratings.com/src/afl_stats/player_stats/afl/last10.json
+- https://www.wheeloratings.com/src/afl_stats/team_stats/afl/2026.json
+- https://www.wheeloratings.com/src/afl_stats/team_stats/afl/last5.json
+- https://www.wheeloratings.com/src/afl_stats/team_stats/afl/last10.json

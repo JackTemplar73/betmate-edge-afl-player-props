@@ -1,0 +1,107 @@
+[2026-05-31 09:19:45] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 09:20:53] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 09:20:53] Stack healthy, no action needed
+[2026-05-31 09:21:03] Health check public=000 local_refresh=000 local_public=000
+[2026-05-31 09:21:03] Restarting BetMate Edge stack
+[2026-05-31 09:22:04] Local services failed health checks after restart
+[2026-05-31 09:50:53] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 09:50:53] Stack healthy, no action needed
+[2026-05-31 10:20:54] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 10:20:54] Stack healthy, no action needed
+[2026-05-31 10:50:54] Health check public=404 local_refresh=200 local_public=200
+[2026-05-31 10:50:54] Restarting BetMate Edge stack
+[2026-05-31 10:52:04] Public health endpoint failed after restart
+[2026-05-31 11:22:04] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 11:22:04] Stack healthy, no action needed
+[2026-05-31 11:52:04] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 11:52:04] Stack healthy, no action needed
+[2026-05-31 12:22:05] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 12:22:05] Stack healthy, no action needed
+[2026-05-31 12:52:05] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 12:52:05] Stack healthy, no action needed
+[2026-05-31 13:22:06] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 13:22:06] Stack healthy, no action needed
+[2026-05-31 13:52:06] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 13:52:06] Stack healthy, no action needed
+[2026-05-31 14:22:06] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 14:22:06] Stack healthy, no action needed
+[2026-05-31 14:52:07] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 14:52:07] Stack healthy, no action needed
+[2026-05-31 15:22:07] Health check public=404 local_refresh=000 local_public=000
+[2026-05-31 15:22:07] Restarting BetMate Edge stack
+[2026-05-31 15:23:17] Public health endpoint failed after restart
+[2026-05-31 15:53:18] Health check public=404 local_refresh=000 local_public=000
+[2026-05-31 15:53:18] Restarting BetMate Edge stack
+[2026-05-31 15:54:27] Public health endpoint failed after restart
+[2026-05-31 16:24:28] Health check public=404 local_refresh=000 local_public=000
+[2026-05-31 16:24:28] Restarting BetMate Edge stack
+[2026-05-31 16:25:37] Public health endpoint failed after restart
+[2026-05-31 16:56:52] Health check public=000 local_refresh=000 local_public=000
+[2026-05-31 16:56:52] Restarting BetMate Edge stack
+[2026-05-31 17:06:08] Public health endpoint failed after restart
+[2026-05-31 17:36:09] Health check public=404 local_refresh=000 local_public=000
+[2026-05-31 17:36:09] Restarting BetMate Edge stack
+[2026-05-31 17:37:29] Public health endpoint failed after restart
+[2026-05-31 18:07:29] Health check public=404 local_refresh=000 local_public=000
+[2026-05-31 18:07:29] Restarting BetMate Edge stack
+[2026-05-31 18:08:39] Public health endpoint failed after restart
+[2026-05-31 18:38:40] Health check public=404 local_refresh=000 local_public=000
+[2026-05-31 18:38:40] Restarting BetMate Edge stack
+[2026-05-31 18:39:50] Public health endpoint failed after restart
+[2026-05-31 19:09:50] Health check public=404 local_refresh=000 local_public=000
+[2026-05-31 19:09:50] Restarting BetMate Edge stack
+[2026-05-31 19:11:00] Public health endpoint failed after restart
+[2026-05-31 19:41:00] Health check public=404 local_refresh=000 local_public=000
+[2026-05-31 19:41:00] Restarting BetMate Edge stack
+[2026-05-31 19:42:10] Public health endpoint failed after restart
+[2026-05-31 20:12:10] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 20:12:10] Stack healthy, no action needed
+[2026-05-31 20:42:11] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 20:42:11] Stack healthy, no action needed
+[2026-05-31 21:12:11] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 21:12:11] Stack healthy, no action needed
+[2026-05-31 21:42:11] Health check public=200 local_refresh=200 local_public=200
+[2026-05-31 21:42:11] Stack healthy, no action needed
+[2026-05-31 22:12:12] Health check public=404 local_refresh=000 local_public=000
+[2026-05-31 22:12:12] Restarting BetMate Edge stack
+[2026-05-31 22:13:21] Public health endpoint failed after restart
+[2026-05-31 22:43:22] Health check public=404 local_refresh=000 local_public=000
+[2026-05-31 22:43:22] Restarting BetMate Edge stack
+[2026-05-31 22:44:32] Public health endpoint failed after restart
+[2026-05-31 23:14:32] Outside schedule window, skipping check
+[2026-05-31 23:44:32] Outside schedule window, skipping check
+[2026-06-01 00:14:32] Outside schedule window, skipping check
+[2026-06-01 00:44:32] Outside schedule window, skipping check
+[2026-06-01 01:14:32] Outside schedule window, skipping check
+[2026-06-01 01:44:32] Outside schedule window, skipping check
+[2026-06-01 02:14:32] Outside schedule window, skipping check
+[2026-06-01 02:44:32] Outside schedule window, skipping check
+[2026-06-01 03:14:32] Outside schedule window, skipping check
+[2026-06-01 03:44:32] Outside schedule window, skipping check
+[2026-06-01 04:14:32] Outside schedule window, skipping check
+[2026-06-01 04:44:32] Outside schedule window, skipping check
+[2026-06-01 05:14:33] Outside schedule window, skipping check
+[2026-06-01 05:44:33] Outside schedule window, skipping check
+[2026-06-01 06:14:33] Outside schedule window, skipping check
+[2026-06-01 06:44:33] Outside schedule window, skipping check
+[2026-06-01 07:14:33] Outside schedule window, skipping check
+[2026-06-01 07:44:33] Outside schedule window, skipping check
+[2026-06-01 08:14:33] Outside schedule window, skipping check
+[2026-06-01 08:44:33] Outside schedule window, skipping check
+[2026-06-01 09:14:33] Outside schedule window, skipping check
+[2026-06-01 09:44:33] Outside schedule window, skipping check
+[2026-06-01 10:14:33] Outside schedule window, skipping check
+[2026-06-01 10:44:33] Outside schedule window, skipping check
+[2026-06-01 11:14:33] Outside schedule window, skipping check
+[2026-06-01 11:44:34] Outside schedule window, skipping check
+[2026-06-01 12:14:34] Outside schedule window, skipping check
+[2026-06-01 12:44:34] Outside schedule window, skipping check
+[2026-06-01 13:14:34] Outside schedule window, skipping check
+[2026-06-01 13:44:34] Outside schedule window, skipping check
+[2026-06-01 14:14:34] Outside schedule window, skipping check
+[2026-06-01 14:44:34] Outside schedule window, skipping check
+[2026-06-01 15:14:34] Outside schedule window, skipping check
+[2026-06-01 15:44:34] Outside schedule window, skipping check
+[2026-06-01 16:14:34] Outside schedule window, skipping check
+[2026-06-01 16:44:34] Outside schedule window, skipping check
+[2026-06-01 17:14:34] Outside schedule window, skipping check

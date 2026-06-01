@@ -1,0 +1,104 @@
+{
+  "generatedAt": "2026-06-01T08:59:41",
+  "overall": {
+    "rowCount": 81,
+    "settledCount": 81,
+    "results": {
+      "WIN": 41,
+      "LOSS": 36,
+      "NO_STAT": 1,
+      "PUSH": 3
+    },
+    "equalBetProfit": 15.45,
+    "actualProfit": 9.251,
+    "totalStaked": 41.67,
+    "actualRoi": 22.2
+  },
+  "byGame": {
+    "Brisbane Lions v Fremantle Dockers": {
+      "rowCount": 6,
+      "settledCount": 6,
+      "results": {
+        "WIN": 3,
+        "LOSS": 3
+      },
+      "equalBetProfit": -0.43,
+      "actualProfit": -0.43,
+      "totalStaked": 6.0,
+      "actualRoi": -7.2
+    },
+    "Carlton Blues v Geelong Cats": {
+      "rowCount": 2,
+      "settledCount": 2,
+      "results": {
+        "LOSS": 1,
+        "WIN": 1
+      },
+      "equalBetProfit": -0.13,
+      "actualProfit": 0.37,
+      "totalStaked": 1.5,
+      "actualRoi": 24.7
+    },
+    "Melbourne Demons v Greater Western Sydney Giants": {
+      "rowCount": 9,
+      "settledCount": 9,
+      "results": {
+        "LOSS": 9
+      },
+      "equalBetProfit": -9.0,
+      "actualProfit": -6.42,
+      "totalStaked": 6.42,
+      "actualRoi": -100.0
+    },
+    "St Kilda Saints v Hawthorn Hawks": {
+      "rowCount": 34,
+      "settledCount": 34,
+      "results": {
+        "WIN": 21,
+        "LOSS": 10,
+        "PUSH": 3
+      },
+      "equalBetProfit": 6.63,
+      "actualProfit": 5.406,
+      "totalStaked": 7.2,
+      "actualRoi": 75.1
+    },
+    "Sydney Swans v Richmond Tigers": {
+      "rowCount": 9,
+      "settledCount": 9,
+      "results": {
+        "LOSS": 3,
+        "WIN": 6
+      },
+      "equalBetProfit": 19.94,
+      "actualProfit": 10.84,
+      "totalStaked": 5.5,
+      "actualRoi": 197.1
+    },
+    "West Coast Eagles v Essendon Bombers": {
+      "rowCount": 11,
+      "settledCount": 11,
+      "results": {
+        "WIN": 4,
+        "NO_STAT": 1,
+        "LOSS": 6
+      },
+      "equalBetProfit": -2.38,
+      "actualProfit": -1.38,
+      "totalStaked": 10.0,
+      "actualRoi": -13.8
+    },
+    "Western Bulldogs v Melbourne Demons": {
+      "rowCount": 10,
+      "settledCount": 10,
+      "results": {
+        "WIN": 6,
+        "LOSS": 4
+      },
+      "equalBetProfit": 0.82,
+      "actualProfit": 0.865,
+      "totalStaked": 5.05,
+      "actualRoi": 17.1
+    }
+  }
+}

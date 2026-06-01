@@ -1,0 +1,3 @@
+display_name: AFLplayerprops
+short_description: AFL player props EV/QI, Walters discipline, CLV/history ledger, settlement, and Markov reports.
+default_prompt: Source today's AFL player prop markets from Model data and Odds API, score EV/QI, select the Walters-disciplined best alternate lines, size by volatility, log the card to bet history for CLV tracking, and produce bettor-friendly Markov commentary with HTML/PDF outputs. Never mention the underlying model-data vendor/source name in external-facing output; call it Model data.
