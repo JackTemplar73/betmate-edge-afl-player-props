@@ -37,7 +37,8 @@ def publish_site(source_html: Path, site_dir: Path, site_file: str, payload: dic
     archive_target = site_dir / "full-report.html"
     premium_archive = site_dir / "premium-archive.html"
 
-    shutil.copy2(source_html, target)
+    if source_html.resolve() != target.resolve():
+        shutil.copy2(source_html, target)
     shutil.copy2(source_html, index_target)
     shutil.copy2(source_html, archive_target)
 
