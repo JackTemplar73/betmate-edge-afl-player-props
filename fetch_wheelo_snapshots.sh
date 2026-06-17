@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT="/Users/merlin/Documents/Codex/2026-05-24/consider-all-our-existing-afl-related"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 STAMP="$(date '+%Y%m%d_%H%M%S')"
 OUT_DIR="$ROOT/wheelo_snapshots/$STAMP"
 mkdir -p "$OUT_DIR"

@@ -36,6 +36,14 @@ FIELDS = [
     "market_probability",
     "model_edge",
     "ev_per_unit",
+    "posterior_probability",
+    "posterior_edge",
+    "posterior_ev_per_unit",
+    "calibration_blend",
+    "historical_roi_penalty",
+    "historical_roi_bonus",
+    "historical_samples",
+    "calibration_note",
     "live_qi",
     "alt_line_score",
     "markov_path",
@@ -56,6 +64,13 @@ FIELDS = [
     "flat_profit",
     "stake_profit",
 ]
+
+MARKET_LINE_TOLERANCE = {
+    "Disposals": 2.0,
+    "Goals": 1.0,
+    "Ranking/Fantasy Pts": 5.0,
+    "Tackles": 1.0,
+}
 
 
 def now() -> str:
@@ -131,6 +146,31 @@ def implied(price: Any) -> float | None:
     if not p:
         return None
     return 1.0 / p
+
+
+def select_clv_candidate(row: dict[str, Any], candidates: list[dict[str, str]]) -> dict[str, str] | None:
+    if not candidates:
+        return None
+    original_line = f(row.get("open_line"))
+    if original_line is None:
+        original_line = f(row.get("line"))
+    if original_line is None:
+        return candidates[0]
+
+    def sort_key(candidate: dict[str, str]) -> tuple[float, float]:
+        candidate_line = f(candidate.get("line"))
+        if candidate_line is None:
+            return (float("inf"), -(f(candidate.get("best_price")) or 0.0))
+        # When the exact line has disappeared, use the nearest alternative line
+        # instead of the longest-priced one at the same book.
+        return (abs(candidate_line - original_line), -(f(candidate.get("best_price")) or 0.0))
+
+    chosen = min(candidates, key=sort_key)
+    chosen_line = f(chosen.get("line"))
+    tolerance = MARKET_LINE_TOLERANCE.get(str(row.get("market", "")), 1.0)
+    if chosen_line is None or abs(chosen_line - original_line) > tolerance:
+        return None
+    return chosen
 
 
 def calc_clv(row: dict[str, Any]) -> None:
@@ -376,8 +416,24 @@ def update_clv(args: argparse.Namespace) -> None:
                 normalise_book(row.get("book", "")),
             )
             candidates = loose.get(lkey, [])
-            current = max(candidates, key=lambda r: f(r.get("best_price")) or 0, default=None)
+            current = select_clv_candidate(row, candidates)
         if current is None:
+            changed = False
+            if row.get("latest_line") or row.get("latest_price"):
+                changed = True
+            row["latest_line"] = ""
+            row["latest_price"] = ""
+            if args.close:
+                # Preserve any previously captured closing price; when a live
+                # board disappears entirely, we only want to mark the market as
+                # unavailable rather than erase historical close data.
+                if row.get("status") in {"OPEN", "TRACKED"}:
+                    row["status"] = "CLOSED_UNAVAILABLE"
+                    changed = True
+            if changed:
+                row["updated_at_utc"] = ts
+                updated += 1
+            calc_clv(row)
             continue
         row["latest_line"] = current.get("line", row.get("latest_line", ""))
         row["latest_price"] = current.get("best_price", row.get("latest_price", ""))
@@ -395,31 +451,18 @@ def update_clv(args: argparse.Namespace) -> None:
 
 def settle(args: argparse.Namespace) -> None:
     ledger = read_csv(args.ledger)
-    settlements = {bet_id(row): row for row in read_csv(args.settlement)}
+    settlement_rows = read_csv(args.settlement)
+    settlements: dict[str, dict[str, str]] = {}
+    settlement_keys: dict[tuple[str, str, str, str, str, str], dict[str, str]] = {}
+    for row in settlement_rows:
+        explicit_id = str(row.get("bet_id", "")).strip()
+        if explicit_id:
+            settlements[explicit_id] = row
+        settlement_keys[bet_key(row)] = row
     updated = 0
     ts = now()
     for row in ledger:
-        match = settlements.get(row["bet_id"])
-        if match is None:
-            # settlement files may lack game/commence_time, so use a looser key.
-            row_key = (
-                row.get("player", "").strip().lower(),
-                row.get("market", "").strip().lower(),
-                row.get("side", "").strip().lower(),
-                fmt_float(row.get("line"), 3),
-                normalise_book(row.get("book", "")),
-            )
-            for candidate in settlements.values():
-                cand_key = (
-                    candidate.get("player", "").strip().lower(),
-                    candidate.get("market", "").strip().lower(),
-                    candidate.get("side", "").strip().lower(),
-                    fmt_float(candidate.get("line"), 3),
-                    normalise_book(candidate.get("book", "")),
-                )
-                if cand_key == row_key:
-                    match = candidate
-                    break
+        match = settlements.get(row["bet_id"]) or settlement_keys.get(bet_key(row))
         if match is None:
             continue
         row["actual"] = match.get("actual", "")

@@ -2,19 +2,26 @@
 set -euo pipefail
 
 PROJECT_ROOT="/Users/merlin/Documents/Codex/2026-05-24/consider-all-our-existing-afl-related"
+PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+PYTHON_BIN="/opt/homebrew/bin/python3"
+CURL_BIN="/usr/bin/curl"
+LAUNCHCTL_BIN="/bin/launchctl"
+USER_ID="$(id -u)"
+REFRESH_LABEL="com.merlin.betmate-edge-refresh"
+PUBLIC_LABEL="com.merlin.betmate-edge-public"
+NGROK_LABEL="com.merlin.betmate-edge-ngrok"
 LOG_DIR="$PROJECT_ROOT/monitor_logs"
-REFRESH_LOG="$LOG_DIR/betmate_edge_refresh_server.log"
-PUBLIC_LOG="$LOG_DIR/betmate_edge_public_server.log"
-NGROK_LOG="$LOG_DIR/betmate_edge_ngrok.log"
 MONITOR_LOG="$LOG_DIR/betmate_edge_monitor.log"
 LATEST_TUNNEL_FILE="$LOG_DIR/latest_ngrok_url.txt"
 
 PUBLIC_HEALTH_URL="https://gestureless-rancorously-zariah.ngrok-free.dev/health"
+PUBLIC_REFRESH_URL="https://gestureless-rancorously-zariah.ngrok-free.dev/refresh"
 LOCAL_REFRESH_HEALTH_URL="http://127.0.0.1:8765/health"
 LOCAL_PUBLIC_HEALTH_URL="http://127.0.0.1:8000/health"
 NGROK_API_URL="http://127.0.0.1:4040/api/tunnels"
 
 ODDS_API_KEY="${THE_ODDS_API_KEY:-026c34657c294b1af47274812988496e}"
+REFRESH_TOKEN="${CODEX_REFRESH_TOKEN:-$(cat "$PROJECT_ROOT/codex_refresh_token.txt" 2>/dev/null || true)}"
 
 mkdir -p "$LOG_DIR"
 
@@ -27,18 +34,10 @@ log() {
 }
 
 within_schedule() {
-  local weekday hour
-  weekday="$(date +%u)"
+  local hour
   hour="$(date +%H)"
 
-  case "$weekday" in
-    3|4|5|6|7) ;;
-    *)
-      return 1
-      ;;
-  esac
-
-  if [ "$hour" -lt 7 ] || [ "$hour" -gt 22 ]; then
+  if [ "$hour" -lt 8 ] || [ "$hour" -gt 21 ]; then
     return 1
   fi
 
@@ -47,39 +46,37 @@ within_schedule() {
 
 http_code() {
   local url="$1"
-  curl -s -o /dev/null -w '%{http_code}' "$url" || true
+  "$CURL_BIN" -s -o /dev/null -w '%{http_code}' "$url" || true
 }
 
-kill_matching() {
-  local pattern="$1"
-  local pids
-  pids="$(pgrep -f "$pattern" || true)"
-  if [ -n "$pids" ]; then
-    echo "$pids" | xargs kill >/dev/null 2>&1 || true
-    sleep 2
-  fi
+refresh_endpoint_code() {
+  "$CURL_BIN" -s -o /dev/null -w '%{http_code}' \
+    -X POST "$PUBLIC_REFRESH_URL" \
+    -H "Authorization: Bearer $REFRESH_TOKEN" \
+    -H 'Content-Type: application/json' \
+    -d '{}' || true
 }
 
-start_refresh_server() {
-  nohup env THE_ODDS_API_KEY="$ODDS_API_KEY" python3 "$PROJECT_ROOT/betmate_edge_refresh_server.py" >> "$REFRESH_LOG" 2>&1 &
+kickstart_agent() {
+  local label="$1"
+  "$LAUNCHCTL_BIN" enable "gui/$USER_ID/$label" >/dev/null 2>&1 || true
+  "$LAUNCHCTL_BIN" kickstart -k "gui/$USER_ID/$label" >/dev/null 2>&1 || true
 }
 
-start_public_server() {
-  nohup python3 "$PROJECT_ROOT/betmate_edge_public_server.py" >> "$PUBLIC_LOG" 2>&1 &
-}
-
-start_ngrok() {
-  nohup ngrok http 8000 >> "$NGROK_LOG" 2>&1 &
+restart_agents() {
+  kickstart_agent "$REFRESH_LABEL"
+  kickstart_agent "$PUBLIC_LABEL"
+  kickstart_agent "$NGROK_LABEL"
 }
 
 record_tunnel_url() {
   local payload url
-  payload="$(curl -s "$NGROK_API_URL" || true)"
-  url="$(PAYLOAD_JSON="$payload" python3 -c '
+  payload="$("$CURL_BIN" -s "$NGROK_API_URL" || true)"
+  url="$(printf '%s' "$payload" | "$PYTHON_BIN" -c '
 import json
-import os
+import sys
 
-raw = os.environ.get("PAYLOAD_JSON", "").strip()
+raw = sys.stdin.read().strip()
 if not raw:
     raise SystemExit(0)
 
@@ -128,13 +125,7 @@ wait_for_public_health() {
 
 restart_stack() {
   log "Restarting BetMate Edge stack"
-  kill_matching "python3 $PROJECT_ROOT/betmate_edge_refresh_server.py"
-  kill_matching "python3 $PROJECT_ROOT/betmate_edge_public_server.py"
-  kill_matching "ngrok http 8000"
-
-  start_refresh_server
-  start_public_server
-  start_ngrok
+  restart_agents
 
   if ! wait_for_local_services; then
     log "Local services failed health checks after restart"
@@ -158,14 +149,15 @@ main() {
     exit 0
   fi
 
-  local public_code refresh_code local_public_code
+  local public_code refresh_code local_public_code public_refresh_code
   public_code="$(http_code "$PUBLIC_HEALTH_URL")"
   refresh_code="$(http_code "$LOCAL_REFRESH_HEALTH_URL")"
   local_public_code="$(http_code "$LOCAL_PUBLIC_HEALTH_URL")"
+  public_refresh_code="$(refresh_endpoint_code)"
 
-  log "Health check public=$public_code local_refresh=$refresh_code local_public=$local_public_code"
+  log "Health check public=$public_code local_refresh=$refresh_code local_public=$local_public_code public_refresh=$public_refresh_code"
 
-  if [ "$public_code" = "200" ] && [ "$refresh_code" = "200" ] && [ "$local_public_code" = "200" ]; then
+  if [ "$public_code" = "200" ] && [ "$refresh_code" = "200" ] && [ "$local_public_code" = "200" ] && { [ "$public_refresh_code" = "200" ] || [ "$public_refresh_code" = "409" ]; }; then
     record_tunnel_url
     log "Stack healthy, no action needed"
     exit 0

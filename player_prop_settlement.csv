@@ -1,12 +1,32 @@
 bet_id,game,commence_time,player,market,side,line,book,actual,result,unit_profit,stake_profit,stake_units,signal
-archie_roberts_disposals_over_29_5_pointsbetau_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Archie Roberts,Disposals,Over,29.5,PointsBet (AU),31,WIN,0.87,0.87,1.0,A_BET
-sullivan_robey_disposals_under_20_5_pointsbetau_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Sullivan Robey,Disposals,Under,20.5,PointsBet (AU),19,WIN,0.87,0.87,1.0,A_BET
-mason_redman_disposals_under_21_5_sportsbet_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Mason Redman,Disposals,Under,21.5,SportsBet,,NO_STAT,0.0,0.0,1.0,A_BET
-kyle_langford_disposals_under_20_5_pointsbetau_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Kyle Langford,Disposals,Under,20.5,PointsBet (AU),21,LOSS,-1,-1.0,1.0,A_BET
-tom_mccarthy_disposals_under_25_5_pointsbetau_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Tom McCarthy,Disposals,Under,25.5,PointsBet (AU),26,LOSS,-1,-1.0,1.0,A_BET
-tom_mccarthy_disposals_under_25_5_sportsbet_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Tom McCarthy,Disposals,Under,25.5,SportsBet,26,LOSS,-1,-1.0,1.0,A_BET
-archie_roberts_disposals_over_28_5_pointsbetau_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Archie Roberts,Disposals,Over,28.5,PointsBet (AU),31,WIN,1.0,1.0,1.0,A_BET
-will_setterfield_goals_over_0_5_betright_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Will Setterfield,Goals,Over,0.5,Bet Right,0,LOSS,-1,-0.5,0.5,A_BET
-archie_roberts_disposals_over_29_5_sportsbet_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Archie Roberts,Disposals,Over,29.5,SportsBet,31,WIN,0.88,0.88,1.0,A_BET
-tom_mccarthy_disposals_under_25_5_ladbrokes_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Tom McCarthy,Disposals,Under,25.5,Ladbrokes,26,LOSS,-1,-1.0,1.0,A_BET
-will_setterfield_goals_over_0_5_betr_2026_05_31T09_20_54Z,West Coast Eagles v Essendon Bombers,2026-05-31T09:20:54Z,Will Setterfield,Goals,Over,0.5,Betr,0,LOSS,-1,-0.5,0.5,A_BET
+angus_anderson_goals_over_0_5_sportsbet_2026_06_08T05_15_33Z,Collingwood Magpies v Melbourne Demons,2026-06-08T05:15:33Z,Angus Anderson,Goals,Over,0.5,SportsBet,1,WIN,0.73,0.547,0.75,A_BET
+billy_wilson_disposals_under_21_5_pointsbetau_2026_06_07T09_20_02Z,Essendon Bombers v Carlton Blues,2026-06-07T09:20:02Z,Billy Wilson,Disposals,Under,21.5,PointsBet (AU),24,LOSS,-1.0,-1.0,1.0,A_BET
+ed_richards_tackles_over_3_5_sportsbet_2026_06_05T09_40_00Z,Hawthorn Hawks v Western Bulldogs,2026-06-05T09:40:00Z,Ed Richards,Tackles,Over,3.5,SportsBet,2,LOSS,-1.0,-1.0,1.0,A_BET
+harvey_harrison_tackles_over_3_5_pointsbetau_2026_06_08T05_15_33Z,Collingwood Magpies v Melbourne Demons,2026-06-08T05:15:33Z,Harvey Harrison,Tackles,Over,3.5,PointsBet (AU),6,WIN,2.1,2.1,1.0,A_BET
+harvey_harrison_tackles_over_3_5_sportsbet_2026_06_08T05_15_33Z,Collingwood Magpies v Melbourne Demons,2026-06-08T05:15:33Z,Harvey Harrison,Tackles,Over,3.5,SportsBet,6,WIN,1.6,1.6,1.0,A_BET
+hayden_mclean_goals_over_2_5_ladbrokes_2026_06_07T05_15_00Z,Sydney Swans v St Kilda Saints,2026-06-07T05:15:00Z,Hayden McLean,Goals,Over,2.5,Ladbrokes,2,LOSS,-1.0,-0.75,0.75,A_BET
+jake_melksham_goals_over_1_5_betr_2026_06_08T05_15_33Z,Collingwood Magpies v Melbourne Demons,2026-06-08T05:15:33Z,Jake Melksham,Goals,Over,1.5,Betr,1,LOSS,-1.0,-0.75,0.75,A_BET
+jake_melksham_goals_over_1_5_dabbleau_2026_06_08T05_15_33Z,Collingwood Magpies v Melbourne Demons,2026-06-08T05:15:33Z,Jake Melksham,Goals,Over,1.5,Dabble AU,1,LOSS,-1.0,-0.75,0.75,A_BET
+jake_melksham_goals_over_1_5_sportsbet_2026_06_08T05_15_33Z,Collingwood Magpies v Melbourne Demons,2026-06-08T05:15:33Z,Jake Melksham,Goals,Over,1.5,SportsBet,1,LOSS,-1.0,-0.75,0.75,A_BET
+jake_soligo_disposals_under_20_5_pointsbetau_2026_06_04T09_30_00Z,Adelaide Crows v Geelong Cats,2026-06-04T09:30:00Z,Jake Soligo,Disposals,Under,20.5,PointsBet (AU),22,LOSS,-1.0,-1.0,1.0,A_BET
+jordan_dawson_goals_over_0_5_betright_2026_06_04T09_30_00Z,Adelaide Crows v Geelong Cats,2026-06-04T09:30:00Z,Jordan Dawson,Goals,Over,0.5,Bet Right,3,WIN,0.99,0.742,0.75,A_BET
+jordan_dawson_goals_over_0_5_sportsbet_2026_06_04T09_30_00Z,Adelaide Crows v Geelong Cats,2026-06-04T09:30:00Z,Jordan Dawson,Goals,Over,0.5,SportsBet,3,WIN,0.91,0.682,0.75,A_BET
+kade_chandler_tackles_over_3_5_sportsbet_2026_06_08T05_15_33Z,Collingwood Magpies v Melbourne Demons,2026-06-08T05:15:33Z,Kade Chandler,Tackles,Over,3.5,SportsBet,6,WIN,0.81,0.81,1.0,A_BET
+kade_chandler_tackles_over_3_5_unibet_2026_06_08T05_15_33Z,Collingwood Magpies v Melbourne Demons,2026-06-08T05:15:33Z,Kade Chandler,Tackles,Over,3.5,Unibet,6,WIN,0.87,0.87,1.0,A_BET
+luke_davies_uniacke_tackles_over_3_5_pointsbetau_2026_06_06T04_15_00Z,North Melbourne Kangaroos v Fremantle Dockers,2026-06-06T04:15:00Z,Luke Davies-Uniacke,Tackles,Over,3.5,PointsBet (AU),2,LOSS,-1.0,-1.0,1.0,A_BET
+luke_davies_uniacke_tackles_over_3_5_sportsbet_2026_06_06T04_15_00Z,North Melbourne Kangaroos v Fremantle Dockers,2026-06-06T04:15:00Z,Luke Davies-Uniacke,Tackles,Over,3.5,SportsBet,2,LOSS,-1.0,-1.0,1.0,A_BET
+luke_davies_uniacke_tackles_over_3_5_unibet_2026_06_06T04_15_00Z,North Melbourne Kangaroos v Fremantle Dockers,2026-06-06T04:15:00Z,Luke Davies-Uniacke,Tackles,Over,3.5,Unibet,2,LOSS,-1.0,-1.0,1.0,A_BET
+nathan_o_driscoll_disposals_over_17_5_pointsbetau_2026_06_06T04_15_00Z,North Melbourne Kangaroos v Fremantle Dockers,2026-06-06T04:15:00Z,Nathan O'Driscoll,Disposals,Over,17.5,PointsBet (AU),23,WIN,0.87,0.87,1.0,A_BET
+ned_moyle_goals_over_0_5_betr_2026_06_06T07_15_00Z,Gold Coast Suns v Brisbane Lions,2026-06-06T07:15:00Z,Ned Moyle,Goals,Over,0.5,Betr,0,LOSS,-1.0,-0.75,0.75,A_BET
+ned_moyle_goals_over_0_5_sportsbet_2026_06_06T07_15_00Z,Gold Coast Suns v Brisbane Lions,2026-06-06T07:15:00Z,Ned Moyle,Goals,Over,0.5,SportsBet,0,LOSS,-1.0,-0.75,0.75,A_BET
+paddy_cross_goals_over_0_5_betright_2026_06_08T05_15_33Z,Collingwood Magpies v Melbourne Demons,2026-06-08T05:15:33Z,Paddy Cross,Goals,Over,0.5,Bet Right,1,WIN,1.55,1.162,0.75,A_BET
+paddy_cross_goals_over_0_5_pointsbetau_2026_06_08T05_15_33Z,Collingwood Magpies v Melbourne Demons,2026-06-08T05:15:33Z,Paddy Cross,Goals,Over,0.5,PointsBet (AU),1,WIN,1.55,1.162,0.75,A_BET
+paddy_cross_goals_over_0_5_sportsbet_2026_06_08T05_15_33Z,Collingwood Magpies v Melbourne Demons,2026-06-08T05:15:33Z,Paddy Cross,Goals,Over,0.5,SportsBet,1,WIN,1.5,1.125,0.75,A_BET
+reuben_ginbey_disposals_under_17_5_pointsbetau_2026_06_06T10_15_57Z,West Coast Eagles v Port Adelaide Power,2026-06-06T10:15:57Z,Reuben Ginbey,Disposals,Under,17.5,PointsBet (AU),12,WIN,0.95,0.95,1.0,A_BET
+sam_durham_disposals_under_22_5_pointsbetau_2026_06_07T09_20_02Z,Essendon Bombers v Carlton Blues,2026-06-07T09:20:02Z,Sam Durham,Disposals,Under,22.5,PointsBet (AU),30,LOSS,-1.0,-1.0,1.0,A_BET
+shaun_mannagh_goals_over_1_5_unibet_2026_06_04T09_30_00Z,Adelaide Crows v Geelong Cats,2026-06-04T09:30:00Z,Shaun Mannagh,Goals,Over,1.5,Unibet,1,LOSS,-1.0,-0.75,0.75,A_BET
+tom_sparrow_tackles_over_4_5_sportsbet_2026_06_08T05_15_33Z,Collingwood Magpies v Melbourne Demons,2026-06-08T05:15:33Z,Tom Sparrow,Tackles,Over,4.5,SportsBet,6,WIN,0.7,0.7,1.0,A_BET
+tom_sparrow_tackles_over_4_5_unibet_2026_06_08T05_15_33Z,Collingwood Magpies v Melbourne Demons,2026-06-08T05:15:33Z,Tom Sparrow,Tackles,Over,4.5,Unibet,6,WIN,0.71,0.71,1.0,A_BET
+trent_rivers_disposals_under_22_5_pointsbetau_2026_06_08T05_15_33Z,Collingwood Magpies v Melbourne Demons,2026-06-08T05:15:33Z,Trent Rivers,Disposals,Under,22.5,PointsBet (AU),17,WIN,0.95,0.95,1.0,A_BET
+tristan_xerri_disposals_over_16_5_pointsbetau_2026_06_06T04_15_00Z,North Melbourne Kangaroos v Fremantle Dockers,2026-06-06T04:15:00Z,Tristan Xerri,Disposals,Over,16.5,PointsBet (AU),12,LOSS,-1.0,-1.0,1.0,A_BET
+tristan_xerri_disposals_over_16_5_sportsbet_2026_06_06T04_15_00Z,North Melbourne Kangaroos v Fremantle Dockers,2026-06-06T04:15:00Z,Tristan Xerri,Disposals,Over,16.5,SportsBet,12,LOSS,-1.0,-1.0,1.0,A_BET

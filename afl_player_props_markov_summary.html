@@ -3,15 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AFL Player Props Markov Summary</title>
+  <title>Premium Bets Archive</title>
   <style>
     :root {
       --ink: #111827;
       --muted: #4b5563;
       --line: #d1d5db;
       --panel: #f8fafc;
-      --a: #0f766e;
-      --b: #1d4ed8;
+      --link: #1d4ed8;
     }
     * { box-sizing: border-box; }
     body {
@@ -20,296 +19,41 @@
       color: var(--ink);
       background: #ffffff;
     }
-    header {
-      padding: 28px 34px 18px;
-      border-bottom: 1px solid var(--line);
-      background: #f9fafb;
+    main {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 48px 24px 64px;
     }
-    h1 { margin: 0 0 8px; font-size: 28px; }
-    h2 { margin: 28px 0 12px; font-size: 20px; }
-    h3 { margin: 0 0 8px; font-size: 16px; }
-    h3 span { color: var(--muted); font-weight: normal; }
-    p { line-height: 1.45; }
-    .meta { color: var(--muted); margin: 0; max-width: 980px; }
-    main { padding: 22px 34px 40px; }
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
-      margin: 0 0 18px;
-    }
-    .card {
+    .panel {
       border: 1px solid var(--line);
       background: var(--panel);
-      border-radius: 8px;
-      padding: 14px;
+      border-radius: 12px;
+      padding: 24px;
     }
-    .card strong { display: block; margin-bottom: 6px; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
+    h1 { margin: 0 0 12px; font-size: 28px; }
+    p { margin: 0 0 14px; line-height: 1.5; }
+    a {
+      color: var(--link);
+      font-weight: 700;
+      text-decoration: none;
     }
-    th, td {
-      border: 1px solid var(--line);
-      padding: 8px;
-      text-align: left;
-      vertical-align: top;
-    }
-    th { background: var(--ink); color: white; }
-    tr:nth-child(even) td { background: #f9fafb; }
-    .badge {
-      display: inline-block;
-      min-width: 28px;
-      text-align: center;
-      color: white;
-      border-radius: 4px;
+    a:hover { text-decoration: underline; }
+    code {
+      background: #eef2ff;
+      border-radius: 6px;
       padding: 2px 6px;
-      font-weight: bold;
-    }
-    .badge.a { background: var(--a); }
-    .badge.b { background: var(--b); }
-    .pos { color: #047857; font-weight: bold; }
-    .commentary {
-      border-top: 1px solid var(--line);
-      padding: 16px 0;
-      max-width: 1080px;
-    }
-    .risk { color: #7c2d12; }
-    @media print {
-      header { background: white; }
-      main { padding: 16px; }
-      .commentary { page-break-inside: avoid; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>AFL Player Props Markov Summary</h1>
-    <p class="meta">Generated 2026-05-27 23:02 from WheeloRatings + Odds API. Scope: Western Bulldogs v Melbourne only; GWS v Brisbane returned no live player prop bookmakers. Marks were unavailable through Odds API.</p>
-  </header>
   <main>
-    <section class="cards">
-      <div class="card"><strong>Cleaned Card</strong>10 best risk-adjusted alternate lines</div>
-      <div class="card"><strong>Grades</strong>A_BET: 4, B_BET: 6</div>
-      <div class="card"><strong>Best Book Split</strong>PointsBet (AU) 7, Unibet 2, SportsBet 1</div>
+    <section class="panel">
+      <h1>Premium Bets Moved</h1>
+      <p>This standalone page is now archived so there is only one live UI source of truth.</p>
+      <p>Use the full agent report here:</p>
+      <p><a href="file:///Users/merlin/Documents/Codex/2026-05-24/consider-all-our-existing-afl-related/afl_player_props_stk_haw_walters_report.html">afl_player_props_stk_haw_walters_report.html</a></p>
+      <p>Then open the <code>Premium Bets</code> tab for the current premium card and the last-round premium results.</p>
     </section>
-
-    <h2>Summary Card</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Grade</th><th>Bet</th><th>Stake</th><th>Best AU Bookie</th><th>Price</th><th>EV</th><th>QI</th><th>Alt Score</th><th>Markov Path</th>
-        </tr>
-      </thead>
-      <tbody>
-        
-            <tr>
-              <td><span class="badge a">A</span></td>
-              <td>Jack Gunston Goals Over 2.5</td>
-              <td>0.50u</td>
-              <td>Unibet</td>
-              <td>1.79</td>
-              <td class="pos">66.3%</td>
-              <td>95.0</td>
-              <td>0.4892</td>
-              <td>Strong -&gt; Dominant -&gt; Mispriced -&gt; Elite</td>
-            </tr>
-            
-            <tr>
-              <td><span class="badge a">A</span></td>
-              <td>Isaac Keeler Goals Over 0.5</td>
-              <td>0.50u</td>
-              <td>PointsBet (AU)</td>
-              <td>2.10</td>
-              <td class="pos">51.6%</td>
-              <td>95.0</td>
-              <td>0.2895</td>
-              <td>Strong -&gt; Dominant -&gt; Mispriced -&gt; Elite</td>
-            </tr>
-            
-            <tr>
-              <td><span class="badge a">A</span></td>
-              <td>Karl Amon Disposals Under 26.5</td>
-              <td>1.00u</td>
-              <td>PointsBet (AU)</td>
-              <td>1.87</td>
-              <td class="pos">34.6%</td>
-              <td>93.5</td>
-              <td>0.2574</td>
-              <td>Strong -&gt; Dominant -&gt; Mispriced -&gt; Elite</td>
-            </tr>
-            
-            <tr>
-              <td><span class="badge a">A</span></td>
-              <td>Nick Watson Goals Over 1.5</td>
-              <td>0.50u</td>
-              <td>Unibet</td>
-              <td>1.38</td>
-              <td class="pos">22.9%</td>
-              <td>93.6</td>
-              <td>0.1611</td>
-              <td>Strong -&gt; Dominant -&gt; Good -&gt; Elite</td>
-            </tr>
-            
-            <tr>
-              <td><span class="badge b">B</span></td>
-              <td>Bradley Hill Disposals Over 19.5</td>
-              <td>0.50u</td>
-              <td>PointsBet (AU)</td>
-              <td>1.87</td>
-              <td class="pos">26.3%</td>
-              <td>86.5</td>
-              <td>0.1726</td>
-              <td>Lean -&gt; Dominant -&gt; Mispriced -&gt; High</td>
-            </tr>
-            
-            <tr>
-              <td><span class="badge b">B</span></td>
-              <td>Max Hall Disposals Under 21.5</td>
-              <td>0.50u</td>
-              <td>SportsBet</td>
-              <td>1.90</td>
-              <td class="pos">24.9%</td>
-              <td>84.2</td>
-              <td>0.1574</td>
-              <td>Lean -&gt; Dominant -&gt; Good -&gt; High</td>
-            </tr>
-            
-            <tr>
-              <td><span class="badge b">B</span></td>
-              <td>Cam Mackenzie Tackles Over 3.5</td>
-              <td>0.40u</td>
-              <td>PointsBet (AU)</td>
-              <td>2.10</td>
-              <td class="pos">29.0%</td>
-              <td>83.8</td>
-              <td>0.1554</td>
-              <td>Lean -&gt; Positive -&gt; Mispriced -&gt; High</td>
-            </tr>
-            
-            <tr>
-              <td><span class="badge b">B</span></td>
-              <td>Marcus Windhager Disposals Over 20.5</td>
-              <td>0.50u</td>
-              <td>PointsBet (AU)</td>
-              <td>1.87</td>
-              <td class="pos">19.5%</td>
-              <td>82.9</td>
-              <td>0.1176</td>
-              <td>Lean -&gt; Positive -&gt; Good -&gt; High</td>
-            </tr>
-            
-            <tr>
-              <td><span class="badge b">B</span></td>
-              <td>Connor Macdonald Disposals Over 18.5</td>
-              <td>0.50u</td>
-              <td>PointsBet (AU)</td>
-              <td>1.87</td>
-              <td class="pos">19.5%</td>
-              <td>82.9</td>
-              <td>0.1176</td>
-              <td>Lean -&gt; Positive -&gt; Good -&gt; High</td>
-            </tr>
-            
-            <tr>
-              <td><span class="badge b">B</span></td>
-              <td>Jack Sinclair Disposals Over 27.5</td>
-              <td>0.50u</td>
-              <td>PointsBet (AU)</td>
-              <td>1.87</td>
-              <td class="pos">18.3%</td>
-              <td>82.3</td>
-              <td>0.1089</td>
-              <td>Lean -&gt; Positive -&gt; Good -&gt; High</td>
-            </tr>
-            
-      </tbody>
-    </table>
-
-    <h2>Detailed Markov Commentary</h2>
-    <p>The chain means: does Wheelo like it, does probability agree, is the price wrong, and is confidence high?</p>
-    
-            <section class="commentary">
-              <h3>1. A_BET - Jack Gunston Goals Over 2.5 @ 1.79 <span>Unibet</span></h3>
-              <p><strong>Markov path:</strong> Strong -&gt; Dominant -&gt; Mispriced -&gt; Elite | score 12/12 | EV 66.3% | QI 95.0 | Alt score 0.4892</p>
-              <p>Wheelo projects 3.75 goals avg against a 2.5 line, creating a +1.2 stat gap for the over. The Markov state path is Strong -&gt; Dominant -&gt; Mispriced -&gt; Elite, meaning the row moves from projection support into a positive probability state, then through the price/EV state, and finishes with 95.0 QI. Model probability is 92.9% versus market 55.9%, producing 66.3% EV.</p>
-              <p><strong>Ladder:</strong> Over 2.5 @ 1.79 EV 66.3%; Over 3.5 @ 2.95 EV 81.6%; Over 1.5 @ 1.22 EV 20.8%</p>
-              <p class="risk"><strong>Risk:</strong> Goals are highest variance; price must compensate for scoring role volatility.</p>
-            </section>
-            
-            <section class="commentary">
-              <h3>2. A_BET - Isaac Keeler Goals Over 0.5 @ 2.10 <span>PointsBet (AU)</span></h3>
-              <p><strong>Markov path:</strong> Strong -&gt; Dominant -&gt; Mispriced -&gt; Elite | score 12/12 | EV 51.6% | QI 95.0 | Alt score 0.2895</p>
-              <p>Wheelo projects 1.0 goals avg against a 0.5 line, creating a +0.5 stat gap for the over. The Markov state path is Strong -&gt; Dominant -&gt; Mispriced -&gt; Elite, meaning the row moves from projection support into a positive probability state, then through the price/EV state, and finishes with 95.0 QI. Model probability is 72.2% versus market 47.6%, producing 51.6% EV.</p>
-              
-              <p class="risk"><strong>Risk:</strong> Goals are highest variance; price must compensate for scoring role volatility.</p>
-            </section>
-            
-            <section class="commentary">
-              <h3>3. A_BET - Karl Amon Disposals Under 26.5 @ 1.87 <span>PointsBet (AU)</span></h3>
-              <p><strong>Markov path:</strong> Strong -&gt; Dominant -&gt; Mispriced -&gt; Elite | score 12/12 | EV 34.6% | QI 93.5 | Alt score 0.2574</p>
-              <p>Wheelo projects 23.3 disposals against a 26.5 line, creating a +3.2 stat gap for the under. The Markov state path is Strong -&gt; Dominant -&gt; Mispriced -&gt; Elite, meaning the row moves from projection support into a positive probability state, then through the price/EV state, and finishes with 93.5 QI. Model probability is 72.0% versus market 50.0%, producing 34.6% EV.</p>
-              <p><strong>Ladder:</strong> Under 26.5 @ 1.87 EV 34.6%; Under 25.5 @ 1.84 EV 20.6%</p>
-              <p class="risk"><strong>Risk:</strong> Disposal props are more stable, but role/rotation drift can still break projection.</p>
-            </section>
-            
-            <section class="commentary">
-              <h3>4. A_BET - Nick Watson Goals Over 1.5 @ 1.38 <span>Unibet</span></h3>
-              <p><strong>Markov path:</strong> Strong -&gt; Dominant -&gt; Good -&gt; Elite | score 11/12 | EV 22.9% | QI 93.6 | Alt score 0.1611</p>
-              <p>Wheelo projects 2.545 goals avg against a 1.5 line, creating a +1.0 stat gap for the over. The Markov state path is Strong -&gt; Dominant -&gt; Good -&gt; Elite, meaning the row moves from projection support into a positive probability state, then through the price/EV state, and finishes with 93.6 QI. Model probability is 89.1% versus market 72.5%, producing 22.9% EV.</p>
-              <p><strong>Ladder:</strong> Over 1.5 @ 1.38 EV 22.9%; Over 2.5 @ 2.23 EV 16.2%; Over 0.5 @ 1.07 EV 5.9%</p>
-              <p class="risk"><strong>Risk:</strong> Goals are highest variance; price must compensate for scoring role volatility.</p>
-            </section>
-            
-            <section class="commentary">
-              <h3>5. B_BET - Bradley Hill Disposals Over 19.5 @ 1.87 <span>PointsBet (AU)</span></h3>
-              <p><strong>Markov path:</strong> Lean -&gt; Dominant -&gt; Mispriced -&gt; High | score 10/12 | EV 26.3% | QI 86.5 | Alt score 0.1726</p>
-              <p>Wheelo projects 22.0 disposals against a 19.5 line, creating a +2.5 stat gap for the over. The Markov state path is Lean -&gt; Dominant -&gt; Mispriced -&gt; High, meaning the row moves from projection support into a positive probability state, then through the price/EV state, and finishes with 86.5 QI. Model probability is 67.5% versus market 50.0%, producing 26.3% EV.</p>
-              
-              <p class="risk"><strong>Risk:</strong> Disposal props are more stable, but role/rotation drift can still break projection.</p>
-            </section>
-            
-            <section class="commentary">
-              <h3>6. B_BET - Max Hall Disposals Under 21.5 @ 1.90 <span>SportsBet</span></h3>
-              <p><strong>Markov path:</strong> Lean -&gt; Dominant -&gt; Good -&gt; High | score 9/12 | EV 24.9% | QI 84.2 | Alt score 0.1574</p>
-              <p>Wheelo projects 19.273 disposals against a 21.5 line, creating a +2.2 stat gap for the under. The Markov state path is Lean -&gt; Dominant -&gt; Good -&gt; High, meaning the row moves from projection support into a positive probability state, then through the price/EV state, and finishes with 84.2 QI. Model probability is 65.7% versus market 49.1%, producing 24.9% EV.</p>
-              
-              <p class="risk"><strong>Risk:</strong> Disposal props are more stable, but role/rotation drift can still break projection.</p>
-            </section>
-            
-            <section class="commentary">
-              <h3>7. B_BET - Cam Mackenzie Tackles Over 3.5 @ 2.10 <span>PointsBet (AU)</span></h3>
-              <p><strong>Markov path:</strong> Lean -&gt; Positive -&gt; Mispriced -&gt; High | score 9/12 | EV 29.0% | QI 83.8 | Alt score 0.1554</p>
-              <p>Wheelo projects 4.111 tackles against a 3.5 line, creating a +0.6 stat gap for the over. The Markov state path is Lean -&gt; Positive -&gt; Mispriced -&gt; High, meaning the row moves from projection support into a positive probability state, then through the price/EV state, and finishes with 83.8 QI. Model probability is 61.4% versus market 47.6%, producing 29.0% EV.</p>
-              <p><strong>Ladder:</strong> Over 3.5 @ 2.1 EV 29.0%; Over 4.5 @ 2.95 EV 25.8%; Over 2.5 @ 1.33 EV 3.5%</p>
-              <p class="risk"><strong>Risk:</strong> Tackle props depend on game script and pressure exposure.</p>
-            </section>
-            
-            <section class="commentary">
-              <h3>8. B_BET - Marcus Windhager Disposals Over 20.5 @ 1.87 <span>PointsBet (AU)</span></h3>
-              <p><strong>Markov path:</strong> Lean -&gt; Positive -&gt; Good -&gt; High | score 8/12 | EV 19.5% | QI 82.9 | Alt score 0.1176</p>
-              <p>Wheelo projects 22.455 disposals against a 20.5 line, creating a +2.0 stat gap for the over. The Markov state path is Lean -&gt; Positive -&gt; Good -&gt; High, meaning the row moves from projection support into a positive probability state, then through the price/EV state, and finishes with 82.9 QI. Model probability is 63.9% versus market 50.0%, producing 19.5% EV.</p>
-              
-              <p class="risk"><strong>Risk:</strong> Disposal props are more stable, but role/rotation drift can still break projection.</p>
-            </section>
-            
-            <section class="commentary">
-              <h3>9. B_BET - Connor Macdonald Disposals Over 18.5 @ 1.87 <span>PointsBet (AU)</span></h3>
-              <p><strong>Markov path:</strong> Lean -&gt; Positive -&gt; Good -&gt; High | score 8/12 | EV 19.5% | QI 82.9 | Alt score 0.1176</p>
-              <p>Wheelo projects 20.455 disposals against a 18.5 line, creating a +2.0 stat gap for the over. The Markov state path is Lean -&gt; Positive -&gt; Good -&gt; High, meaning the row moves from projection support into a positive probability state, then through the price/EV state, and finishes with 82.9 QI. Model probability is 63.9% versus market 50.0%, producing 19.5% EV.</p>
-              
-              <p class="risk"><strong>Risk:</strong> Disposal props are more stable, but role/rotation drift can still break projection.</p>
-            </section>
-            
-            <section class="commentary">
-              <h3>10. B_BET - Jack Sinclair Disposals Over 27.5 @ 1.87 <span>PointsBet (AU)</span></h3>
-              <p><strong>Markov path:</strong> Lean -&gt; Positive -&gt; Good -&gt; High | score 8/12 | EV 18.3% | QI 82.3 | Alt score 0.1089</p>
-              <p>Wheelo projects 29.364 disposals against a 27.5 line, creating a +1.9 stat gap for the over. The Markov state path is Lean -&gt; Positive -&gt; Good -&gt; High, meaning the row moves from projection support into a positive probability state, then through the price/EV state, and finishes with 82.3 QI. Model probability is 63.3% versus market 50.0%, producing 18.3% EV.</p>
-              
-              <p class="risk"><strong>Risk:</strong> Disposal props are more stable, but role/rotation drift can still break projection.</p>
-            </section>
-            
   </main>
 </body>
 </html>

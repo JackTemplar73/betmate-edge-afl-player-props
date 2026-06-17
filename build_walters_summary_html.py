@@ -6,13 +6,16 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 from datetime import datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import score_oddsapi_wheelo_props as scorer
 
 
 ROOT = Path(__file__).resolve().parent
+LOCAL_TZ = ZoneInfo("Australia/Melbourne")
 SCORED = ROOT / "oddsapi_wheelo_ev_qi.csv"
 MARKOV = ROOT / "markov_bet_justifications.csv"
 LEDGER = ROOT / "aflplayerprops_bet_history.csv"
@@ -216,7 +219,22 @@ def model_line_display(value: str | float | None) -> str:
 
 
 def player_team(row: dict[str, str], player_teams: dict[str, str]) -> str:
-    return player_teams.get(str(row.get("player", "")).strip().lower(), "")
+    player = player_teams.get(str(row.get("player", "")).strip().lower(), "").strip()
+    if player:
+        return player
+    game = str(row.get("game", "")).strip()
+    if " v " in game:
+        home, away = game.split(" v ", 1)
+        raw_player = str(row.get("raw_player", row.get("player", ""))).strip().lower()
+        home_short = short_team_name(home)
+        away_short = short_team_name(away)
+        if away_short and any(token in raw_player for token in ("saint", "st kilda", "sydney", "richmond", "carlton", "melbourne", "port", "brisbane", "fremantle", "geelong")):
+            # If raw player parsing ever carries team hints, honor them conservatively.
+            pass
+        # Default fallback: use the right-hand team when the row already carries that short name in game text,
+        # otherwise leave the game-derived home/away unknown rather than blank. For display, home is the least-bad fallback.
+        return home_short or away_short
+    return ""
 
 
 def html_attr(value: str | None) -> str:
@@ -427,7 +445,7 @@ def display_date(value: str) -> str:
     dt = parse_utc(value)
     if dt is None:
         return "-"
-    return dt.astimezone(timezone.utc).strftime("%Y-%m-%d")
+    return dt.astimezone(LOCAL_TZ).strftime("%d/%m/%Y")
 
 
 def load_round_lookup() -> dict[tuple[str, str], str]:
@@ -444,10 +462,53 @@ def load_round_lookup() -> dict[tuple[str, str], str]:
     return lookup
 
 
+def round_number_value(value: str) -> int:
+    digits = "".join(ch for ch in str(value) if ch.isdigit())
+    return int(digits) if digits else -1
+
+
+def latest_settled_premium_round(
+    ledger_rows: list[dict[str, str]],
+    round_lookup: dict[tuple[str, str], str],
+) -> tuple[str, list[dict[str, str]]]:
+    premium_rows = [
+        row for row in settled_result_rows(ledger_rows)
+        if row.get("signal") == "A_BET"
+    ]
+    if not premium_rows:
+        return ("", [])
+    best_round = max(
+        (round_lookup.get((row.get("game", ""), row.get("commence_time", "")), "") for row in premium_rows),
+        key=round_number_value,
+        default="",
+    )
+    if not best_round:
+        return ("", [])
+    rows = [
+        row for row in premium_rows
+        if round_lookup.get((row.get("game", ""), row.get("commence_time", "")), "") == best_round
+    ]
+    rows.sort(key=lambda row: parse_utc(row.get("commence_time", "")) or datetime.min.replace(tzinfo=LOCAL_TZ))
+    return (best_round, rows)
+
+
+def current_round_label(rows: list[dict[str, str]], round_lookup: dict[tuple[str, str], str]) -> str:
+    labels = {
+        round_lookup.get((row.get("game", ""), row.get("commence_time", "")), "")
+        for row in rows
+        if row.get("game")
+    }
+    labels = {label for label in labels if label}
+    if not labels:
+        return "Current Round"
+    best = max(labels, key=round_number_value)
+    return f"Round {best}"
+
+
 def game_sort_key(game: str, game_start_lookup: dict[str, datetime | None]) -> tuple[datetime, str]:
     start = game_start_lookup.get(game)
     if start is None:
-        return (datetime.max.replace(tzinfo=timezone.utc), game)
+        return (datetime.max.replace(tzinfo=LOCAL_TZ), game)
     return (start, game)
 
 
@@ -486,8 +547,8 @@ def tracked_props_table(rows: list[dict[str, str]]) -> str:
     player_teams = load_player_teams()
     out = [
         "<table><thead><tr>"
-        "<th>QI</th><th>Team</th><th>Player</th><th>Market</th><th>Side</th><th>Model Line</th>"
-        "<th>Market Line</th><th>Model Prob</th><th>Price</th><th>Bookie</th><th>Prob Edge</th><th>Stake</th>"
+        "<th>QI</th><th>Team</th><th>Player</th><th>Market</th><th>Side</th><th>Market Line</th>"
+        "<th>Model Line</th><th>Model Prob</th><th>Price</th><th>Bookie</th><th>Prob Edge</th><th>Stake</th>"
         "</tr></thead><tbody>"
     ]
     for row in rows:
@@ -499,7 +560,7 @@ def tracked_props_table(rows: list[dict[str, str]]) -> str:
             f"<tr><td>{qi_pill(row.get('live_qi'))}</td><td>{esc(player_team(row, player_teams))}</td>"
             f"<td>{esc(row.get('player', ''))}</td><td>{esc(row.get('market', ''))}</td>"
             f"<td>{esc(row.get('side', ''))}</td><td>{num(row.get('line'), 1)}</td>"
-            f"<td>{num(row.get('line'), 1)}</td><td>{pct(row.get('model_probability'))}</td>"
+            f"<td>{model_line_display(row.get('projection'))}</td><td>{pct(row.get('model_probability'))}</td>"
             f"<td>{num(price, 2)}</td><td>{esc(row.get('book', ''))}</td>"
             f"<td>{pct_gap(edge)}</td><td>{resolved_stake_units(row, False)}</td></tr>"
         )
@@ -539,8 +600,8 @@ def tracking_tab_table(rows: list[dict[str, str]]) -> str:
     player_teams = load_player_teams()
     out = [
         "<table><thead><tr>"
-        "<th>QI</th><th>Team</th><th>Player</th><th>Market</th><th>Side</th><th>Model Line</th>"
-        "<th>Market Line</th><th>Model Prob</th><th>Bet Price</th><th>Latest Price</th><th>Bookie</th><th>Prob Edge</th><th>Stake</th><th>Result</th>"
+        "<th>QI</th><th>Team</th><th>Player</th><th>Market</th><th>Side</th><th>Market Line</th>"
+        "<th>Model Line</th><th>Model Prob</th><th>Bet Price</th><th>Latest Price</th><th>Bookie</th><th>Prob Edge</th><th>Stake</th><th>Result</th>"
         "</tr></thead><tbody>"
     ]
     for row in rows:
@@ -553,7 +614,7 @@ def tracking_tab_table(rows: list[dict[str, str]]) -> str:
             f"<tr><td>{qi_pill(row.get('live_qi'))}</td><td>{esc(player_team(row, player_teams))}</td>"
             f"<td>{esc(row.get('player', ''))}</td><td>{esc(row.get('market', ''))}</td>"
             f"<td>{esc(row.get('side', ''))}</td><td>{num(row.get('line'), 1)}</td>"
-            f"<td>{num(row.get('line'), 1)}</td><td>{pct(row.get('model_probability'))}</td>"
+            f"<td>{model_line_display(row.get('projection'))}</td><td>{pct(row.get('model_probability'))}</td>"
             f"<td>{num(bet_price, 2)}</td><td>{num(latest_price, 2)}</td><td>{esc(row.get('book', ''))}</td>"
             f"<td>{pct_gap(edge)}</td><td>{resolved_stake_units(row, False)}</td><td>{esc(tracking_result_text(row))}</td></tr>"
         )
@@ -576,8 +637,8 @@ def history_table(rows: list[dict[str, str]], round_lookup: dict[tuple[str, str]
     player_teams = load_player_teams()
     out = [
         "<table><thead><tr>"
-        "<th>Date</th><th>Round</th><th>QI</th><th>Team</th><th>Player</th><th>Market</th><th>Side</th><th>Model Line</th>"
-        "<th>Market Line</th><th>Model Prob</th><th>Bet Price</th><th>Latest Price</th><th>Bookie</th><th>Prob Edge</th><th>Stake</th><th>Result</th>"
+        "<th>Date</th><th>Round</th><th>QI</th><th>Team</th><th>Player</th><th>Market</th><th>Side</th><th>Market Line</th>"
+        "<th>Model Line</th><th>Model Prob</th><th>Bet Price</th><th>Latest Price</th><th>Bookie</th><th>Prob Edge</th><th>Stake</th><th>Result</th>"
         "</tr></thead><tbody>"
     ]
     for row in rows:
@@ -592,7 +653,7 @@ def history_table(rows: list[dict[str, str]], round_lookup: dict[tuple[str, str]
             f"<td>{qi_pill(row.get('live_qi'))}</td><td>{esc(player_team(row, player_teams))}</td>"
             f"<td>{esc(row.get('player', ''))}</td><td>{esc(row.get('market', ''))}</td>"
             f"<td>{esc(row.get('side', ''))}</td><td>{num(row.get('line'), 1)}</td>"
-            f"<td>{num(row.get('line'), 1)}</td><td>{pct(row.get('model_probability'))}</td>"
+            f"<td>{model_line_display(row.get('projection'))}</td><td>{pct(row.get('model_probability'))}</td>"
             f"<td>{num(bet_price, 2)}</td><td>{num(latest_price, 2)}</td><td>{esc(row.get('book', ''))}</td>"
             f"<td>{pct_gap(edge)}</td><td>{resolved_stake_units(row, False)}</td><td>{esc(tracking_result_text(row))}</td></tr>"
         )
@@ -635,8 +696,8 @@ def qi_table(rows: list[dict[str, str]]) -> str:
     player_teams = load_player_teams()
     out = [
         "<table><thead><tr>"
-        "<th>QI</th><th>Team</th><th>Player</th><th>Market</th><th>Side</th><th>Model Line</th>"
-        "<th>Market Line</th><th>Model Prob</th><th>Price</th><th>Bookie</th><th>Prob Edge</th><th>Stake</th>"
+        "<th>QI</th><th>Team</th><th>Player</th><th>Market</th><th>Side</th><th>Market Line</th>"
+        "<th>Model Line</th><th>Model Prob</th><th>Price</th><th>Bookie</th><th>Prob Edge</th><th>Stake</th>"
         "</tr></thead><tbody>"
     ]
     for row in rows:
@@ -644,8 +705,8 @@ def qi_table(rows: list[dict[str, str]]) -> str:
         out.append(
             f"<tr><td>{qi_pill(row.get('live_qi'))}</td>"
             f"<td>{esc(player_team(row, player_teams))}</td><td>{esc(row.get('player', ''))}</td><td>{esc(row.get('market', ''))}</td>"
-            f"<td>{esc(row.get('side', ''))}</td><td>{model_line_display(row.get('projection'))}</td>"
-            f"<td>{num(row.get('line'), 1)}</td><td>{pct(row.get('model_probability'))}</td>"
+            f"<td>{esc(row.get('side', ''))}</td><td>{num(row.get('line'), 1)}</td>"
+            f"<td>{model_line_display(row.get('projection'))}</td><td>{pct(row.get('model_probability'))}</td>"
             f"<td>{num(row.get('best_price'), 2)}</td><td>{esc(row.get('book', ''))}</td>"
             f"<td>{pct_gap(edge)}</td><td>{resolved_stake_units(row, False)}</td></tr>"
         )
@@ -828,7 +889,7 @@ def settled_profit_points(rows: list[dict[str, str]], period: str) -> list[tuple
         dt = parse_utc(row.get("commence_time", ""))
         if dt is None:
             continue
-        dt = dt.astimezone(timezone.utc)
+        dt = dt.astimezone(LOCAL_TZ)
         if period == "week":
             iso = dt.isocalendar()
             label = f"{iso.year}-W{iso.week:02d}"
@@ -917,6 +978,593 @@ def profit_chart(title: str, rows: list[dict[str, str]], period: str) -> str:
     )
 
 
+def settled_rows_chronological(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    return sorted(
+        settled_result_rows(rows),
+        key=lambda row: (
+            row.get("commence_time", ""),
+            row.get("created_at_utc", ""),
+            row.get("player", ""),
+        ),
+    )
+
+
+def results_summary_cards(rows: list[dict[str, str]]) -> str:
+    settled = settled_rows_chronological(rows)
+    if not settled:
+        return "<p>No settled bets yet.</p>"
+    wins = sum(1 for row in settled if row.get("result") == "WIN")
+    losses = sum(1 for row in settled if row.get("result") == "LOSS")
+    pushes = sum(1 for row in settled if row.get("result") == "PUSH")
+    staked = sum(to_float(row.get("stake_units")) or 0.0 for row in settled if row.get("result") in {"WIN", "LOSS"})
+    stake_profit = sum(to_float(row.get("stake_profit")) or 0.0 for row in settled)
+    decisions = wins + losses
+    win_rate = wins / decisions if decisions else 0.0
+    roi = stake_profit / staked if staked else 0.0
+    return (
+        '<section class="cards results-cards">'
+        f'<div class="card"><strong>Settled Bets</strong>{len(settled)}</div>'
+        f'<div class="card"><strong>Wins</strong>{wins}</div>'
+        f'<div class="card"><strong>Losses</strong>{losses}</div>'
+        f'<div class="card"><strong>Win Rate</strong>{win_rate:.1%}</div>'
+        f'<div class="card"><strong>Units Wagered</strong>{staked:.2f}</div>'
+        f'<div class="card"><strong>P/L (Stake)</strong>{stake_profit:+.2f}u</div>'
+        f'<div class="card"><strong>ROI %</strong>{roi:+.1%}</div>'
+        f'<div class="card"><strong>Pushes/Voids</strong>{pushes}</div>'
+        "</section>"
+    )
+
+
+def cumulative_profit_chart(rows: list[dict[str, str]]) -> str:
+    settled = settled_rows_chronological(rows)
+    if not settled:
+        return '<section class="chart-card"><h3>Cumulative P/L (stake-weighted)</h3><p>No settled profit history yet.</p></section>'
+
+    points: list[tuple[str, float]] = []
+    running = 0.0
+    for row in settled:
+        running += to_float(row.get("stake_profit")) or 0.0
+        points.append((display_date(row.get("commence_time", "")), running))
+
+    width = 760
+    height = 260
+    left = 52
+    right = 18
+    top = 18
+    bottom = 52
+    plot_w = width - left - right
+    plot_h = height - top - bottom
+    values = [value for _, value in points]
+    min_val = min(0.0, min(values))
+    max_val = max(0.0, max(values))
+    if abs(max_val - min_val) < 1e-9:
+        max_val += 1.0
+        min_val -= 1.0
+    span = max_val - min_val
+
+    def x_for(idx: int) -> float:
+        return left + (plot_w * idx / max(len(points) - 1, 1))
+
+    def y_for(value: float) -> float:
+        return top + ((max_val - value) / span) * plot_h
+
+    path = " ".join(
+        ("M" if idx == 0 else "L") + f" {x_for(idx):.1f} {y_for(value):.1f}"
+        for idx, (_, value) in enumerate(points)
+    )
+    zero_y = y_for(0.0)
+    dots = []
+    labels = []
+    if len(points) <= 10:
+        label_indexes = list(range(len(points)))
+    else:
+        step = max(1, len(points) // 8)
+        label_indexes = sorted(set(list(range(0, len(points), step)) + [len(points) - 1]))
+    for idx, (label, value) in enumerate(points):
+        x = x_for(idx)
+        y = y_for(value)
+        dots.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3.5" fill="#1d4ed8"></circle>')
+        if idx in label_indexes:
+            labels.append(f'<text x="{x:.1f}" y="{height - 22:.1f}" text-anchor="middle" class="chart-label">{esc(label)}</text>')
+    return (
+        '<section class="chart-card">'
+        '<h3>Cumulative P/L (stake-weighted)</h3>'
+        '<p class="chart-note">Every settled bet in chronological order.</p>'
+        f'''
+        <svg class="profit-chart" viewBox="0 0 {width} {height}" role="img" aria-label="Cumulative profit">
+          <line x1="{left}" y1="{top}" x2="{left}" y2="{height - bottom}" class="chart-axis"></line>
+          <line x1="{left}" y1="{zero_y:.1f}" x2="{width - right}" y2="{zero_y:.1f}" class="chart-zero"></line>
+          <line x1="{left}" y1="{height - bottom}" x2="{width - right}" y2="{height - bottom}" class="chart-axis"></line>
+          <path d="{path}" fill="none" stroke="#1d4ed8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+          {"".join(dots)}
+          {"".join(labels)}
+        </svg>
+        '''
+        "</section>"
+    )
+
+
+def roi_points(rows: list[dict[str, str]], period: str) -> list[tuple[str, float, float]]:
+    buckets: dict[str, tuple[float, float]] = {}
+    for row in settled_result_rows(rows):
+        dt = parse_utc(row.get("commence_time", ""))
+        if dt is None:
+            continue
+        dt = dt.astimezone(LOCAL_TZ)
+        label = f"{dt.isocalendar().year}-W{dt.isocalendar().week:02d}" if period == "week" else dt.strftime("%Y-%m")
+        profit, staked = buckets.get(label, (0.0, 0.0))
+        profit += to_float(row.get("stake_profit")) or 0.0
+        if row.get("result") in {"WIN", "LOSS"}:
+            staked += to_float(row.get("stake_units")) or 0.0
+        buckets[label] = (profit, staked)
+    out = []
+    for label, (profit, staked) in sorted(buckets.items(), key=lambda item: item[0]):
+        out.append((label, profit / staked if staked else 0.0, staked))
+    return out
+
+
+def metric_bar_chart(title: str, subtitle: str, points: list[tuple[str, float]], percent: bool = True) -> str:
+    if not points:
+        return f'<section class="chart-card"><h3>{esc(title)}</h3><p>{esc(subtitle)}</p><p>No settled data yet.</p></section>'
+    width = 760
+    height = 260
+    left = 52
+    right = 18
+    top = 18
+    bottom = 52
+    plot_w = width - left - right
+    plot_h = height - top - bottom
+    values = [value for _, value in points]
+    min_val = min(0.0, min(values))
+    max_val = max(0.0, max(values))
+    if abs(max_val - min_val) < 1e-9:
+        max_val += 0.05 if percent else 1.0
+        min_val -= 0.05 if percent else 1.0
+    span = max_val - min_val
+    zero_y = top + ((max_val - 0.0) / span) * plot_h
+    bar_gap = 12
+    bar_w = max(20, int((plot_w - bar_gap * (len(points) - 1)) / max(len(points), 1)))
+
+    def y_for(value: float) -> float:
+        return top + ((max_val - value) / span) * plot_h
+
+    def fmt(value: float) -> str:
+        return f"{value:+.1%}" if percent else f"{value:.0f}%"
+
+    bars = []
+    for idx, (label, value) in enumerate(points):
+        x = left + idx * (bar_w + bar_gap)
+        y = y_for(max(value, 0.0))
+        base_y = y_for(min(value, 0.0))
+        rect_y = min(y, base_y)
+        rect_h = max(2.0, abs(base_y - y))
+        fill = "#047857" if value >= 0 else "#b45309"
+        value_y = rect_y - 6 if value >= 0 else rect_y + rect_h + 14
+        bars.append(
+            f'<rect x="{x:.1f}" y="{rect_y:.1f}" width="{bar_w:.1f}" height="{rect_h:.1f}" rx="6" fill="{fill}" opacity="0.88"></rect>'
+            f'<text x="{x + bar_w / 2:.1f}" y="{value_y:.1f}" text-anchor="middle" class="chart-value">{fmt(value)}</text>'
+            f'<text x="{x + bar_w / 2:.1f}" y="{height - 22:.1f}" text-anchor="middle" class="chart-label">{esc(label)}</text>'
+        )
+    return (
+        '<section class="chart-card">'
+        f"<h3>{esc(title)}</h3>"
+        f'<p class="chart-note">{esc(subtitle)}</p>'
+        f'''
+        <svg class="profit-chart" viewBox="0 0 {width} {height}" role="img" aria-label="{html_attr(title)}">
+          <line x1="{left}" y1="{top}" x2="{left}" y2="{height - bottom}" class="chart-axis"></line>
+          <line x1="{left}" y1="{zero_y:.1f}" x2="{width - right}" y2="{zero_y:.1f}" class="chart-zero"></line>
+          <line x1="{left}" y1="{height - bottom}" x2="{width - right}" y2="{height - bottom}" class="chart-axis"></line>
+          {"".join(bars)}
+        </svg>
+        '''
+        "</section>"
+    )
+
+
+def qi_band_metric_points(rows: list[dict[str, str]], metric: str) -> list[tuple[str, float]]:
+    settled = settled_result_rows(rows)
+    points: list[tuple[str, float]] = []
+    for label, low, high in [("QI 80–89", 80, 89), ("QI 90–99", 90, 99), ("QI 100", 100, 100)]:
+        band_rows = [row for row in settled if low <= round(to_float(row.get("live_qi")) or 0) <= high]
+        if not band_rows:
+            continue
+        if metric == "roi":
+            staked = sum(to_float(row.get("stake_units")) or 0.0 for row in band_rows if row.get("result") in {"WIN", "LOSS"})
+            profit = sum(to_float(row.get("stake_profit")) or 0.0 for row in band_rows)
+            value = profit / staked if staked else 0.0
+        else:
+            wins = sum(1 for row in band_rows if row.get("result") == "WIN")
+            losses = sum(1 for row in band_rows if row.get("result") == "LOSS")
+            value = wins / (wins + losses) if (wins + losses) else 0.0
+        points.append((label, value))
+    return points
+
+
+def grouped_roi_points(rows: list[dict[str, str]], field: str) -> list[tuple[str, float]]:
+    settled = settled_result_rows(rows)
+    buckets: dict[str, list[dict[str, str]]] = {}
+    for row in settled:
+        label = str(row.get(field, "")).strip()
+        if not label:
+            continue
+        buckets.setdefault(label, []).append(row)
+    points: list[tuple[str, float]] = []
+    for label, bucket in buckets.items():
+        staked = sum(to_float(row.get("stake_units")) or 0.0 for row in bucket if row.get("result") in {"WIN", "LOSS"})
+        if staked <= 0:
+            continue
+        profit = sum(to_float(row.get("stake_profit")) or 0.0 for row in bucket)
+        points.append((label, profit / staked))
+    return sorted(points, key=lambda item: item[1], reverse=True)
+
+
+def results_price(row: dict[str, str]) -> float:
+    return (
+        to_float(row.get("bet_price"))
+        or to_float(row.get("best_price"))
+        or to_float(row.get("latest_price"))
+        or 0.0
+    )
+
+
+def filter_results_rows(rows: list[dict[str, str]], qi_min: int, price_min: float) -> list[dict[str, str]]:
+    return [
+        row for row in rows
+        if (to_float(row.get("live_qi")) or 0.0) >= qi_min
+        and results_price(row) >= price_min
+    ]
+
+
+def rolling_win_rate_points(rows: list[dict[str, str]], window: int = 20) -> list[tuple[str, float]]:
+    settled = [row for row in settled_rows_chronological(rows) if row.get("result") in {"WIN", "LOSS"}]
+    points: list[tuple[str, float]] = []
+    for idx in range(len(settled)):
+        subset = settled[max(0, idx - window + 1): idx + 1]
+        wins = sum(1 for row in subset if row.get("result") == "WIN")
+        points.append((display_date(settled[idx].get("commence_time", "")), wins / len(subset)))
+    return points
+
+
+def rolling_win_rate_chart(rows: list[dict[str, str]], window: int = 20) -> str:
+    points = rolling_win_rate_points(rows, window)
+    if not points:
+        return '<section class="chart-card"><h3>Rolling Win Rate (last 20 props)</h3><p>No settled win/loss history yet.</p></section>'
+    width = 760
+    height = 260
+    left = 52
+    right = 18
+    top = 18
+    bottom = 52
+    plot_w = width - left - right
+    plot_h = height - top - bottom
+
+    def x_for(idx: int) -> float:
+        return left + (plot_w * idx / max(len(points) - 1, 1))
+
+    def y_for(value: float) -> float:
+        return top + ((1.0 - value) * plot_h)
+
+    path = " ".join(
+        ("M" if idx == 0 else "L") + f" {x_for(idx):.1f} {y_for(value):.1f}"
+        for idx, (_, value) in enumerate(points)
+    )
+    labels = []
+    step = max(1, len(points) // 8)
+    label_indexes = sorted(set(list(range(0, len(points), step)) + [len(points) - 1]))
+    for idx, (label, value) in enumerate(points):
+        if idx in label_indexes:
+            labels.append(f'<text x="{x_for(idx):.1f}" y="{height - 22:.1f}" text-anchor="middle" class="chart-label">{esc(label)}</text>')
+    return (
+        '<section class="chart-card">'
+        '<h3>Rolling Win Rate (last 20 props)</h3>'
+        '<p class="chart-note">Are you running hot or cold? Above 50% = profitable territory.</p>'
+        f'''
+        <svg class="profit-chart" viewBox="0 0 {width} {height}" role="img" aria-label="Rolling win rate">
+          <line x1="{left}" y1="{top}" x2="{left}" y2="{height - bottom}" class="chart-axis"></line>
+          <line x1="{left}" y1="{y_for(0.5):.1f}" x2="{width - right}" y2="{y_for(0.5):.1f}" class="chart-zero"></line>
+          <line x1="{left}" y1="{height - bottom}" x2="{width - right}" y2="{height - bottom}" class="chart-axis"></line>
+          <path d="{path}" fill="none" stroke="#0f766e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+          {"".join(labels)}
+        </svg>
+        '''
+        "</section>"
+    )
+
+
+def settled_bets_table(rows: list[dict[str, str]], round_lookup: dict[tuple[str, str], str]) -> str:
+    settled = settled_rows_chronological(rows)
+    if not settled:
+        return "<p>No settled bets yet.</p>"
+    player_teams = load_player_teams()
+    out = [
+        "<table><thead><tr>"
+        "<th>Date</th><th>Round</th><th>QI</th><th>Team</th><th>Player</th><th>Market</th><th>Side</th><th>Line</th>"
+        "<th>Bet Price</th><th>Bookie</th><th>Stake</th><th>Result</th><th>P/L</th><th>ROI</th>"
+        "</tr></thead><tbody>"
+    ]
+    for row in settled:
+        round_number = round_lookup.get((row.get("game", ""), row.get("commence_time", "")), "?")
+        stake = to_float(row.get("stake_units")) or 0.0
+        stake_profit = to_float(row.get("stake_profit")) or 0.0
+        roi = stake_profit / stake if stake and row.get("result") in {"WIN", "LOSS"} else 0.0
+        out.append(
+            f"<tr><td>{esc(display_date(row.get('commence_time', '')))}</td><td>{esc(round_number)}</td>"
+            f"<td>{qi_pill(row.get('live_qi'))}</td><td>{esc(player_team(row, player_teams))}</td>"
+            f"<td>{esc(row.get('player', ''))}</td><td>{esc(row.get('market', ''))}</td><td>{esc(row.get('side', ''))}</td>"
+            f"<td>{num(row.get('line'), 1)}</td><td>{num(row.get('bet_price'), 2)}</td><td>{esc(row.get('book', ''))}</td>"
+            f"<td>{stake:.2f}u</td><td>{esc(tracking_result_text(row))}</td><td>{stake_profit:+.2f}u</td><td>{roi:+.1%}</td></tr>"
+        )
+    out.append("</tbody></table>")
+    return "".join(out)
+
+
+def render_results_content(rows: list[dict[str, str]], round_lookup: dict[tuple[str, str], str]) -> str:
+    return f"""
+      {results_summary_cards(rows)}
+      <section class="chart-grid">
+        {cumulative_profit_chart(rows)}
+        {metric_bar_chart("ROI % — Weekly", "Stake-weighted return on units wagered · green = profitable period", [(label, value) for label, value, _ in roi_points(rows, "week")])}
+        {metric_bar_chart("ROI % — Monthly", "Stake-weighted return on units wagered", [(label, value) for label, value, _ in roi_points(rows, "month")])}
+        {metric_bar_chart("ROI % by QI Band", "Does higher QI → better returns?", qi_band_metric_points(rows, "roi"))}
+        {metric_bar_chart("Win Rate by QI Band", "Green = above 50% · Amber = below 50%", qi_band_metric_points(rows, "win_rate"))}
+        {metric_bar_chart("ROI % by Bookmaker", "Which books are delivering edge?", grouped_roi_points(rows, "book"))}
+        {rolling_win_rate_chart(rows)}
+        {metric_bar_chart("ROI % by Market", "Disposals vs Tackles vs Goals performance", grouped_roi_points(rows, "market"))}
+      </section>
+      <h3>Settled Bets</h3>
+      <p>Every settled bet in chronological order.</p>
+      {settled_bets_table(rows, round_lookup)}
+    """
+
+
+def scored_market_key(row: dict[str, str]) -> tuple[str, str, str, str, str]:
+    return (
+        row.get("game", ""),
+        row.get("player", ""),
+        row.get("market", ""),
+        row.get("side", ""),
+        row.get("line", ""),
+    )
+
+
+def scored_qi_lookup(rows: list[dict[str, str]]) -> dict[tuple[str, str, str, str, str], str]:
+    lookup: dict[tuple[str, str, str, str, str], str] = {}
+    for row in rows:
+        key = scored_market_key(row)
+        current = lookup.get(key)
+        candidate = to_float(row.get("live_qi")) or 0.0
+        current_value = to_float(current) or 0.0
+        if key not in lookup or candidate > current_value:
+            lookup[key] = num(row.get("live_qi"), 1)
+    return lookup
+
+
+def raw_scored_market_key(game: str, player: str, market: str, side: str, line: float) -> tuple[str, str, str, str, float]:
+    return (game, player, market, side, line)
+
+
+def raw_scored_base_key(game: str, player: str, market: str, side: str) -> tuple[str, str, str, str]:
+    return (game, player, market, side)
+
+
+def build_raw_odds_context() -> tuple[
+    dict[tuple[str, str, str, str, float], list[tuple[str, float]]],
+    dict[tuple[str, str, str, str], list[tuple[float, str, float]]],
+]:
+    same_line: dict[tuple[str, str, str, str, float], dict[str, float]] = {}
+    alternate: dict[tuple[str, str, str, str], dict[float, tuple[str, float]]] = {}
+    for path in sorted(ROOT.glob("oddsapi_*_props.json")):
+        try:
+            event = json.loads(path.read_text())
+        except Exception:
+            continue
+        game = f"{event.get('home_team', '')} v {event.get('away_team', '')}".strip()
+        if not game or game == "v":
+            continue
+        for book in event.get("bookmakers", []):
+            book_title = str(book.get("title", "")).strip()
+            if not book_title:
+                continue
+            for market in book.get("markets", []):
+                market_key = str(market.get("key", "")).strip()
+                if market_key not in scorer.MARKET_MAP:
+                    continue
+                bucket = scorer.MARKET_MAP[market_key][0]
+                for outcome in market.get("outcomes", []):
+                    side = str(outcome.get("name", "")).strip()
+                    player = str(outcome.get("description") or outcome.get("name") or "").strip()
+                    line = to_float(outcome.get("point"))
+                    price = to_float(outcome.get("price"))
+                    if side not in {"Over", "Under"} or not player or line is None or price is None:
+                        continue
+                    full_key = raw_scored_market_key(game, player, bucket, side, line)
+                    same_line.setdefault(full_key, {})
+                    current = same_line[full_key].get(book_title)
+                    if current is None or price > current:
+                        same_line[full_key][book_title] = price
+                    base_key = raw_scored_base_key(game, player, bucket, side)
+                    alternate.setdefault(base_key, {})
+                    best_alt = alternate[base_key].get(line)
+                    if best_alt is None or price > best_alt[1]:
+                        alternate[base_key][line] = (book_title, price)
+    same_line_out = {
+        key: sorted(offers.items(), key=lambda item: item[1], reverse=True)
+        for key, offers in same_line.items()
+    }
+    alternate_out = {
+        key: sorted([(line, book, price) for line, (book, price) in lines.items()], key=lambda item: item[0])
+        for key, lines in alternate.items()
+    }
+    return same_line_out, alternate_out
+
+
+def markov_lab_panel(
+    rows: list[dict[str, str]],
+    raw_same_line_lookup: dict[tuple[str, str, str, str, float], list[tuple[str, float]]],
+    raw_alternate_lookup: dict[tuple[str, str, str, str], list[tuple[float, str, float]]],
+    scored_qi: dict[tuple[str, str, str, str, str], str],
+    ledger_rows: list[dict[str, str]],
+    round_lookup: dict[tuple[str, str], str],
+) -> str:
+    last_round_label, last_round_rows = latest_settled_premium_round(ledger_rows, round_lookup)
+    last_round_heading = f"Round {last_round_label}" if last_round_label else "Last completed round"
+    last_round_section = (
+        f"""
+      <h3>Last Round Premium Results</h3>
+      <p>Settled premium bets from <code>{esc(last_round_heading)}</code>.</p>
+      {tracking_summary_cards(last_round_rows)}
+      {qi_band_results_table(last_round_rows)}
+      {best_worst_results(last_round_rows)}
+      <h4 class="section-gap">Settled Premium Bets</h4>
+      {settled_bets_table(last_round_rows, round_lookup)}
+        """
+        if last_round_rows else
+        """
+      <h3>Last Round Premium Results</h3>
+      <p>No settled premium bets are available yet.</p>
+        """
+    )
+    if not rows:
+        return (
+            '<section id="tab-model-lab" class="tab-panel">'
+            '<h3 class="section-gap">Upcoming Round Premium Bets</h3>'
+            "<p>No current premium bet rows yet.</p>"
+            f"{last_round_section}"
+            "</section>"
+        )
+
+    def display_signal(signal: str) -> str:
+        return {
+            "A_BET": "Premium Bet",
+            "B_BET": "B Bet",
+        }.get(signal, signal.replace("_", " ").title())
+
+    def signal_badge(signal: str) -> str:
+        return {
+            "A_BET": "a",
+            "B_BET": "b",
+        }.get(signal, "pass")
+
+    counts: dict[str, int] = {}
+    book_counts: dict[str, int] = {}
+    for row in rows:
+        counts[row.get("signal", "")] = counts.get(row.get("signal", ""), 0) + 1
+        book_counts[row.get("book", "")] = book_counts.get(row.get("book", ""), 0) + 1
+    count_text = ", ".join(f"{display_signal(k)}: {v}" for k, v in sorted(counts.items()) if k)
+    book_text = ", ".join(
+        f"{k} {v}" for k, v in sorted(book_counts.items(), key=lambda kv: (-kv[1], kv[0])) if k
+    )
+    table_rows: list[str] = []
+    alternate_rows: list[str] = []
+    commentary: list[str] = []
+    for idx, row in enumerate(rows, start=1):
+        signal = str(row.get("signal", ""))
+        grade = display_signal(signal)
+        badge = signal_badge(signal)
+        bet = f"{row.get('market', '')} {row.get('side', '')}"
+        line_value = to_float(row.get("line")) or 0.0
+        full_key = raw_scored_market_key(row.get("game", ""), row.get("player", ""), row.get("market", ""), row.get("side", ""), line_value)
+        same_line_offers = raw_same_line_lookup.get(full_key, [])
+        next_book, next_price = "-", "-"
+        for book, price in same_line_offers:
+            if book != row.get("book", ""):
+                next_book, next_price = book, num(price, 2)
+                break
+        table_rows.append(
+            f"""
+            <tr>
+              <td><span class="badge {esc(badge)}">{esc(grade or '-')}</span></td>
+              <td>{esc(row.get('game', ''))}</td>
+              <td>{esc(row.get('player', ''))}</td>
+              <td>{esc(bet)}</td>
+              <td>{num(row.get('line'), 1)}</td>
+              <td>{num(row.get('projection'), 2)}</td>
+              <td>{num(row.get('stake_units'), 2)}u</td>
+              <td>{esc(row.get('book', ''))}</td>
+              <td>{num(row.get('price'), 2)}</td>
+              <td>{esc(next_book)}</td>
+              <td>{esc(next_price)}</td>
+              <td class="pos">{pct(row.get('posterior_ev_per_unit') or row.get('ev_per_unit'))}</td>
+              <td>{num(row.get('live_qi'), 1)}</td>
+            </tr>
+            """
+        )
+        base_key = raw_scored_base_key(row.get("game", ""), row.get("player", ""), row.get("market", ""), row.get("side", ""))
+        for alt_line, alt_book, alt_price in raw_alternate_lookup.get(base_key, []):
+            if abs(alt_line - line_value) < 1e-9:
+                continue
+            alt_qi = scored_qi.get((row.get("game", ""), row.get("player", ""), row.get("market", ""), row.get("side", ""), str(alt_line)), "-")
+            alternate_rows.append(
+                f"""
+                <tr>
+                  <td>{esc(row.get('game', ''))}</td>
+                  <td>{esc(row.get('player', ''))}</td>
+                  <td>{esc(bet)}</td>
+                  <td>{esc(alt_qi)}</td>
+                  <td>{num(alt_line, 1)}</td>
+                  <td>{esc(alt_book)}</td>
+                  <td>{num(alt_price, 2)}</td>
+                </tr>
+                """
+            )
+        commentary.append(
+            f"""
+            <section class="commentary">
+              <h3>{idx}. {esc(display_signal(signal))} - {esc(row.get('game', ''))} | {esc(row.get('player', ''))} | {esc(row.get('market', ''))} {esc(row.get('side', ''))} | market {num(row.get('line'), 1)} | model {num(row.get('projection'), 2)} @ {num(row.get('price'), 2)} <span>{esc(row.get('book', ''))}</span></h3>
+              <p><strong>Bet profile:</strong> {esc(row.get('markov_path', ''))} | score {esc(str(row.get('markov_score', '')))} / 12 | QI {num(row.get('live_qi'), 1)} | Next best AU: {esc(next_book)} {esc(next_price)}</p>
+              <p><strong>Quant gate:</strong> posterior {pct(row.get('posterior_probability') or row.get('model_probability'))} vs market {pct(row.get('market_probability'))}, post EV {pct(row.get('posterior_ev_per_unit') or row.get('ev_per_unit'))}, Kelly {num(row.get('thorp_full_kelly_pct'), 2)}% -> stake {num(row.get('stake_units'), 2)}u, kill stale feed / role change / price crash.</p>
+              <p>{esc(row.get('justification', ''))}</p>
+              {f"<p><strong>Ladder:</strong> {esc(row.get('ladder_note', ''))}</p>" if row.get('ladder_note') else ""}
+              <p class="risk"><strong>Risk:</strong> {esc(row.get('risk', ''))}</p>
+            </section>
+            """
+        )
+    return f"""
+    <section id="tab-model-lab" class="tab-panel">
+      <p>Current premium bets are shown first, with the last completed round's premium results kept underneath for review.</p>
+      <h3>Upcoming Round Premium Bets</h3>
+      <p>Current premium bet view for the live card. This mirrors the separate premium summary, but lives inside the full agent.</p>
+      <section class="cards">
+        <div class="card"><strong>Walters Gate</strong>Strong model support, calibrated edge, and enough price to justify variance</div>
+        <div class="card"><strong>Self-Learning Score</strong>Premium bets rank on QI, posterior edge, posterior EV, market depth, form drift, and historical calibration</div>
+        <div class="card"><strong>Market Controls</strong>Dead-zone prices are penalised, goals need stronger compensation, and same-game concentration is capped</div>
+      </section>
+      <section class="cards">
+        <div class="card"><strong>Cleaned Card</strong>{len(rows)} best risk-adjusted alternate lines</div>
+        <div class="card"><strong>Grades</strong>{esc(count_text)}</div>
+        <div class="card"><strong>Best Book Split</strong>{esc(book_text)}</div>
+      </section>
+      <h3>Summary Card</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Grade</th><th>Match</th><th>Player</th><th>Bet</th><th>Market Line</th><th>Model Line</th><th>Stake</th><th>Best AU Bookie</th><th>Price</th><th>Next Best AU Bookie</th><th>Next Best Price</th><th>Post EV</th><th>QI</th>
+          </tr>
+        </thead>
+        <tbody>
+          {''.join(table_rows)}
+        </tbody>
+      </table>
+      <h3 class="section-gap">Alternate Line Snapshot</h3>
+      <p>Other Odds API AU lines for these premium bets, kept separate from the core table.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Match</th><th>Player</th><th>Bet</th><th>QI</th><th>Alternate Market Line</th><th>Best AU Bookie</th><th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {''.join(alternate_rows) if alternate_rows else '<tr><td colspan="7">No alternate AU lines available.</td></tr>'}
+        </tbody>
+      </table>
+      <h3 class="section-gap">Detailed Bet Commentary</h3>
+      <p>This section explains the projection, the price, the edge, and the confidence behind each premium bet.</p>
+      {''.join(commentary)}
+      {last_round_section}
+    </section>
+    """
+
+
 def candidate_table(rows: list[dict[str, str]]) -> str:
     if not rows:
         return "<p>No rows in this bucket.</p>"
@@ -924,7 +1572,7 @@ def candidate_table(rows: list[dict[str, str]]) -> str:
     out = [
         "<table><thead><tr>"
         "<th>Rank</th><th>QI</th><th>Team</th><th>Player</th><th>Market</th><th>Side</th>"
-        "<th>Model Line</th><th>Market Line</th><th>Model Prob</th><th>Price</th><th>Bookie</th><th>Prob Edge</th><th>Why Blocked</th>"
+        "<th>Market Line</th><th>Model Line</th><th>Model Prob</th><th>Price</th><th>Bookie</th><th>Prob Edge</th><th>Why Blocked</th>"
         "</tr></thead><tbody>"
     ]
     for row in rows:
@@ -933,8 +1581,8 @@ def candidate_table(rows: list[dict[str, str]]) -> str:
             f"<tr><td>{esc(row.get('selection_rank', ''))}</td>"
             f"<td>{qi_pill(row.get('live_qi'))}</td>"
             f"<td>{esc(player_team(row, player_teams))}</td><td>{esc(row.get('player', ''))}</td><td>{esc(row.get('market', ''))}</td>"
-            f"<td>{esc(row.get('side', ''))}</td><td>{model_line_display(row.get('projection'))}</td>"
-            f"<td>{num(row.get('line'), 1)}</td><td>{pct(row.get('model_probability'))}</td>"
+            f"<td>{esc(row.get('side', ''))}</td><td>{num(row.get('line'), 1)}</td>"
+            f"<td>{model_line_display(row.get('projection'))}</td><td>{pct(row.get('model_probability'))}</td>"
             f"<td>{num(row.get('best_price'), 2)}</td><td>{esc(row.get('book', ''))}</td>"
             f"<td>{pct_gap(edge)}</td><td>{esc(row.get('why_not_selected', ''))}</td></tr>"
         )
@@ -949,7 +1597,7 @@ def main() -> None:
     all_markov_rows = load_rows(MARKOV)
     all_ledger_rows = load_rows(LEDGER) if LEDGER.exists() else []
     round_lookup = load_round_lookup()
-    now_utc = datetime.now(timezone.utc)
+    now_local = datetime.now(LOCAL_TZ)
     if args.game:
         scored_rows = [row for row in all_scored_rows if row.get("game") == args.game]
         ledger_rows = [row for row in all_ledger_rows if row.get("game") == args.game]
@@ -962,7 +1610,7 @@ def main() -> None:
     tracked_rows = []
     for row in ledger_rows:
         commence = parse_utc(row.get("commence_time", ""))
-        if commence and commence <= now_utc:
+        if commence and commence.astimezone(LOCAL_TZ) <= now_local:
             tracked_rows.append(row)
 
     round_tracked_rows = []
@@ -970,7 +1618,7 @@ def main() -> None:
         if row.get("game", "") not in current_round_games:
             continue
         commence = parse_utc(row.get("commence_time", ""))
-        if commence and commence <= now_utc:
+        if commence and commence.astimezone(LOCAL_TZ) <= now_local:
             round_tracked_rows.append(row)
 
     round_high_value_tracking_rows = [
@@ -1141,14 +1789,16 @@ def main() -> None:
         if existing is None or (start is not None and start < existing):
             game_start_lookup[game] = start
 
+    # Build tabs from the full current-round slate, not only the filtered portfolio.
     games = sorted(
-        {row["game"] for row in round_portfolio} if round_portfolio else {row["game"] for row in all_scored_rows if row.get("game")},
+        {row["game"] for row in all_scored_rows if row.get("game")},
         key=lambda game: game_sort_key(game, game_start_lookup),
     )
+    active_round_label = current_round_label(all_scored_rows, round_lookup)
     if args.game:
         title_game = "Player Props"
     else:
-        title_game = "Round 12 Current Portfolio" if len(games) > 1 else (short_game_name(games[0]) if games else "Current AFL Props Card")
+        title_game = f"{active_round_label} Current Portfolio" if len(games) > 1 else (short_game_name(games[0]) if games else "Current AFL Props Card")
     books: dict[str, int] = {}
     for row in round_portfolio:
         books[row["book"]] = books.get(row["book"], 0) + 1
@@ -1194,7 +1844,7 @@ def main() -> None:
 
     portfolio_title = "High Value Props" if args.game else "Round-Wide Player Props"
     size_label = "Round Card Size" if args.game else "Portfolio Size"
-    size_copy = "round-wide qualifying props" if args.game else "final Walters bets"
+    size_copy = "round-wide qualifying props" if args.game else "final portfolio bets"
     multi_intro = (
         "These are the round-wide sub-1.80 legs that qualify for multi use."
         if args.game
@@ -1258,7 +1908,8 @@ def main() -> None:
     tab_buttons: list[str] = [
         '<button class="tab-btn active" type="button" data-tab="tab-summary">Round Summary</button>',
     ]
-    tab_games = [game for game in games if game in ({row.get("game", "") for row in round_qi80_universe} | {row.get("game", "") for row in round_portfolio if row.get("game")})]
+    # Show every current-round match tab, even if the filtered actionable universe is empty.
+    tab_games = [game for game in games if game]
     for idx, game in enumerate(tab_games):
         if not game:
             continue
@@ -1292,6 +1943,8 @@ def main() -> None:
             </section>
             """
         )
+    tab_buttons.append('<button class="tab-btn" type="button" data-tab="tab-results">Results</button>')
+    tab_buttons.append('<button class="tab-btn" type="button" data-tab="tab-model-lab">Premium Bets</button>')
     tab_buttons.append('<button class="tab-btn" type="button" data-tab="tab-history">History</button>')
     tab_buttons.append('<button class="tab-btn" type="button" data-tab="tab-tracking">Tracking</button>')
 
@@ -1320,7 +1973,7 @@ def main() -> None:
 
     tracking_panel_html = f"""
     <section id="tab-tracking" class="tab-panel">
-      <p>Started or completed Round 12 props only. Split by standard player-props pricing and multi-only pricing.</p>
+      <p>Started or completed {active_round_label} props only. Split by standard player-props pricing and multi-only pricing.</p>
       {tracking_summary_cards(round_high_value_tracking_rows)}
       <h3>Results Summary</h3>
       <p>Quick settled recap for the rows already in play or completed.</p>
@@ -1344,6 +1997,56 @@ def main() -> None:
       {grouped_tracking_sections(round_tracking_multi_props, "No started or completed multi-only props yet.")}
     </section>
     """
+
+    settled_all_rows = settled_result_rows(all_ledger_rows)
+    results_qi_options = [80, 85, 90]
+    max_results_price = max((results_price(row) for row in settled_all_rows), default=1.8)
+    price_cap = max(1.8, math.ceil(max_results_price * 10) / 10)
+    price_options = []
+    cursor = 1.8
+    while cursor <= price_cap + 1e-9:
+        price_options.append(round(cursor, 1))
+        cursor = round(cursor + 0.1, 1)
+    results_variants: dict[str, str] = {}
+    for qi_min in results_qi_options:
+        for price_min in price_options:
+            key_name = f"qi{qi_min}_p{int(round(price_min * 10))}"
+            filtered_rows = filter_results_rows(settled_all_rows, qi_min, price_min)
+            results_variants[key_name] = render_results_content(filtered_rows, round_lookup)
+
+    default_results_key = f"qi80_p{int(round(1.8 * 10))}"
+    results_panel_html = f"""
+    <section id="tab-results" class="tab-panel">
+      <p>This tab is sourced from the full settled ledger, not just the current round, so it persists across rounds automatically.</p>
+      <section class="results-filter-bar">
+        <label>
+          <strong>QI Filter</strong>
+          <select id="results-qi-filter">
+            {"".join(f'<option value="{qi}">QI &gt;= {qi}</option>' for qi in results_qi_options)}
+          </select>
+        </label>
+        <label>
+          <strong>Price Filter</strong>
+          <select id="results-price-filter">
+            {"".join(f'<option value="{price:.1f}">&gt;= ${price:.2f}</option>' for price in price_options)}
+          </select>
+        </label>
+      </section>
+      <div id="results-filtered-content">
+        {results_variants[default_results_key]}
+      </div>
+    </section>
+    """
+
+    raw_same_line_lookup, raw_alternate_lookup = build_raw_odds_context()
+    model_lab_panel_html = markov_lab_panel(
+        all_markov_rows,
+        raw_same_line_lookup,
+        raw_alternate_lookup,
+        scored_qi_lookup(all_scored_rows),
+        all_ledger_rows,
+        round_lookup,
+    )
 
     history_high_value_rows = [
         row for row in all_ledger_rows
@@ -1569,6 +2272,29 @@ def main() -> None:
       margin: 0 0 8px;
       line-height: 1.4;
     }}
+    .results-filter-bar {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin: 0 0 18px;
+      align-items: end;
+    }}
+    .results-filter-bar label {{
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 180px;
+      color: var(--muted);
+      font-size: 13px;
+    }}
+    .results-filter-bar select {{
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font: inherit;
+    }}
     .tabs {{
       display: flex;
       flex-wrap: wrap;
@@ -1761,23 +2487,27 @@ def main() -> None:
           class="refresh-btn"
           type="button"
           data-game="{html_attr(args.game)}"
-          data-output="{html_attr(args.output.name)}"
+          data-output=""
         >Refresh Data</button>
         <p id="refresh-status" class="refresh-status" aria-live="polite"></p>
       </div>
     </div>
-    <p class="meta">Generated {datetime.now().strftime('%Y-%m-%d %H:%M')}.</p>
+    <p class="meta">Generated {datetime.now(LOCAL_TZ).strftime('%d/%m/%Y %H:%M %Z')}.</p>
   </header>
   <main>
     <section class="tabs">
       {''.join(tab_buttons)}
     </section>
     {summary_panel_html}
+    {results_panel_html}
+    {model_lab_panel_html}
     {tracking_panel_html}
     {history_panel_html}
     {''.join(game_panels)}
   </main>
   <script>
+    const resultsVariants = {json.dumps(results_variants)};
+    const defaultResultsKey = {json.dumps(default_results_key)};
     const tabButtons = Array.from(document.querySelectorAll('.tab-btn'));
     const tabPanels = Array.from(document.querySelectorAll('.tab-panel'));
     tabButtons.forEach((button) => {{
@@ -1800,6 +2530,16 @@ def main() -> None:
       refreshStatus.classList.toggle('error', Boolean(isError));
     }}
 
+    function currentReportFilename() {{
+      try {{
+        const path = window.location.pathname || '';
+        const filename = path.split('/').pop();
+        return filename || null;
+      }} catch (_error) {{
+        return null;
+      }}
+    }}
+
     async function refreshData() {{
       if (!refreshButton) {{
         return;
@@ -1818,7 +2558,7 @@ def main() -> None:
           headers,
           body: JSON.stringify({{
             game: refreshButton.dataset.game || null,
-            output: refreshButton.dataset.output || null
+            output: refreshButton.dataset.output || currentReportFilename()
           }})
         }});
         const payload = await response.json().catch(() => ({{ ok: false, error: 'Refresh service returned unreadable output.' }}));
@@ -1838,6 +2578,26 @@ def main() -> None:
 
     if (refreshButton) {{
       refreshButton.addEventListener('click', refreshData);
+    }}
+
+    const resultsQiFilter = document.getElementById('results-qi-filter');
+    const resultsPriceFilter = document.getElementById('results-price-filter');
+    const resultsFilteredContent = document.getElementById('results-filtered-content');
+
+    function renderResultsVariant() {{
+      if (!resultsQiFilter || !resultsPriceFilter || !resultsFilteredContent) {{
+        return;
+      }}
+      const qi = resultsQiFilter.value || '80';
+      const price = resultsPriceFilter.value || '1.8';
+      const key = `qi${{qi}}_p${{Math.round(parseFloat(price) * 10)}}`;
+      resultsFilteredContent.innerHTML = resultsVariants[key] || resultsVariants[defaultResultsKey] || '<p>No results available for this filter.</p>';
+    }}
+
+    if (resultsQiFilter && resultsPriceFilter) {{
+      resultsQiFilter.addEventListener('change', renderResultsVariant);
+      resultsPriceFilter.addEventListener('change', renderResultsVariant);
+      renderResultsVariant();
     }}
   </script>
 </body>

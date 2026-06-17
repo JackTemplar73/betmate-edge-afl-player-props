@@ -8,6 +8,7 @@ import json
 import os
 import subprocess
 import threading
+from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -15,6 +16,7 @@ from pathlib import Path
 from urllib.parse import urlencode, urlparse
 from urllib.request import Request, urlopen
 
+import capture_round_prop_universe as round_capture
 
 ROOT = Path(__file__).resolve().parent
 HOST = os.environ.get("BETMATE_REFRESH_HOST", "127.0.0.1")
@@ -249,6 +251,104 @@ def load_round_lookup() -> dict[tuple[str, str], str]:
 
 def round_number_for_event(round_lookup: dict[tuple[str, str], str], game: str, commence: str) -> str:
     return round_lookup.get((game, commence), "") or round_lookup.get((game, ""), "")
+
+
+def current_round_numbers(events: list[dict[str, object]]) -> list[str]:
+    round_lookup = load_round_lookup()
+    counts: dict[str, int] = defaultdict(int)
+    for event in events:
+        game = f"{str(event.get('home_team', '')).strip()} v {str(event.get('away_team', '')).strip()}"
+        commence = str(event.get("commence_time", "")).strip()
+        round_number = round_number_for_event(round_lookup, game, commence)
+        if round_number:
+            counts[round_number] += 1
+    return [round_number for round_number, _ in sorted(counts.items(), key=lambda item: (-item[1], item[0]))]
+
+
+def archive_and_validate_round_capture(events: list[dict[str, object]], logs: list[str]) -> None:
+    round_numbers = current_round_numbers(events)
+    if not round_numbers:
+        logs.append("Round capture guardrail skipped: no mapped round number matched current events.")
+        return
+
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    for round_number in round_numbers:
+        archive_dir = round_capture.archive_round_fetch(round_number, stamp)
+        summary_rows, missing_rows, errors = round_capture.validate_round_capture(round_number)
+        round_games = round_capture.round_games(round_number)
+        ledger_match_keys = round_capture.ledger_keys(round_games)
+        captured_rows = round_capture.capture_rows(round_games)
+        for row in captured_rows:
+            row["round_number"] = round_number
+            key = (
+                row["game"],
+                row["commence_time"],
+                row["player"],
+                row["market"],
+                row["side"],
+                str(row["line"]),
+            )
+            row["captured_in_ledger"] = "True" if key in ledger_match_keys else "False"
+
+        round_capture.write_csv(
+            ROOT / f"round{round_number}_prop_universe.csv",
+            captured_rows,
+            [
+                "round_number",
+                "game",
+                "commence_time",
+                "player",
+                "market",
+                "side",
+                "line",
+                "book",
+                "price",
+                "captured_in_ledger",
+                "source_file",
+                "market_key",
+                "book_last_update",
+                "market_last_update",
+            ],
+        )
+        round_capture.write_csv(
+            ROOT / f"round{round_number}_prop_universe_missing_from_ledger.csv",
+            missing_rows,
+            [
+                "round_number",
+                "game",
+                "commence_time",
+                "player",
+                "market",
+                "side",
+                "line",
+                "book",
+                "price",
+                "captured_in_ledger",
+                "source_file",
+                "market_key",
+                "book_last_update",
+                "market_last_update",
+            ],
+        )
+        round_capture.write_csv(
+            ROOT / f"round{round_number}_prop_capture_summary.csv",
+            summary_rows,
+            [
+                "game",
+                "commence_time",
+                "source_file",
+                "bookmakers_count",
+                "markets_count",
+                "outcomes_count",
+                "empty_bookmakers",
+            ],
+        )
+
+        logs.append(
+            f"Round {round_number} archive written: {archive_dir.name} with {len(summary_rows)} event summaries and {len(missing_rows)} missing-vs-ledger rows."
+        )
+        if errors:
+            raise RuntimeError(" ; ".join(errors))
 
 
 def current_round_label(events: list[dict[str, object]], override: str | None) -> str:
@@ -598,6 +698,7 @@ def refresh_pipeline(
     logs: list[str] = []
     fetch_wheelo_snapshot(logs)
     events = fetch_oddsapi(logs)
+    archive_and_validate_round_capture(events, logs)
     current_round_games = {
         f"{str(event.get('home_team', ''))} v {str(event.get('away_team', ''))}"
         for event in events

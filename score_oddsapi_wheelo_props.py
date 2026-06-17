@@ -11,11 +11,14 @@ import math
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 
 ROOT = Path(__file__).resolve().parent
+LOCAL_TZ = ZoneInfo("Australia/Melbourne")
 WHEELO_PLAYERS = ROOT / "wheelo_today_player_pack.csv"
 EVENTS_JSON = ROOT / "oddsapi_events.json"
+HISTORY_LEDGER = ROOT / "aflplayerprops_bet_history.csv"
 
 MARKET_MAP = {
     "player_disposals": ("Disposals", "Disposals", True),
@@ -55,6 +58,25 @@ PROJECTION_DRIFT_CAP = {
 PORTFOLIO_MAX_BETS = 10
 PORTFOLIO_MAX_GOALS = 3
 PORTFOLIO_MAX_PER_PLAYER = 1
+PORTFOLIO_MAX_PER_GAME = 3
+PREMIUM_MIN_QI = 90
+PREMIUM_MIN_EDGE = 0.08
+PREMIUM_MIN_EV = 0.12
+PREMIUM_MIN_PRICE = 1.80
+PREMIUM_MIN_SCORE = 7.0
+PREMIUM_GOALS_MIN_QI = 90
+PREMIUM_GOALS_MIN_EDGE = 0.18
+PREMIUM_GOALS_MIN_PRICE = 3.00
+PREMIUM_DISPOSALS_UNDER_MIN_QI = 92
+PREMIUM_DISPOSALS_UNDER_MIN_EDGE = 0.14
+PREMIUM_DISPOSALS_UNDER_MIN_EV = 0.14
+PREMIUM_PRICE_DEAD_ZONE = (2.0, 2.49)
+CALIBRATION_PRIOR_WEIGHT = 8.0
+CALIBRATION_MIN_SAMPLE = 8
+CALIBRATION_MAX_BLEND = 0.35
+ROI_PENALTY_SAMPLE = 12
+ROI_PENALTY_CUTOFF = -0.10
+ROI_BONUS_CUTOFF = 0.08
 
 # Walters-style tiny Bayesian nudges from the first settlement. These are not
 # bans or promotions; they are conservative priors that need more samples.
@@ -104,6 +126,133 @@ SIGNAL_THRESHOLDS = {
 }
 
 
+def price_band(price: float) -> str:
+    if price < 1.50:
+        return "lt_1_50"
+    if price < 1.80:
+        return "1_50_1_79"
+    if price < 2.00:
+        return "1_80_1_99"
+    if price < 2.50:
+        return "2_00_2_49"
+    return "2_50_plus"
+
+
+def qi_band(qi: float) -> str:
+    if qi < 85:
+        return "80_84"
+    if qi < 90:
+        return "85_89"
+    if qi < 95:
+        return "90_94"
+    return "95_plus"
+
+
+def blend_probability(model_prob: float, market_prob: float, empirical_prob: float, blend: float) -> float:
+    posterior = (1.0 - blend) * model_prob + blend * empirical_prob
+    posterior = 0.9 * posterior + 0.1 * market_prob
+    return max(0.01, min(0.99, posterior))
+
+
+def historical_segment_keys(row: dict[str, Any], price: float, qi: float) -> list[tuple[str, str]]:
+    market = str(row.get("market") or "")
+    side = str(row.get("side") or "")
+    book = str(row.get("book") or "")
+    return [
+        ("market_side_price", f"{market}|{side}|{price_band(price)}"),
+        ("market_side", f"{market}|{side}"),
+        ("qi_band", qi_band(qi)),
+        ("book_market", f"{book}|{market}"),
+    ]
+
+
+def load_history_calibration() -> dict[tuple[str, str], dict[str, float]]:
+    if not HISTORY_LEDGER.exists():
+        return {}
+    with HISTORY_LEDGER.open(newline="", encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    stats: dict[tuple[str, str], dict[str, float]] = defaultdict(lambda: {"wins": 0.0, "losses": 0.0, "stake": 0.0, "profit": 0.0, "market_prob_sum": 0.0})
+    for row in rows:
+        if row.get("status") != "SETTLED":
+            continue
+        result = str(row.get("result") or "")
+        if result not in {"WIN", "LOSS"}:
+            continue
+        price = to_float(row.get("bet_price")) or 0.0
+        qi = to_float(row.get("live_qi")) or 0.0
+        market_prob = to_float(row.get("market_probability")) or (1.0 / price if price > 1.0 else 0.5)
+        profit = to_float(row.get("stake_profit")) or 0.0
+        stake = to_float(row.get("stake_units")) or 0.0
+        for key in historical_segment_keys(row, price, qi):
+            segment = stats[key]
+            if result == "WIN":
+                segment["wins"] += 1.0
+            else:
+                segment["losses"] += 1.0
+            segment["stake"] += stake
+            segment["profit"] += profit
+            segment["market_prob_sum"] += market_prob
+    return stats
+
+
+def calibration_metrics(
+    row: dict[str, Any],
+    history_stats: dict[tuple[str, str], dict[str, float]],
+    model_prob: float,
+    market_prob: float,
+    price: float,
+    qi: float,
+) -> dict[str, Any]:
+    contributions = []
+    roi_penalty = 0.0
+    roi_bonus = 0.0
+    notes: list[str] = []
+    effective_weight = 0.0
+    weighted_empirical = 0.0
+
+    for key in historical_segment_keys(row, price, qi):
+        segment = history_stats.get(key)
+        if not segment:
+            continue
+        n = segment["wins"] + segment["losses"]
+        if n < CALIBRATION_MIN_SAMPLE:
+            continue
+        avg_market_prob = segment["market_prob_sum"] / n if n else market_prob
+        posterior = (segment["wins"] + CALIBRATION_PRIOR_WEIGHT * avg_market_prob) / (n + CALIBRATION_PRIOR_WEIGHT)
+        weight = min(n, 40.0)
+        weighted_empirical += posterior * weight
+        effective_weight += weight
+        roi = segment["profit"] / segment["stake"] if segment["stake"] else 0.0
+        contributions.append((key[0], key[1], n, posterior, roi))
+        if roi <= ROI_PENALTY_CUTOFF and n >= ROI_PENALTY_SAMPLE:
+            roi_penalty += min(0.10, abs(roi) * 0.25)
+            notes.append(f"{key[0]}_roi_drag")
+        elif roi >= ROI_BONUS_CUTOFF and n >= ROI_PENALTY_SAMPLE:
+            roi_bonus += min(0.05, roi * 0.15)
+            notes.append(f"{key[0]}_roi_tailwind")
+
+    if effective_weight > 0:
+        empirical_prob = weighted_empirical / effective_weight
+        blend = min(CALIBRATION_MAX_BLEND, 0.12 + effective_weight / 200.0)
+    else:
+        empirical_prob = market_prob
+        blend = 0.0
+
+    posterior_prob = blend_probability(model_prob, market_prob, empirical_prob, blend)
+    posterior_prob = max(0.01, min(0.99, posterior_prob - roi_penalty + roi_bonus))
+    return {
+        "posterior_probability": round(posterior_prob, 6),
+        "posterior_edge": round(posterior_prob - market_prob, 6),
+        "posterior_ev_per_unit": round(posterior_prob * price - 1.0, 6),
+        "calibration_blend": round(blend, 4),
+        "historical_roi_penalty": round(roi_penalty, 4),
+        "historical_roi_bonus": round(roi_bonus, 4),
+        "historical_samples": int(effective_weight),
+        "calibration_note": ", ".join(notes[:4]),
+    }
+
+
 def latest_snapshot_dir() -> Path:
     base = ROOT / "wheelo_snapshots"
     candidates = sorted(
@@ -118,10 +267,21 @@ def latest_snapshot_dir() -> Path:
 def upcoming_events() -> list[dict[str, Any]]:
     if not EVENTS_JSON.exists():
         return []
-    today = datetime.now().date().isoformat()
+    today = datetime.now(LOCAL_TZ).date()
     events = json.loads(EVENTS_JSON.read_text())
+
+    def is_upcoming_local(event: dict[str, Any]) -> bool:
+        commence = str(event.get("commence_time", "")).strip()
+        if not commence:
+            return False
+        try:
+            dt = datetime.fromisoformat(commence.replace("Z", "+00:00"))
+        except ValueError:
+            return False
+        return dt.astimezone(LOCAL_TZ).date() >= today
+
     return sorted(
-        [event for event in events if str(event.get("commence_time", ""))[:10] >= today],
+        [event for event in events if is_upcoming_local(event)],
         key=lambda event: event.get("commence_time", ""),
     )
 
@@ -141,12 +301,17 @@ def odds_files() -> list[Path]:
         except json.JSONDecodeError:
             continue
         event_id = str(event.get("id", ""))
-        commence = str(event.get("commence_time", ""))[:10]
+        commence_raw = str(event.get("commence_time", "")).strip()
         if target_ids:
             if event_id in target_ids:
                 files.append(path)
-        elif commence >= datetime.now().date().isoformat():
-            files.append(path)
+        elif commence_raw:
+            try:
+                commence_dt = datetime.fromisoformat(commence_raw.replace("Z", "+00:00"))
+            except ValueError:
+                continue
+            if commence_dt.astimezone(LOCAL_TZ).date() >= datetime.now(LOCAL_TZ).date():
+                files.append(path)
     return files
 
 
@@ -372,8 +537,8 @@ def thorp_allocation(row: dict[str, Any]) -> dict[str, Any]:
     market = str(row.get("market"))
     qi = float(row.get("live_qi") or 0)
     price = float(row.get("best_price") or 0)
-    prob = float(row.get("model_probability") or 0)
-    ev = float(row.get("ev_per_unit") or 0)
+    prob = float(row.get("posterior_probability") or row.get("model_probability") or 0)
+    ev = float(row.get("posterior_ev_per_unit") or row.get("ev_per_unit") or 0)
 
     if signal not in {"A_BET", "B_BET"} or price <= 1 or prob <= 0 or ev <= 0:
         return {
@@ -407,6 +572,7 @@ def thorp_allocation(row: dict[str, Any]) -> dict[str, Any]:
 
     reliability = float(row.get("book_market_reliability") or reliability_multiplier(str(row.get("book", "")), market))
     kelly_fraction *= max(0.70, min(1.05, reliability))
+    kelly_fraction *= max(0.60, 1.0 - float(row.get("historical_roi_penalty") or 0))
     bankroll_pct = min(single_bet_cap_pct, full_kelly * kelly_fraction * 100.0)
     stake_unit = min(1.0, bankroll_pct)
     return {
@@ -511,6 +677,7 @@ def no_vig_lookup(prices: dict[tuple[str, str, str, str, float], list[dict[str, 
 
 def score() -> list[dict[str, Any]]:
     rows, aliases = load_wheelo_rows()
+    history_stats = load_history_calibration()
     scored: list[dict[str, Any]] = []
     for odds_path in odds_files():
         event = json.loads(odds_path.read_text())
@@ -549,6 +716,23 @@ def score() -> list[dict[str, Any]]:
             edge = None if prob is None else prob - implied
             ev = None if prob is None else prob * best["price"] - 1
             qi = live_qi(bucket, edge, support, wheelo is not None, len(offers))
+            calibration = {}
+            if prob is not None:
+                calibration = calibration_metrics(
+                    {
+                        "market": bucket,
+                        "side": side,
+                        "book": best["book"],
+                    },
+                    history_stats,
+                    prob,
+                    implied,
+                    float(best["price"]),
+                    qi,
+                )
+            posterior_prob = calibration.get("posterior_probability", prob)
+            posterior_edge = calibration.get("posterior_edge", edge)
+            posterior_ev = calibration.get("posterior_ev_per_unit", ev)
             scored.append(
                 {
                     "game": f"{event.get('home_team')} v {event.get('away_team')}",
@@ -578,9 +762,17 @@ def score() -> list[dict[str, Any]]:
                     "market_probability": implied,
                     "model_edge": edge,
                     "ev_per_unit": ev,
+                    "posterior_probability": posterior_prob,
+                    "posterior_edge": posterior_edge,
+                    "posterior_ev_per_unit": posterior_ev,
+                    "calibration_blend": calibration.get("calibration_blend", 0.0),
+                    "historical_roi_penalty": calibration.get("historical_roi_penalty", 0.0),
+                    "historical_roi_bonus": calibration.get("historical_roi_bonus", 0.0),
+                    "historical_samples": calibration.get("historical_samples", 0),
+                    "calibration_note": calibration.get("calibration_note", ""),
                     "live_qi": qi,
                     "matched_wheelo": wheelo is not None,
-                    "signal": signal(bucket, edge, qi, support),
+                    "signal": signal(bucket, posterior_edge, qi, support),
                 }
             )
     return scored
@@ -605,8 +797,8 @@ def signal(bucket: str, edge: float | None, qi: float, support: str) -> str:
 
 
 def alt_line_score(row: dict[str, Any]) -> float:
-    prob = float(row["model_probability"] or 0)
-    ev = float(row["ev_per_unit"] or -1)
+    prob = float(row.get("posterior_probability") or row["model_probability"] or 0)
+    ev = float(row.get("posterior_ev_per_unit") or row["ev_per_unit"] or -1)
     qi = float(row["live_qi"] or 0) / 100.0
     market = str(row["market"])
     if ev <= 0 or prob <= 0:
@@ -642,6 +834,8 @@ def apply_alt_line_selection(scored: list[dict[str, Any]]) -> None:
         row["portfolio_selection"] = "NOT_SELECTED"
         row["selection_rank"] = ""
         row["why_not_selected"] = ""
+        row["premium_score"] = ""
+        row["premium_rule_note"] = ""
 
     def signal_priority(row: dict[str, Any]) -> int:
         signal = str(row.get("signal", ""))
@@ -658,23 +852,23 @@ def apply_alt_line_selection(scored: list[dict[str, Any]]) -> None:
             key=lambda row: (
                 signal_priority(row),
                 float(row["alt_line_score"]),
-                float(row["ev_per_unit"] or 0),
+                float(row.get("posterior_ev_per_unit") or row["ev_per_unit"] or 0),
                 float(row["live_qi"] or 0),
             ),
             reverse=True,
         )
         best = rows[0]
-        positive = [row for row in rows if float(row["ev_per_unit"] or 0) >= 0.03]
+        positive = [row for row in rows if float(row.get("posterior_ev_per_unit") or row["ev_per_unit"] or 0) >= 0.03]
         for row in rows:
             if row is best:
                 row["line_selection"] = "BEST_RISK_ADJUSTED"
-            elif float(row["ev_per_unit"] or 0) >= 0.03:
+            elif float(row.get("posterior_ev_per_unit") or row["ev_per_unit"] or 0) >= 0.03:
                 row["line_selection"] = "LADDER_OPTION"
             else:
                 row["line_selection"] = "DUPLICATE_SUPPRESSED"
             if len(positive) > 1:
                 row["ladder_note"] = "; ".join(
-                    f"{r['side']} {r['line']} @ {r['best_price']} EV {100 * float(r['ev_per_unit']):.1f}%"
+                    f"{r['side']} {r['line']} @ {r['best_price']} EV {100 * float(r.get('posterior_ev_per_unit') or r['ev_per_unit']):.1f}%"
                     for r in positive[:4]
                 )
             else:
@@ -684,16 +878,169 @@ def apply_alt_line_selection(scored: list[dict[str, Any]]) -> None:
 
 
 def select_portfolio(scored: list[dict[str, Any]]) -> None:
+    def premium_rule_failure(row: dict[str, Any]) -> str:
+        qi = float(row.get("live_qi") or 0)
+        price = float(row.get("best_price") or 0)
+        edge = float(row.get("posterior_edge") or row.get("model_edge") or 0)
+        ev = float(row.get("posterior_ev_per_unit") or row.get("ev_per_unit") or 0)
+        market = str(row.get("market") or "")
+        side = str(row.get("side") or "")
+        support = str(row.get("wheelo_support") or "")
+        if "strong" not in support.lower():
+            return "Premium rule: requires strong model support."
+        if price < PREMIUM_MIN_PRICE:
+            return f"Premium rule: price below {PREMIUM_MIN_PRICE:.2f}."
+        if edge < PREMIUM_MIN_EDGE:
+            return f"Premium rule: probability edge below {PREMIUM_MIN_EDGE * 100:.0f}%."
+        if ev < PREMIUM_MIN_EV:
+            return f"Premium rule: EV below {PREMIUM_MIN_EV * 100:.0f}%."
+        if qi < PREMIUM_MIN_QI:
+            return f"Premium rule: QI below {PREMIUM_MIN_QI}."
+        if PREMIUM_PRICE_DEAD_ZONE[0] <= price <= PREMIUM_PRICE_DEAD_ZONE[1] and market != "Tackles":
+            return f"Premium rule: avoid {PREMIUM_PRICE_DEAD_ZONE[0]:.2f}-{PREMIUM_PRICE_DEAD_ZONE[1]:.2f} dead-zone prices."
+        if market == "Goals":
+            if qi < PREMIUM_GOALS_MIN_QI:
+                return f"Premium rule: goals require QI {PREMIUM_GOALS_MIN_QI}+."
+            if price < PREMIUM_GOALS_MIN_PRICE:
+                return f"Premium rule: goals require price {PREMIUM_GOALS_MIN_PRICE:.2f}+."
+            if edge < PREMIUM_GOALS_MIN_EDGE:
+                return f"Premium rule: goals require {PREMIUM_GOALS_MIN_EDGE * 100:.0f}%+ probability edge."
+        if market == "Disposals" and side == "Under":
+            if qi < PREMIUM_DISPOSALS_UNDER_MIN_QI:
+                return f"Premium rule: disposals unders require QI {PREMIUM_DISPOSALS_UNDER_MIN_QI}+."
+            if edge < PREMIUM_DISPOSALS_UNDER_MIN_EDGE:
+                return f"Premium rule: disposals unders require {PREMIUM_DISPOSALS_UNDER_MIN_EDGE * 100:.0f}%+ probability edge."
+            if ev < PREMIUM_DISPOSALS_UNDER_MIN_EV:
+                return f"Premium rule: disposals unders require {PREMIUM_DISPOSALS_UNDER_MIN_EV * 100:.0f}%+ EV."
+        return ""
+
+    def premium_selection_score(row: dict[str, Any]) -> tuple[float, list[str]]:
+        qi = float(row.get("live_qi") or 0)
+        edge = float(row.get("posterior_edge") or row.get("model_edge") or 0)
+        ev = float(row.get("posterior_ev_per_unit") or row.get("ev_per_unit") or 0)
+        price = float(row.get("best_price") or 0)
+        market = str(row.get("market") or "")
+        side = str(row.get("side") or "")
+        books_at_line = int(float(row.get("books_at_line") or 0))
+        projection_delta = float(row.get("projection_delta") or 0)
+        reliability = float(row.get("book_market_reliability") or 1.0)
+        roi_penalty = float(row.get("historical_roi_penalty") or 0)
+        roi_bonus = float(row.get("historical_roi_bonus") or 0)
+
+        score = 0.0
+        notes: list[str] = []
+
+        # Historical results have been strongest in the 90-94 band. 95+ is still
+        # playable, but it no longer gets an automatic extra bump.
+        if 90 <= qi < 95:
+            score += 2.5
+            notes.append("sweet_spot_qi")
+        elif qi >= 95:
+            score += 2.0
+            notes.append("elite_qi")
+
+        if edge >= 0.18:
+            score += 2.0
+            notes.append("major_edge")
+        elif edge >= 0.12:
+            score += 1.5
+            notes.append("clean_edge")
+        else:
+            score += 1.0
+            notes.append("pass_edge_gate")
+
+        if ev >= 0.35:
+            score += 1.5
+            notes.append("large_ev")
+        elif ev >= 0.20:
+            score += 1.0
+            notes.append("good_ev")
+        else:
+            score += 0.5
+            notes.append("pass_ev_gate")
+
+        # Best realised return has been in the 1.80-1.99 band, not the mid-range.
+        if 1.80 <= price < 2.00:
+            score += 1.5
+            notes.append("best_price_band")
+        elif 2.50 <= price < 8.0:
+            score += 0.75
+            notes.append("long_price_compensation")
+        elif 2.00 <= price < 2.50:
+            score -= 1.25
+            notes.append("mid_price_drag")
+
+        if books_at_line >= 3:
+            score += 1.0
+            notes.append("multi_book_confirm")
+        elif books_at_line >= 2:
+            score += 0.5
+            notes.append("two_book_confirm")
+
+        if projection_delta > 0.12:
+            score += 0.5
+            notes.append("form_tailwind")
+        elif projection_delta < -0.20:
+            score -= 0.5
+            notes.append("form_headwind")
+
+        if reliability >= 1.02:
+            score += 0.5
+            notes.append("reliable_book_market")
+        elif reliability <= 0.95:
+            score -= 0.25
+            notes.append("lower_reliability_market")
+        if roi_penalty > 0:
+            score -= min(1.5, roi_penalty * 12.0)
+            notes.append("historical_roi_drag")
+        if roi_bonus > 0:
+            score += min(0.5, roi_bonus * 8.0)
+            notes.append("historical_roi_tailwind")
+
+        if market == "Goals":
+            score -= 1.25
+            notes.append("goals_variance_penalty")
+            if price >= 3.0:
+                score += 1.0
+                notes.append("goal_price_compensation")
+            elif price >= PREMIUM_GOALS_MIN_PRICE:
+                score += 0.5
+                notes.append("goal_price_paid")
+        elif market == "Tackles":
+            score += 1.0
+            notes.append("tackle_market_bonus")
+        elif market == "Disposals" and side == "Over":
+            score += 1.25
+            notes.append("disposals_over_bonus")
+        elif market == "Disposals" and side == "Under":
+            score -= 1.0
+            notes.append("disposals_under_penalty")
+
+        return round(score, 2), notes
+
     candidates = [
         row for row in scored
         if row.get("line_selection") == "BEST_RISK_ADJUSTED"
         and row.get("signal") == "A_BET"
         and float(row.get("alt_line_score") or -999) > 0
+        and not premium_rule_failure(row)
     ]
+    qualified = []
+    for row in candidates:
+        premium_score, score_notes = premium_selection_score(row)
+        row["premium_score"] = premium_score
+        row["premium_rule_note"] = ", ".join(score_notes)
+        if premium_score >= PREMIUM_MIN_SCORE:
+            qualified.append(row)
+        else:
+            row["portfolio_selection"] = "SUPPRESSED_PREMIUM_RULE"
+            row["why_not_selected"] = f"Premium score {premium_score:.2f} below {PREMIUM_MIN_SCORE:.2f}."
+    candidates = qualified
     candidates.sort(
         key=lambda row: (
+            float(row.get("premium_score") or 0),
             float(row.get("alt_line_score") or 0),
-            float(row.get("ev_per_unit") or 0),
+            float(row.get("posterior_ev_per_unit") or row.get("ev_per_unit") or 0),
             float(row.get("live_qi") or 0),
         ),
         reverse=True,
@@ -702,6 +1049,7 @@ def select_portfolio(scored: list[dict[str, Any]]) -> None:
         row["selection_rank"] = str(idx)
     chosen = []
     player_count: dict[str, int] = defaultdict(int)
+    game_count: dict[str, int] = defaultdict(int)
     goal_count = 0
     for row in candidates:
         if player_count[str(row["player"])] >= PORTFOLIO_MAX_PER_PLAYER:
@@ -712,9 +1060,13 @@ def select_portfolio(scored: list[dict[str, Any]]) -> None:
             row["portfolio_selection"] = "SUPPRESSED_GOAL_CAP"
             row["why_not_selected"] = "Goal cap: top 3 goal props already taken."
             continue
+        if game_count[str(row["game"])] >= PORTFOLIO_MAX_PER_GAME:
+            row["portfolio_selection"] = "SUPPRESSED_GAME_CAP"
+            row["why_not_selected"] = "Game cap: too much same-game concentration."
+            continue
         if len(chosen) >= PORTFOLIO_MAX_BETS:
             row["portfolio_selection"] = "SUPPRESSED_PORTFOLIO_CAP"
-            row["why_not_selected"] = "Outside top 10 overall by alt-line ranking."
+            row["why_not_selected"] = "Outside top 10 overall by premium score and alt-line ranking."
             continue
         row["portfolio_selection"] = "PORTFOLIO_BET"
         row["why_not_selected"] = ""
@@ -726,14 +1078,29 @@ def select_portfolio(scored: list[dict[str, Any]]) -> None:
         row["thorp_allocation_note"] = allocation["allocation_note"]
         chosen.append(row)
         player_count[str(row["player"])] += 1
+        game_count[str(row["game"])] += 1
         if row["market"] == "Goals":
             goal_count += 1
 
     for row in scored:
         if row.get("portfolio_selection") == "NOT_SELECTED":
+            row["premium_score"] = row.get("premium_score", "")
+            row["premium_rule_note"] = row.get("premium_rule_note", "")
             if row.get("line_selection") == "BEST_RISK_ADJUSTED" and row.get("signal") == "A_BET":
-                row["why_not_selected"] = "Outside top 10 overall by alt-line ranking."
-                row["portfolio_selection"] = "SUPPRESSED_PORTFOLIO_CAP"
+                premium_failure = premium_rule_failure(row)
+                if premium_failure:
+                    row["why_not_selected"] = premium_failure
+                    row["portfolio_selection"] = "SUPPRESSED_PREMIUM_RULE"
+                else:
+                    premium_score, score_notes = premium_selection_score(row)
+                    row["premium_score"] = premium_score
+                    row["premium_rule_note"] = ", ".join(score_notes)
+                    if premium_score < PREMIUM_MIN_SCORE:
+                        row["why_not_selected"] = f"Premium score {premium_score:.2f} below {PREMIUM_MIN_SCORE:.2f}."
+                        row["portfolio_selection"] = "SUPPRESSED_PREMIUM_RULE"
+                    else:
+                        row["why_not_selected"] = "Outside top 10 overall by premium score and alt-line ranking."
+                        row["portfolio_selection"] = "SUPPRESSED_PORTFOLIO_CAP"
             elif row.get("line_selection") == "LADDER_OPTION":
                 row["why_not_selected"] = "Alternate ladder line; better risk-adjusted version kept."
             elif row.get("line_selection") == "DUPLICATE_SUPPRESSED":
@@ -777,6 +1144,14 @@ def write_outputs(scored: list[dict[str, Any]]) -> None:
         "market_probability",
         "model_edge",
         "ev_per_unit",
+        "posterior_probability",
+        "posterior_edge",
+        "posterior_ev_per_unit",
+        "calibration_blend",
+        "historical_roi_penalty",
+        "historical_roi_bonus",
+        "historical_samples",
+        "calibration_note",
         "live_qi",
         "signal",
         "alt_line_score",
@@ -789,6 +1164,8 @@ def write_outputs(scored: list[dict[str, Any]]) -> None:
         "portfolio_selection",
         "selection_rank",
         "why_not_selected",
+        "premium_score",
+        "premium_rule_note",
         "line_selection",
         "ladder_note",
         "matched_wheelo",
@@ -827,7 +1204,12 @@ def write_outputs(scored: list[dict[str, Any]]) -> None:
     selected = [row for row in eligible if row.get("portfolio_selection") == "PORTFOLIO_BET"]
     leaders = sorted(
         [row for row in selected if row["ev_per_unit"] is not None],
-        key=lambda row: (row["signal"] in {"A_BET", "B_BET"}, row["alt_line_score"], row["ev_per_unit"], row["live_qi"]),
+        key=lambda row: (
+            row["signal"] in {"A_BET", "B_BET"},
+            row["alt_line_score"],
+            row.get("posterior_ev_per_unit", row["ev_per_unit"]),
+            row["live_qi"],
+        ),
         reverse=True,
     )
     lines = [
@@ -841,8 +1223,9 @@ def write_outputs(scored: list[dict[str, Any]]) -> None:
         "",
         "## Walters Portfolio Card",
         f"Rules: max {PORTFOLIO_MAX_BETS} bets, max {PORTFOLIO_MAX_GOALS} goal props, max {PORTFOLIO_MAX_PER_PLAYER} per player; Thorp fractional Kelly sizes every selected edge and goals are stake-discounted.",
+        f"Calibration: posterior probability blends model, market, and settled-history segments; max per game {PORTFOLIO_MAX_PER_GAME}.",
         "",
-        "| Signal | Stake | Bankroll | Full Kelly | Player | Market | Side | Line | Price | Book | Proj | Prob | EV | QI | AltScore |",
+        "| Signal | Stake | Bankroll | Full Kelly | Player | Market | Side | Line | Price | Book | Proj | Post Prob | Post EV | QI | AltScore |",
         "|---|---:|---:|---:|---|---|---:|---:|---:|---|---:|---:|---:|---:|---:|",
     ]
     for row in leaders:
@@ -850,7 +1233,7 @@ def write_outputs(scored: list[dict[str, Any]]) -> None:
             f"| {row['signal']} | {fmt(row['stake_units'], 2)}u | {fmt(row['thorp_bankroll_pct'], 2)}% | {fmt(row['thorp_full_kelly_pct'], 2)}% | "
             f"{row['player']} | {row['market']} | {row['side']} | {fmt(row['line'], 1)} | "
             f"{fmt(row['best_price'], 2)} | {row['book']} | {fmt(row['projection'], 1)} | "
-            f"{fmt(100 * row['model_probability'], 1)}% | {fmt(100 * row['ev_per_unit'], 1)}% | "
+            f"{fmt(100 * row['posterior_probability'], 1)}% | {fmt(100 * row['posterior_ev_per_unit'], 1)}% | "
             f"{fmt(row['live_qi'], 1)} | {fmt(row['alt_line_score'], 4)} |"
         )
     all_best = [row for row in eligible if row.get("line_selection") == "BEST_RISK_ADJUSTED"]
@@ -861,7 +1244,7 @@ def write_outputs(scored: list[dict[str, Any]]) -> None:
     for row in sorted(suppressed, key=lambda r: float(r.get("alt_line_score") or 0), reverse=True)[:20]:
         lines.append(
             f"- {row['player']} {row['market']} {row['side']} {fmt(row['line'], 1)} @ {fmt(row['best_price'], 2)} "
-            f"({row['book']}): {row['portfolio_selection']}, EV {fmt(100 * row['ev_per_unit'], 1)}%, QI {fmt(row['live_qi'], 1)}"
+            f"({row['book']}): {row['portfolio_selection']}, post EV {fmt(100 * row['posterior_ev_per_unit'], 1)}%, QI {fmt(row['live_qi'], 1)}"
         )
     lines.append("")
     lines.append("## Ladder Notes")

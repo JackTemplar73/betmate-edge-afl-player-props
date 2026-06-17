@@ -1,0 +1,81 @@
+name: Publish BetMate Edge AFL Props
+
+on:
+  push:
+    branches: ["main", "master"]
+    paths:
+      - "publish_github_pages.py"
+      - "build_walters_summary_html.py"
+      - "score_oddsapi_wheelo_props.py"
+      - "markov_bet_justifications.py"
+      - "afl_player_props_stk_haw_walters_report.html"
+      - "afl_player_props_markov_summary.html"
+      - "aflplayerprops_bet_history.csv"
+      - "oddsapi_*.json"
+      - "wheelo_today_player_pack.csv"
+      - "wheelo_match_previews.html"
+      - "wheelo_snapshots/**"
+      - ".github/workflows/publish-betmate-pages.yml"
+  workflow_dispatch:
+    inputs:
+      refresh_live_data:
+        description: "Refresh live data before publishing"
+        required: false
+        default: "true"
+  schedule:
+    - cron: "5 * * * *"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "betmate-pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Publish site
+        env:
+          THE_ODDS_API_KEY: ${{ secrets.THE_ODDS_API_KEY }}
+          ODDS_API_KEY: ${{ secrets.THE_ODDS_API_KEY }}
+        run: |
+          set -euo pipefail
+          REFRESH="false"
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            REFRESH="true"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.refresh_live_data }}" = "true" ]; then
+            REFRESH="true"
+          fi
+
+          if [ "$REFRESH" = "true" ] && [ -n "${THE_ODDS_API_KEY:-}" ]; then
+            python3 publish_github_pages.py --refresh
+          else
+            python3 publish_github_pages.py
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

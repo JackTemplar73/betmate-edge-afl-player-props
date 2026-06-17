@@ -15,6 +15,7 @@ OUT_CSV = ROOT / "markov_bet_justifications.csv"
 OUT_VERBOSE_MD = ROOT / "markov_bet_commentary.md"
 OUT_FIELDS = [
     "signal",
+    "game",
     "player",
     "market",
     "side",
@@ -28,6 +29,9 @@ OUT_FIELDS = [
     "market_probability",
     "model_edge",
     "ev_per_unit",
+    "posterior_probability",
+    "posterior_edge",
+    "posterior_ev_per_unit",
     "live_qi",
     "alt_line_score",
     "stake_units",
@@ -65,6 +69,18 @@ def pct(value: Any) -> str:
     return f"{100 * f(value):.1f}%"
 
 
+def posterior_probability(row: dict[str, str]) -> float:
+    return f(row.get("posterior_probability"), f(row.get("model_probability")))
+
+
+def posterior_edge(row: dict[str, str]) -> float:
+    return f(row.get("posterior_edge"), f(row.get("model_edge")))
+
+
+def posterior_ev(row: dict[str, str]) -> float:
+    return f(row.get("posterior_ev_per_unit"), f(row.get("ev_per_unit")))
+
+
 def money(value: Any) -> str:
     return f"{f(value):.2f}"
 
@@ -81,8 +97,8 @@ def projection_state(row: dict[str, str]) -> str:
 
 
 def probability_state(row: dict[str, str]) -> str:
-    edge = f(row["model_edge"])
-    prob = f(row["model_probability"])
+    edge = posterior_edge(row)
+    prob = posterior_probability(row)
     if edge >= 0.15 or prob >= 0.80:
         return "Dominant"
     if edge >= 0.06 or prob >= 0.65:
@@ -93,7 +109,7 @@ def probability_state(row: dict[str, str]) -> str:
 
 
 def price_state(row: dict[str, str]) -> str:
-    ev = f(row["ev_per_unit"])
+    ev = posterior_ev(row)
     if ev >= 0.25:
         return "Mispriced"
     if ev >= 0.10:
@@ -153,11 +169,11 @@ def justification(row: dict[str, str]) -> str:
         proj_unit = row["market"].lower()
     return (
         f"Model data projects {row['projection']} {proj_unit} against a {row['line']} line, "
-        f"creating a {gap_text} stat gap for the {side}. The Markov state path is "
+        f"creating a {gap_text} stat gap for the {side}. The bet profile is "
         f"{markov_path(row)[0]}, meaning the row moves from projection support into a "
-        f"positive probability state, then through the price/EV state, and finishes with "
-        f"{row['live_qi']} QI. Model probability is {pct(row['model_probability'])} versus "
-        f"market {pct(row['market_probability'])}, producing {pct(row['ev_per_unit'])} EV."
+        f"positive probability state, then through the price check, and finishes with "
+        f"{row['live_qi']} QI. Posterior probability is {pct(posterior_probability(row))} versus "
+        f"market {pct(row['market_probability'])}, creating a {pct(posterior_edge(row))} probability edge."
     )
 
 
@@ -167,14 +183,14 @@ def commentary(row: dict[str, str]) -> list[str]:
     prob_state = probability_state(row)
     pr_state = price_state(row)
     c_state = confidence_state(row)
-    edge = f(row["model_edge"])
-    ev = f(row["ev_per_unit"])
+    edge = posterior_edge(row)
+    ev = posterior_ev(row)
     gap = f(row["stat_gap"])
     market = row["market"]
     side = row["side"].lower()
     projection = f(row["projection"])
     line = f(row["line"])
-    prob = f(row["model_probability"])
+    prob = posterior_probability(row)
     market_prob = f(row["market_probability"])
     price = f(row["price"])
 
@@ -296,7 +312,16 @@ def load_rows() -> list[dict[str, str]]:
             row for row in csv.DictReader(f_in)
             if row["signal"] in ACTION_SIGNALS and row.get("portfolio_selection") == "PORTFOLIO_BET"
         ]
-    return sorted(rows, key=lambda r: (r["signal"] == "A_BET", f(r.get("alt_line_score")), f(r["ev_per_unit"]), f(r["live_qi"])), reverse=True)
+    return sorted(
+        rows,
+        key=lambda r: (
+            r["signal"] == "A_BET",
+            f(r.get("alt_line_score")),
+            posterior_ev(r),
+            f(r["live_qi"]),
+        ),
+        reverse=True,
+    )
 
 
 def write_outputs(rows: list[dict[str, str]]) -> None:
@@ -305,6 +330,7 @@ def write_outputs(rows: list[dict[str, str]]) -> None:
         path, score = markov_path(row)
         enriched = {
             "signal": row["signal"],
+            "game": row.get("game", ""),
             "player": row["player"],
             "market": row["market"],
             "side": row["side"],
@@ -318,6 +344,9 @@ def write_outputs(rows: list[dict[str, str]]) -> None:
             "market_probability": row["market_probability"],
             "model_edge": row["model_edge"],
             "ev_per_unit": row["ev_per_unit"],
+            "posterior_probability": row.get("posterior_probability", ""),
+            "posterior_edge": row.get("posterior_edge", ""),
+            "posterior_ev_per_unit": row.get("posterior_ev_per_unit", ""),
             "live_qi": row["live_qi"],
             "alt_line_score": row.get("alt_line_score", ""),
             "stake_units": row.get("stake_units", ""),
