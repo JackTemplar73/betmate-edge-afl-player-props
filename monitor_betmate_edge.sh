@@ -20,7 +20,11 @@ LOCAL_REFRESH_HEALTH_URL="http://127.0.0.1:8765/health"
 LOCAL_PUBLIC_HEALTH_URL="http://127.0.0.1:8000/health"
 NGROK_API_URL="http://127.0.0.1:4040/api/tunnels"
 
-ODDS_API_KEY="${THE_ODDS_API_KEY:-026c34657c294b1af47274812988496e}"
+ODDS_API_KEY="${THE_ODDS_API_KEY:-}"
+if [[ -z "$ODDS_API_KEY" ]]; then
+  echo "THE_ODDS_API_KEY is not set; monitor cannot verify live refresh." >&2
+  exit 1
+fi
 REFRESH_TOKEN="${CODEX_REFRESH_TOKEN:-$(cat "$PROJECT_ROOT/codex_refresh_token.txt" 2>/dev/null || true)}"
 
 mkdir -p "$LOG_DIR"
